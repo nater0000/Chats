@@ -2,4 +2,9 @@
 layout: default
 ---
 
-## [Browse Markdown](./chatsmith/)
+## Markdown Pages
+
+{% for page in site.pages %}
+### [page.name](page.path)
+{% endfor %}
+

@@ -2,5 +2,10 @@
 layout: default
 ---
 
-### [Template Page](./template.html)
+## Markdown Pages
+
+{% for page in site.pages %}
+### [page.name](page.path)
+{% endfor %}
+
 
