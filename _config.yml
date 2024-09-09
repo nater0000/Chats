@@ -1,9 +1,9 @@
 title: Markdown Publishing
-logo: /assets/img/logo-1.png
+logo: /assets/img/logo-01.png
 description: Publish markdown (and more) using GitHub Pages
 show_downloads: false
 google_analytics:
-theme: jekyll-theme-minimal
+#theme: jekyll-theme-minimal
 remote_theme: pages-themes/hacker@v0.2.0
 plugins:
 - jekyll-remote-theme # add this line to the plugins list if you already have one
