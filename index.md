@@ -2,4 +2,4 @@
 layout: default
 ---
 
-[Browse Markdown](./chatsmith/)
+## [Browse Markdown](./chatsmith/)

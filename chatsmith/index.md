@@ -2,5 +2,5 @@
 layout: default
 ---
 
-[Template Page](./template.html).
+### [Template Page](./template.html)
 
