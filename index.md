@@ -7,7 +7,9 @@ layout: default
 {% for page in site.pages %}
 
 {% if page.url contains '/chatsmith/' and page.name != 'index.md' %}
-### [{{page.name}}]({{page.url}})
+{% assign check = page.name | split:'.' | last %}
+{% assign check_len = check | size %}
+### [{{page.name | replace: '-', ' ' | minus: check_len}}]({{page.url}})
 {% endif %}
 
 {% endfor %}
