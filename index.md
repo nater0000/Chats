@@ -6,8 +6,8 @@ layout: default
 
 {% for page in site.pages %}
 
-{% if page.url contains '/chatsmith/' %}
-### [{{page.name}}]({{page.url}})
+{% if page.url contains '/chatsmith/' and page.name != 'index.md' %}
+### [{{page.title}}]({{page.url}})
 {% endif %}
 
 {% endfor %}
