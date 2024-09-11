@@ -4,6 +4,9 @@
 
 head img {
   max-width: 100px;
+  &:hover {
+    max-width: 100px;
+  }
 }
 body {
   padding:0px 0 20px 0px;
