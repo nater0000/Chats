@@ -1,3 +1,5 @@
+## Updating HTML without JavaScript
+
 Web developers typically rely on JavaScript for dynamic updates to HTML content because it's naturally designed for client-side interactions. However, streaming HTML component changes using PHP without JavaScript can be accomplished, but it is less interactive and usually relies on server-side techniques. Here are some methods to achieve this:
 
 ### Server-Sent Events (SSE) with PHP
