@@ -2,7 +2,7 @@
 layout: default
 ---
 
-## Markdown Pages
+## Example Markdown Files
 
 {% for page in site.pages %}
 
