@@ -4,7 +4,7 @@ Gem::Specification.new do |s|
   s.name          = "markdown-publishing"
   s.version       = "0.4.0"
   s.license       = "CC0-1.0"
-  s.authors       = ["Nathan R", "hi@rickey.io"]
+  s.authors       = ["Nathan R", "rickey.io"]
   s.email         = ["hi@rickey.io"]
   s.homepage      = "https://gpt.rickey.io"
   s.summary       = "Conveniently publish markdown and other content types using GitHub Pages!"
