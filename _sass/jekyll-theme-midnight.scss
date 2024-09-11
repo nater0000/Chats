@@ -2,12 +2,13 @@
 @import "fonts";
 @import "rouge-base16-dark.scss";
 
-head img {
-  max-width: 100px;
+#logoId {
+  max-width: 60px;
   &:hover {
-    max-width: 100px;
+    max-width: 60px;
   }
 }
+
 body {
   padding:0px 0 20px 0px;
   margin: 0px;
