@@ -4,6 +4,6 @@ description: Publish markdown (and more) using GitHub Pages
 show_downloads: false
 google_analytics:
 #theme: jekyll-theme-hacker
-remote_theme: pages-themes/minimal
+remote_theme: pages-themes/midnight
 plugins:
   - jekyll-remote-theme
