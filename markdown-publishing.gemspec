@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 Gem::Specification.new do |s|
-  s.name          = "Markdown Publishing"
-  s.version       = "0.3.0"
+  s.name          = "markdown-publishing"
+  s.version       = "0.4.0"
   s.license       = "CC0-1.0"
   s.authors       = ["Nathan R", "hi@rickey.io"]
   s.email         = ["hi@rickey.io"]
