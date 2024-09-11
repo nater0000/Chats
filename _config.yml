@@ -3,7 +3,7 @@ logo: /assets/img/logo-01.png
 description: Publish markdown (and more) using GitHub Pages
 show_downloads: false
 google_analytics:
-#theme: jekyll-theme-hacker
+theme: jekyll-theme-midnight
 remote_theme: pages-themes/midnight
 plugins:
   - jekyll-remote-theme
