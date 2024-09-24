@@ -2,7 +2,7 @@
 layout: default
 ---
 
-## Example Markdown Files
+## Chat Responses
 
 {% for page in site.pages %}
 
