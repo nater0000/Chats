@@ -3,12 +3,11 @@ layout: default
 ---
 
 ## Chat Responses
-
-### [{{ 'Chatsmith' }}]({{ relative_path | append:'/chatsmith/' }})
-### [{{ 'Gemini' }}]({{ relative_path | append:'/gemini/' }})
-### [{{ 'Misc' }}]({{ relative_path | append:'/pages/' }})
+### [{{ 'Chatsmith /' }}]({{ relative_path | append:'/chatsmith/' }})
+### [{{ 'Gemini /' }}]({{ relative_path | append:'/gemini/' }})
+### [{{ 'Misc /' }}]({{ relative_path | append:'/pages/' }})
 ---
-#### Chatsmith
+## Chatsmith
 {% for page in site.pages %}
 
 {% if (page.url contains '/chatsmith/') %}
@@ -20,8 +19,8 @@ layout: default
 {% endif %}
 
 {% endfor %}
-
-#### Gemini
+---
+## Gemini
 {% for page in site.pages %}
 
 {% if (page.url contains '/gemini/') %}
@@ -33,7 +32,7 @@ layout: default
 {% endif %}
 
 {% endfor %}
-
+---
 #### Others
 {% for page in site.pages %}
 
