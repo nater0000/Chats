@@ -17,4 +17,4 @@ layout: default
 {% endif %}
 
 {% endfor %}
-### [{{ "Chatsmith" }}]({{ relative_path | append '/_chatsmith/' }})
+### [{{ 'Chatsmith' }}]({{ relative_path | append:'/_chatsmith/' }})
