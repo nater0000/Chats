@@ -17,6 +17,7 @@ layout: default
 {% if page.name != 'index.md' %}
 ### [{{ page.name | slice: 0, pagename_len | replace: '-', ' ' | capitalize }}]({{ page.url }})
 {% endif %}
+{% endif %}
 
 {% endfor %}
 
@@ -29,6 +30,7 @@ layout: default
 {% if page.name != 'index.md' %}
 ### [{{ page.name | slice: 0, pagename_len | replace: '-', ' ' | capitalize }}]({{ page.url }})
 {% endif %}
+{% endif %}
 
 {% endfor %}
 
@@ -40,6 +42,7 @@ layout: default
 {% assign pagename_len = page.name | size | minus: 3 %}
 {% if page.name != 'index.md' %}
 ### [{{ page.name | slice: 0, pagename_len | replace: '-', ' ' | capitalize }}]({{ page.url }})
+{% endif %}
 {% endif %}
 
 {% endfor %}
