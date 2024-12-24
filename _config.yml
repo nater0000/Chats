@@ -4,8 +4,13 @@ logo: /assets/img/logo-01.png
 description: Easily publish markdown and more using GitHub
 show_downloads: false
 incremental: true
+google:
+  tag_manager:
+    container_id: G-J82GR9915G
 google_analytics: G-J82GR9915G
 theme: jekyll-theme-midnight
 remote_theme: pages-themes/midnight
 plugins:
+  - jekyll-google-tag-manager
   - jekyll-remote-theme
+#  - jekyll-analytics

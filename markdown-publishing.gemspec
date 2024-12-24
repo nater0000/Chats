@@ -2,7 +2,7 @@
 
 Gem::Specification.new do |s|
   s.name          = "simple-publishing"
-  s.version       = "0.4.0"
+  s.version       = "0.5.0"
   s.license       = "CC0-1.0"
   s.authors       = ["Nathan R", "rickey.io"]
   s.email         = ["hi@rickey.io"]
