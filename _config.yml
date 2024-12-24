@@ -9,7 +9,7 @@ incremental: false
 theme: jekyll-theme-midnight
 #remote_theme: pages-themes/midnight
 
-#google_analytics: G-J82GR9915G
+google_analytics: G-J82GR9915G
 #google:
 #  tag_manager:
 #    container_id: G-J82GR9915G
