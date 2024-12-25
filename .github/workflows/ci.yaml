@@ -15,4 +15,5 @@ jobs:
       - name: build
         run: script/bootstrap
       - name: test
+        needs: build
         run: script/cibuild
