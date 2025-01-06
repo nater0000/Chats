@@ -2,12 +2,12 @@
 layout: default
 ---
 ## Generated Output
-### [{{ '- Home' }}]({{ '/' }})
+### [{{ '- All Sources' }}]({{ '/' }})
 ### [{{ '+ Chatsmith ' }}]({{ '/chatsmith/' }})
 ### [{{ '+ Gemini' }}]({{ '/gemini/' }})
 ### [{{ '+ Other' }}]({{ '/pages/' }})
 ---
-## Home
+#### All Sources
 ### - Chatsmith
 {% for page in site.pages %}
 
