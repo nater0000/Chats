@@ -5,6 +5,7 @@ layout: default
 ### [{{ 'Home' }}]({{ '/' }})
 ### [{{ '+ Chatsmith ' }}]({{ '/chatsmith/' }})
 ### [{{ '- Gemini' }}]({{ '/gemini/' }})
+### [{{ '+ DeepSeek R1' }}]({{ '/ds-r1/' }})
 ### [{{ '+ Other' }}]({{ '/pages/' }})
 ---
 ### - Gemini

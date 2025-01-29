@@ -3,15 +3,15 @@ layout: default
 ---
 ## Generated Output
 ### [{{ 'Home' }}]({{ '/' }})
-### [{{ '- Chatsmith ' }}]({{ '/chatsmith/' }})
+### [{{ '+ Chatsmith ' }}]({{ '/chatsmith/' }})
 ### [{{ '+ Gemini' }}]({{ '/gemini/' }})
-### [{{ '+ DeepSeek R1' }}]({{ '/ds-r1/' }})
+### [{{ '- DeepSeek R1' }}]({{ '/ds-r1/' }})
 ### [{{ '+ Other' }}]({{ '/pages/' }})
 ---
-### - Chatsmith
+### - DeepSeek R1
 {% for page in site.pages %}
 
-{% if (page.url contains '/chatsmith/' and page.name != 'index.md') %}
+{% if (page.url contains '/ds-r1/' and page.name != 'index.md') %}
 {% assign suffix = page.name | split:'.' | last %}
 {% assign pagename_len = page.name | size | minus: 3 %}
 #### [{{ page.name | slice: 0, pagename_len | replace: '-', ' ' | capitalize }}]({{ page.url }})
