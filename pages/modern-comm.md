@@ -1,8 +1,8 @@
-===
+---
 title: Modern Communist Manifest
 author: assetmgmt11
-origin: reddit.com
-===
+reference: https://old.reddit.com/user/assetmgmt11/comments/1iciikt/theory/
+---
 
 **The Non-Economic and Economic Nationalist Manifesto**A modern communist manifesto.
 
