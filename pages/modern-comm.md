@@ -1,6 +1,6 @@
 ---
 title: Modern Communist Manifest
-author: assetmgmt11
+origin-author: assetmgmt11
 origin: https://old.reddit.com/user/assetmgmt11/comments/1iciikt/theory/
 ---
 
