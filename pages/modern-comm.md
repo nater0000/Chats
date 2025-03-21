@@ -1,5 +1,7 @@
 ---
 title: Modern Communist Manifest
+author: NathanR
+tags: reddit communism
 origin-author: assetmgmt11
 origin: https://old.reddit.com/user/assetmgmt11/comments/1iciikt/theory/
 ---
