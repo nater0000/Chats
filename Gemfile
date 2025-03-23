@@ -5,7 +5,7 @@ source "https://rubygems.org"
 #gem 'github-pages', group: :jekyll_plugins
 
 gem 'jekyll', '~> 4.0'
-gem 'html-proofer', '~> 4.0.1'
+gem 'html-proofer', '~> 4.0', '>= 4.0.1'
 gem 'jekyll-remote-theme', '~> 0.4.3'
 
 gem 'jekyll-feed', '~> 0.15'

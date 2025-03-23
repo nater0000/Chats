@@ -27,7 +27,7 @@ Gem::Specification.new do |s|
   
   s.add_development_dependency "bundler"
   s.add_development_dependency "rake", "~> 10.0"
-  s.add_development_dependency "html-proofer", "~> 3.0"
+  s.add_development_dependency "html-proofer", "~> 4.0"
   s.add_development_dependency "rubocop-github", "~> 0.16"
   s.add_development_dependency "w3c_validators", "~> 1.3"
 end

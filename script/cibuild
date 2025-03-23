@@ -4,7 +4,8 @@ set -e
 
 bundle exec jekyll build --trace
 
-bundle exec htmlproofer ./_site --check-html --check-sri
+bundle exec htmlproofer --help
+bundle exec htmlproofer ./_site --checks spelling,links,images,scripts
 bundle exec rubocop -D --config .rubocop.yml
 bundle exec script/validate-html
 
