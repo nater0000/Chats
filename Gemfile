@@ -11,6 +11,6 @@ gem 'jekyll-remote-theme', '~> 0.4.3'
 gem 'jekyll-feed', '~> 0.15'
 gem 'jekyll-paginate'
 gem 'jekyll-sitemap'
-gem 'jekyll-seo-tag'
+gem 'jemoji'
 
 #gem 'markdown-publishing', git: 'https://github.com/nater0000/Chats', ref: 'main'
