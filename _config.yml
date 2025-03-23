@@ -43,7 +43,7 @@ excerpt_separator: <!--more-->
 
 ## TOC
 toc:
-  selectors: # "h1,h2,h3" (default)
+  selectors: "h1,h2,h3"
   
   
 ## => Markdown Enhancements
