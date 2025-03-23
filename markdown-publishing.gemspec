@@ -12,9 +12,9 @@ Gem::Specification.new do |s|
   s.files         = `git ls-files -z`.split("\x0").select do |f|
     f.match(%r{^((_includes|_layouts|_sass|assets)/|(LICENSE|README)((\.(txt|md|markdown)|$)))}i)
   end
-  
+
   #s.metadata["plugin_type"] = "theme"
-  
+
   s.required_ruby_version = ">= 2.4.0"
 
   s.platform = Gem::Platform::RUBY
@@ -24,7 +24,7 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency "jekyll-sitemap", "~> 1.0"
   s.add_runtime_dependency "jekyll-feed", "~> 0.15"
   s.add_runtime_dependency "jemoji", "~> 0.8"
-  
+
   s.add_development_dependency "bundler"
   s.add_development_dependency "rake", "~> 10.0"
   s.add_development_dependency "html-proofer", "~> 4.0"
