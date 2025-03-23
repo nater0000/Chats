@@ -3,4 +3,5 @@
 source "https://rubygems.org"
 
 
-gemspec
+gem 'jekyll', '~> 4.0'
+gem 'jekyll-feed', '~> 0.15'

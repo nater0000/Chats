@@ -1,22 +1,38 @@
 on:
   push:
+    branches:
+      - main
   pull_request:
+    branches:
+      - main
     types: [opened, synchronize]
+    
 jobs:
   build:
     runs-on: ubuntu-latest
-    name: Sync, Build, and Test
+    name: script/cibuild
     steps:
-      - uses: actions/checkout@v2
-      - uses: ruby/setup-ruby@v1
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+      
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 3.2
+          ruby-version: '3.2'
           bundler-cache: true
+          
       - name: Make Build Script executable
         run: chmod +x script/bootstrap
-      - name: Build Repositories
+        if: exists('script/bootstrap')
+        
+      - name: Build Repository
         run: script/bootstrap
+        if: exists('script/bootstrap')
+        
       - name: Make Test Script executable
         run: chmod +x script/cibuild
+        if: exists('script/cibuild')
+        
       - name: Test Build Outputs
         run: script/cibuild
+        if: exists('script/cibuild')

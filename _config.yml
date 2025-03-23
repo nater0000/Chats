@@ -15,6 +15,7 @@ google_analytics: G-J82GR9915G
 #    container_id: G-J82GR9915G
 
 plugins:
+  - jekyll-feed
 #  - jekyll-remote-theme
 #  - jekyll-analytics
 #  - jekyll-google-tag-manager
