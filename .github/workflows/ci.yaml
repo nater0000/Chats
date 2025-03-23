@@ -24,12 +24,14 @@ jobs:
       - name: Make Build Script executable
         run: chmod +x script/bootstrap
         
-      - name: Build Repository
+      - name: Bootstrap Bundle Environment
         run: script/bootstrap
         
-      - name: Make Test Script executable
-        run: chmod +x script/validate-html
+      - name: Make Build Script executable
         run: chmod +x script/cibuild
         
-      - name: Test Build Outputs
+      - name: Make Validate Script executable
+        run: chmod +x script/validate-html
+        
+      - name: Run Build And Validate
         run: script/cibuild
