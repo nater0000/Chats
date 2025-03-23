@@ -6,8 +6,8 @@ show_downloads: false
 
 incremental: false
 
-theme: jekyll-theme-custom
-#remote_theme: pages-themes/midnight
+#theme: jekyll-theme-custom
+remote_theme: pages-themes/midnight@latest
 
 ## => GitHub Repository (if the site is hosted by GitHub)
 ##############################
@@ -70,7 +70,7 @@ plugins:
   - jekyll-paginate
   - jekyll-sitemap
   - jemoji
-  - jekyll-theme-custom
+  - jekyll-remote-theme
 # - jekyll-seo-tag
 # - jekyll-feed
 #  - jekyll-remote-theme

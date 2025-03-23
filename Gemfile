@@ -3,7 +3,7 @@
 source "https://rubygems.org"
 
 gem 'github-pages', group: :jekyll_plugins
-gem 'markdown-publishing'
+#gem 'jekyll-theme-custom'
 
 #gem 'jekyll', '~> 4.0'
 
