@@ -28,6 +28,7 @@ jobs:
         run: script/bootstrap
         
       - name: Make Test Script executable
+        run: chmod +x script/validate-html
         run: chmod +x script/cibuild
         
       - name: Test Build Outputs
