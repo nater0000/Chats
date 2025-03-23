@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 Gem::Specification.new do |s|
-  s.name          = "simple-publishing"
+  s.name          = "markdown-publishing"
   s.version       = "0.5.0"
   s.license       = "CC0-1.0"
   s.authors       = ["Nathan R", "rickey.io"]
@@ -16,8 +16,15 @@ Gem::Specification.new do |s|
   s.required_ruby_version = ">= 2.4.0"
 
   s.platform = Gem::Platform::RUBY
-  s.add_runtime_dependency "jekyll", "> 3.5", "< 5.0"
+  s.add_runtime_dependency "jekyll", "> 3.6", "< 5.0"
   s.add_runtime_dependency "jekyll-seo-tag", "~> 2.0"
+  s.add_runtime_dependency "jekyll-paginate", "~> 1.1"
+  s.add_runtime_dependency "jekyll-sitemap", "~> 1.0"
+  s.add_runtime_dependency "jekyll-feed", "~> 0.15"
+  spec.add_runtime_dependency "jemoji", "~> 0.8"
+  
+  s.add_development_dependency "bundler"
+  s.add_development_dependency "rake", "~> 10.0"
   s.add_development_dependency "html-proofer", "~> 3.0"
   s.add_development_dependency "rubocop-github", "~> 0.16"
   s.add_development_dependency "w3c_validators", "~> 1.3"

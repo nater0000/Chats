@@ -6,7 +6,7 @@ show_downloads: false
 
 incremental: false
 
-theme: jekyll-theme-midnight
+theme: markdown-publishing
 #remote_theme: pages-themes/midnight
 
 google_analytics: G-J82GR9915G
@@ -14,8 +14,9 @@ google_analytics: G-J82GR9915G
 #  tag_manager:
 #    container_id: G-J82GR9915G
 
-plugins:
-  - jekyll-feed
+#plugins:
+# - jekyll-seo-tag
+# - jekyll-feed
 #  - jekyll-remote-theme
 #  - jekyll-analytics
 #  - jekyll-google-tag-manager
