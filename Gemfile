@@ -6,7 +6,7 @@ gem 'github-pages', group: :jekyll_plugins
 
 gem 'jekyll', '~> 4.0'
 gem 'jekyll-theme-midnight'
-gem 'htmlproofer', '~> 4.0'
+gem 'htmlproofer'
 
 #gem 'jekyll-feed', '~> 0.15'
 #gem 'markdown-publishing', git: 'https://github.com/nater0000/Chats', ref: 'main'
