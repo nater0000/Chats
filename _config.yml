@@ -14,9 +14,15 @@ google_analytics: G-J82GR9915G
 #  tag_manager:
 #    container_id: G-J82GR9915G
 
-#plugins:
+plugins:
+ - markdown-publishing
 # - jekyll-seo-tag
 # - jekyll-feed
 #  - jekyll-remote-theme
 #  - jekyll-analytics
 #  - jekyll-google-tag-manager
+
+# If you have non-gemified Ruby plugins, use plugins_dir instead
+plugins_dir: 
+  - _plugins
+  
