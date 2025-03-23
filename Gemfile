@@ -2,7 +2,7 @@
 
 source "https://rubygems.org"
 
-gem 'github-pages', group: :jekyll_plugins
+#gem 'github-pages', group: :jekyll_plugins
 
 gem 'jekyll', '~> 4.0'
 gem 'html-proofer', '~> 5.0', '>= 5.0.8'
