@@ -14,5 +14,6 @@ gem "jekyll-seo-tag"
 gem "jekyll-sitemap"
 gem "jemoji"
 gem "rubocop-github", "~> 0.23.0"
+gem "w3c_validators", "~> 1.3", ">= 1.3.7"
 
 #gem "markdown-publishing", git: "https://github.com/nater0000/Chats", ref: "main"
