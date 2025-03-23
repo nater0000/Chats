@@ -7,7 +7,7 @@ show_downloads: false
 incremental: false
 
 #theme: jekyll-theme-custom
-remote_theme: pages-themes/midnight@latest
+remote_theme: pages-themes/midnight
 
 ## => GitHub Repository (if the site is hosted by GitHub)
 ##############################
@@ -78,8 +78,8 @@ plugins:
 #  - jekyll-google-tag-manager
 
 # If you have non-gemified Ruby plugins, use plugins_dir instead
-plugins_dir: 
-  - _plugins
+#plugins_dir: 
+#  - _plugins
   
 exclude:
   - CHANGELOG.md
