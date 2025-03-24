@@ -1,8 +1,8 @@
 ---
-title: "Well-being Index" Foundations
+title: Well-being Index Foundations
 author: NathanR
 gpt: grok-2
-prompt: This is excellent. Can you expand on implementing a "Well-being Index"? This seems very compelling and I would love to deeper understand how this could be created and tracked. Within this context, how could we go about designing and building something that crosses divides and allows even climate change skeptics to feel included in making the world a healthier and safer world for all beings?
+prompt: This is excellent. Can you expand on implementing a Well-being Index"? This seems very compelling and I would love to deeper understand how this could be created and tracked. Within this context, how could we go about designing and building something that crosses divides and allows even climate change skeptics to feel included in making the world a healthier and safer world for all beings?
 date: 2025-03-23,7:20PM
 ---
 
