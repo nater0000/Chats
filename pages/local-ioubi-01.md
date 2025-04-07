@@ -1,10 +1,9 @@
-===
+---
 title: Local IOUBI
 author: NathanR
 prompt: Are you able to use the methodological approach suggestions from ‘Methodological Sustainability’ Knowledge Base and apply it to the ‘Healing Money’ Knowledge Base to suggest a focused entry point to building ‘IOUBI’ as described in the ‘Healing Money’ Knowledge Base? For personal context, I recently moved to a lower middle class urban neighborhood near a high school in northern San Diego County. I have no solid connections to my neighbors or the high school administration currently. While growing up in the 1990s, I learned how to assemble computers from parts loved programming. After graduating with a BSc in Computer Science, I have become a professional software engineer with 20 years of experience mostly in C/C++ but I can pickup almost any programming language and work remotely for a tech corporation that pays me a good salary for not much effort. I have online communities that can assist with some remote tasks, and I plan to introduce myself to my local neighbors and offer tech help, knowledge, and troubleshooting soon.
 gpt: openthinker:7b-q4_K_M
-===
-
+---
 
 ### Thought Process
 
