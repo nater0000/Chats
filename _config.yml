@@ -4,10 +4,6 @@ logo: /assets/img/logo-01.png
 description: Easily publish markdown and more using GitHub
 show_downloads: false
 
-sass:
-  sass_dir: _sass
-  style: compressed
-
 incremental: false
 
 #theme: jekyll-theme-custom
