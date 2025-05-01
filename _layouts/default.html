@@ -6,9 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 	
 	{% if page.title %}
-		<title>Chats | {{ page.title }}</title>
+		<title>{{ site.site_name }} | {{ page.title }}</title>
 	{% else %}
-		<title>Chats</title>
+		<title>{{ site.site_name }}</title>
 	{% endif %}
 	
 	{% include head-custom.html %}
@@ -33,7 +33,7 @@
           <img id="logoId" src="{{site.logo | relative_url}}" alt="Logo" />
         {% endif %}
 		
-		{{ site.title | default: site.github.repository_name }}</a>
+		{{ site.site_name | default: site.github.repository_name }}</a>
 		</h1>
 
         <p id="descId" >{{ site.description | default: site.github.project_tagline }}</p>
