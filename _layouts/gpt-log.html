@@ -20,7 +20,6 @@
 	  {% if page.terminal %}🖥 {{ page.terminal }}<br>{% endif %}
 	  {% if page.gpt %}🤖 {{ page.gpt }}<br>{% endif %}
 	  {% if page.tags %}🏷 {{ page.tags | join: ", " }}<br>{% endif %}
-	  {% if page.slug %}🧲 <a href="https://gpt.rickey.io/{{ page.slug }}.html">{{ page.slug }}</a><br>{% endif %}
 	  {% if page.slug %}🧲 <a href="{{ page.source }}">{{ page.slug }}</a><br>{% endif %}
 	  {% if page.references %}
 		📚 References:<br>

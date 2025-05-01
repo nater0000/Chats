@@ -27,5 +27,3 @@ Then another prompt could go here
 #### **`gpt@remote:~$`**{:.terminal-line .matrix .gpt}
 And the next response  
 Would be here and all formatted
-
----
