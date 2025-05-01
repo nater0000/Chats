@@ -12,18 +12,18 @@ references: [https://chatgpt.com/share/6813b58f-0b20-8010-99c8-19a731cdc252]
 layout: gpt-log
 ---
 
-#### **`user@local:~$`**{:.terminal-line .matrix .user}
+#### user@local:~${:.terminal-line .matrix .user}
 I would want to paste the prompt here where it's not too large and overpowering...
 
-#### **`gpt@remote:~$`**{:.terminal-line .matrix .gpt}
+#### gpt@remote:~${:.terminal-line .matrix .gpt}
 I probably want to paste the response into this spot  
 and whatever formatting is here will hopefully show up beautifully...
 
 ---
 
-#### **`user@local:~$`**{:.terminal-line .matrix .user}
+#### user@local:~${:.terminal-line .matrix .user}
 Then another prompt could go here
 
-#### **`gpt@remote:~$`**{:.terminal-line .matrix .gpt}
+#### gpt@remote:~${:.terminal-line .matrix .gpt}
 And the next response  
 Would be here and all formatted

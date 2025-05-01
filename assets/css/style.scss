@@ -4,13 +4,14 @@
 @import "{{ site.theme }}";
 
 #logoId {
-  max-width: 64px;
+  max-width: 48px;
 }
 
 .content {
   margin-top: 0px;
   padding-top: 0px;
 }
+
 /* Terminal Log Styling Base */
 .gpt-log-entry {
   background-color: #111;
@@ -45,6 +46,7 @@
   color: #00ff00; /* Green text for GPT responses */
   border-left-color: #00ff00;
 }
+
 .terminal-line.matrix.user {
   color: #00ffff; /* Cyan for user prompts */
   border-left-color: #00ffff;
