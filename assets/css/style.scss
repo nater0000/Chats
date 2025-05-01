@@ -101,26 +101,25 @@
   line-height: 1.4;
   margin-bottom: 1em;
 }
-
 header {
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  padding: 1em;
   gap: 1em;
+}
 
-  h1 {
-    margin: 0;
-    font-size: 1.5em;
-    display: flex;
-    align-items: center;
+header h1 {
+  display: flex;
+  align-items: center;
+  font-size: 1.5em;
+  margin: 0;
+}
 
-    a {
-      text-decoration: none;
-      color: inherit;
-    }
-
-    img {
-      max-height: 40px;
-      margin-right: 0.5em;
-    }
-  }
+header h1 a {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: inherit;
+  gap: 0.5em;
 }
