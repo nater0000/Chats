@@ -34,9 +34,22 @@
 /* Themes */
 .terminal-line.matrix {
   background-color: #000;
-  color: #00ff00;
+  color: #00ff00; /* Neon green */
+  border-left: 4px solid #00ff00;
+  padding-left: 0.5em;
+  margin: 0.5em 0;
+}
+
+/* Optional: style responses specifically */
+.terminal-line.matrix.gpt {
+  color: #00ff00; /* Green text for GPT responses */
   border-left-color: #00ff00;
 }
+.terminal-line.matrix.user {
+  color: #00ffff; /* Cyan for user prompts */
+  border-left-color: #00ffff;
+}
+
 
 .terminal-line.bluehack {
   background-color: #000;
