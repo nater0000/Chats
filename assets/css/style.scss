@@ -11,3 +11,52 @@
   margin-top: 0px;
   padding-top: 0px;
 }
+/* Terminal Log Styling Base */
+.gpt-log-entry {
+  background-color: #111;
+  color: #ccc;
+  padding: 2em;
+  border-radius: 12px;
+  font-family: monospace;
+  max-width: 800px;
+  margin: 2em auto;
+  box-shadow: 0 0 12px rgba(0, 255, 0, 0.1);
+}
+
+/* Base terminal label line */
+.terminal-line {
+  font-family: monospace;
+  padding-left: 0.5em;
+  margin: 0.5em 0;
+  border-left: 4px solid;
+}
+
+/* Themes */
+.terminal-line.matrix {
+  background-color: #000;
+  color: #00ff00;
+  border-left-color: #00ff00;
+}
+
+.terminal-line.bluehack {
+  background-color: #000;
+  color: #33ccff;
+  border-left-color: #33ccff;
+}
+
+.terminal-line.solarized {
+  background-color: #002b36;
+  color: #93a1a1;
+  border-left-color: #b58900;
+}
+
+/* Roles */
+.terminal-line.user {
+  color: #00ffff;
+  border-left-color: #00ffff;
+}
+
+.terminal-line.gpt {
+  color: #00ff88;
+  border-left-color: #00ff88;
+}

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="{{ site.lang | default: "en-US" }}">
+
+  <head>
+	<meta charset="UTF-8">
+	<title>Chats | {{ page.title }}</title>
+	<link rel="stylesheet" href="/assets/css/style.css">
+  </head>
+  
+<body>
+  <article class="gpt-log-entry">
+
+	<header class="metadata">
+	  <h1>📓 {{ page.title }}</h1>
+
+	  {% if page.author %}👤 {{ page.author }}<br>{% endif %}
+	  {% if page.date %}📆 {{ page.date }}{% endif %}
+	  {% if page.time %} ⏱️ {{ page.time }}<br>{% endif %}
+	  {% if page.location %}📍 {{ page.location }}<br>{% endif %}
+	  {% if page.terminal %}🖥 {{ page.terminal }}<br>{% endif %}
+	  {% if page.gpt %}🤖 {{ page.gpt }}<br>{% endif %}
+	  {% if page.tags %}🏷 {{ page.tags | join: ", " }}<br>{% endif %}
+	  {% if page.slug %}🧲 <a href="https://gpt.rickey.io/{{ page.slug }}.html">{{ page.slug }}</a><br>{% endif %}
+	  {% if page.slug %}🧲 <a href="{{ page.source }}">{{ page.slug }}</a><br>{% endif %}
+	  {% if page.references %}
+		📚 References:<br>
+		<ul>
+		  {% for ref in page.references %}
+			<li><a href="{{ ref }}">{{ ref }}</a></li>
+		  {% endfor %}
+		</ul>
+	  {% endif %}
+	</header>
+
+    <hr>
+
+    <section class="gpt-content">
+      {{ content }}
+    </section>
+	
+    <hr>
+	
+	<footer>
+	  <small>💾 Published by {{ page.author }}</small>
+	</footer>
+
+  </article>
+</body>
+</html>
