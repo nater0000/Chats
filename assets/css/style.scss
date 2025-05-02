@@ -17,7 +17,7 @@
   border-radius: 12px;
   font-family: monospace;
   max-width: 800px;
-  margin: 2em auto;
+  margin: 0.5em auto;
   box-shadow: 0 0 20px rgba(0, 255, 0, 0.1), 0 0 40px rgba(0, 255, 0, 0.05);
   background: radial-gradient(circle at top left, #111 0%, #000 100%);
 
@@ -93,10 +93,9 @@
 }
 .metadata {
   font-family: monospace;
-  font-size: 0.875rem; // or 0.8rem if you want it smaller
+  font-size: 0.65rem; // or 0.8rem if you want it smaller
   color: #ccc;
   line-height: 1.4;
-  margin-bottom: 1em;
 }
 
 .site-title {
@@ -113,8 +112,11 @@
   display: flex;
   align-items: center;
   text-decoration: none;
-  color: inherit;
   gap: 0.5em;
+  
+  &:hover {
+    color: #ffdb4d;
+  }
 }
 
 .site-title img {
