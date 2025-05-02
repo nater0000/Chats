@@ -9,11 +9,21 @@
   padding-top: 0px;
 }
 
+.gpt-content {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+
+section.content {
+  margin-bottom: 1em;
+}
+
 /* Terminal Log Styling Base */
 .gpt-log-entry {
   background-color: #111;
   color: #ccc;
-  padding: 0.5em;
+  padding: 2em;
   border-radius: 12px;
   font-family: monospace;
   max-width: 800px;
