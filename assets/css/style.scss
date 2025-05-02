@@ -2,7 +2,6 @@
 ---
 
 @import "{{ site.theme }}";
-@import "{{ default_colors }}";
 
 .wrapper {
   padding-top: 1.5em; /* or try 2em for a little more breathing room */
@@ -14,7 +13,7 @@ body {
 }
 
 .content {
-  color: $conifer;
+  color: #b5e853;
   margin-top: 0px;
   padding-top: 0px;
 }
