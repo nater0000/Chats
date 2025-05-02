@@ -19,8 +19,8 @@ body {
 }
 
 .gpt-content {
-  font-family: 'JetBrains Mono', Consolas, 'Courier New', monospace;
-  font-weight: 300;
+  font-family: 'Noto Sans', Consolas, 'Courier New', monospace;
+  font-weight: 400;
   font-size: 0.75rem;
   margin-top: 0.5em;
   margin-bottom: 0.5em;
@@ -55,6 +55,9 @@ section.content {
 
 /* Base terminal label line */
 .terminal-line {
+  font-family: 'JetBrains Mono', Consolas, 'Courier New', monospace;
+  font-weight: 300;
+  
   font-size: 0.9em;
   padding: 0.25em 0.75em;
   box-shadow: inset 0 0 0 2px rgba(0,255,255,0.3);

@@ -62,3 +62,12 @@
   font-style: normal;
   font-display: swap;
 }
+
+@font-face {
+  font-family: 'JetBrains Mono';
+  src: url('/assets/fonts/JetBrainsMono-regular/JetBrainsMono-Regular.woff2') format('woff2'),
+       url('/assets/fonts/JetBrainsMono-regular/JetBrainsMono-Regular.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
