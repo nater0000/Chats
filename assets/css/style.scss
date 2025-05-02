@@ -102,15 +102,28 @@
 .site-title {
   display: flex;
   align-items: center;
-  gap: 0.75em;
+  gap: 0.5em;
 }
-#descId {
-  margin: 0.2em 0 1em 0;
-  font-size: 0.9rem;
-  color: #aaa;
+.site-title h1 {
+  margin: 0;
+  font-size: 1.5rem;
+  line-height: 1.2;
+}
+.site-title a {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: inherit;
+  gap: 0.5em;
 }
 
 .site-title img {
   height: 36px;
   width: auto;
+}
+
+#descId {
+  margin: 0.2em 0 1em 0;
+  font-size: 0.9rem;
+  color: #aaa;
 }
