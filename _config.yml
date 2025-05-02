@@ -8,6 +8,13 @@ sass:
   sass_dir: _sass
   style: compressed
 
+defaults:
+  - scope:
+      path: ""         # Empty string = all pages
+      type: "pages"    # Only applies to regular pages (not posts)
+    values:
+      layout: gpt-log
+      
 incremental: false
 
 #theme: jekyll-theme-custom
