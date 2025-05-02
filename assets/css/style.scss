@@ -13,9 +13,11 @@ body {
 }
 
 .content {
-  color: #90e859;
+  color: #90c659;
   margin-top: 0px;
   padding-top: 0px;
+  
+  -webkit-font-smoothing: antialiased;
 }
 
 .gpt-content {
@@ -24,7 +26,7 @@ body {
   font-size: 0.75rem;
   margin-top: 0.5em;
   margin-bottom: 0.5em;
-  letter-spacing: 0.01em;
+  letter-spacing: 0.0em;
 }
 
 
