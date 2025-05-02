@@ -2,6 +2,7 @@
 ---
 
 @import "{{ site.theme }}";
+@import "{{ default_colors }}";
 
 .wrapper {
   padding-top: 1.5em; /* or try 2em for a little more breathing room */
