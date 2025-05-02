@@ -26,6 +26,7 @@
   <body>
     <div class="wrapper">
       <header>
+  <div class="site-title">
         <h1>
 		<a href="{{ "/" | absolute_url }}">
 		
@@ -35,6 +36,7 @@
 		
 		{{ site.site_name | default: site.github.repository_name }}</a>
 		</h1>
+  </div>
 
         <p id="descId" >{{ site.description | default: site.github.project_tagline }}</p>
 		
