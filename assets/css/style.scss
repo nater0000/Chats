@@ -3,10 +3,24 @@
 
 @import "{{ site.theme }}";
 
+@font-face {
+  font-family: 'Cascadia Code';
+  src: url('/assets/fonts/CascadiaCode-regular/CascadiaCode.woff2') format('woff2'),
+       url('/assets/fonts/CascadiaCode-regular/CascadiaCode.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 .wrapper {
   padding-top: 1.5em; /* or try 2em for a little more breathing room */
 }
-
+body {
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+.gpt-log-entry {
+  font-family: 'Cascadia Code', Consolas, 'Courier New', monospace;
+}
 .content {
   margin-top: 0px;
   padding-top: 0px;
