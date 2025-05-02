@@ -3,9 +3,6 @@
 
 @import "{{ site.theme }}";
 
-#logoId {
-  max-width: 48px;
-}
 
 .content {
   margin-top: 0px;
@@ -101,25 +98,18 @@
   line-height: 1.4;
   margin-bottom: 1em;
 }
-header {
+
+.site-title {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 1em;
-  gap: 1em;
+  gap: 0.75em;
+}
+#descId {
+  margin: 0.2em 0 1em 0;
+  font-size: 0.9rem;
+  color: #aaa;
 }
 
-header h1 {
-  display: flex;
-  align-items: center;
-  font-size: 1.5em;
-  margin: 0;
-}
-
-header h1 a {
-  display: flex;
-  align-items: center;
-  text-decoration: none;
-  color: inherit;
-  gap: 0.5em;
+.site-title img {
+  max-width: 48px;
 }
