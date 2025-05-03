@@ -17,7 +17,7 @@ defaults:
       
 incremental: false
 
-theme: null
+theme: markdown-publishing
 #remote_theme: pages-themes/midnight
 
 ## => GitHub Repository (if the site is hosted by GitHub)
