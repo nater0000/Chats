@@ -82,7 +82,7 @@ plugins:
   - jekyll-sitemap
   - jemoji
   - jekyll-remote-theme
-# - jekyll-seo-tag
+  - jekyll-seo-tag
 # - jekyll-feed
 #  - jekyll-remote-theme
 #  - jekyll-analytics
