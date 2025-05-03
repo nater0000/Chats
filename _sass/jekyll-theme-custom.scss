@@ -117,4 +117,9 @@ pre, code {
   z-index: 1000;
   font-family: $mono-font;
   font-size: 0.9em;
+  transition: opacity 0.6s ease-out;
+}
+
+#theme-switch-msg.fade-out {
+  opacity: 0;
 }
