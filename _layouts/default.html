@@ -18,8 +18,35 @@
 	
 	{% seo %}
 	
-    <link rel="stylesheet" href="{{ '/assets/css/custom.css' | relative_url }}">
-    <link id="dynamic-theme" rel="stylesheet" href="{{ '/assets/css/theme-matrix.css?v=' | append: site.github.build_revision | relative_url }}">
+<!-- Theme stylesheet loader -->
+<link
+  id="dynamic-theme"
+  rel="stylesheet"
+  href="{{ '/assets/css/theme-matrix.css?v=' | append: site.github.build_revision | relative_url }}"
+>
+
+<!-- Preload other theme CSS files to reduce delay when switching -->
+<link
+  rel="preload"
+  as="style"
+  href="{{ '/assets/css/theme-light.css?v=' | append: site.github.build_revision | relative_url }}"
+  onload="this.onload=null;this.rel='stylesheet'"
+  media="all"
+>
+<noscript>
+  <link rel="stylesheet" href="{{ '/assets/css/theme-light.css' | relative_url }}">
+</noscript>
+
+<link
+  rel="preload"
+  as="style"
+  href="{{ '/assets/css/theme-midnight.css?v=' | append: site.github.build_revision | relative_url }}"
+  onload="this.onload=null;this.rel='stylesheet'"
+  media="all"
+>
+<noscript>
+  <link rel="stylesheet" href="{{ '/assets/css/theme-midnight.css' | relative_url }}">
+</noscript>
 
     <script src="{{ '/assets/js/theme-switcher.js' | relative_url }}"></script>
 
@@ -33,6 +60,8 @@
   </head>
   
   <body>
+    <div id="theme-switch-overlay">Switching theme...</div>
+
     <div class="wrapper">
       <header>
   <div class="site-title">

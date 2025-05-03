@@ -91,11 +91,6 @@ plugins:
 # If you have non-gemified Ruby plugins, use plugins_dir instead
 #plugins_dir: 
 #  - _plugins
-
-include:
-  - assets/css/theme-matrix.scss
-  - assets/css/theme-light.scss
-  - assets/css/theme-midnight.scss
   
 exclude:
   - CHANGELOG.md

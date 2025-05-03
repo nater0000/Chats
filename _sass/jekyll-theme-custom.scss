@@ -53,3 +53,19 @@ pre {
   border-radius: 8px;
   background: rgba(0,0,0,0.25);
 }
+
+#theme-switch-overlay {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  padding: 0.5em 1em;
+  background: rgba(0, 0, 0, 0.8);
+  color: #b5e853;
+  font-family: monospace;
+  font-size: 0.9rem;
+  border-radius: 4px;
+  z-index: 9999;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.6s ease;
+}
