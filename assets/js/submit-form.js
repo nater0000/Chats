@@ -65,8 +65,10 @@ gpt: ${gpt}
 tags: [${tags}]
 layout: gpt-log`;
 
-  if (pageName) frontMatter += `
+  if (pageName) {
+    frontMatter += `
 permalink: /${path}/${fileName}`;
+  }
 
   if (references.length > 0) {
     frontMatter += `
@@ -77,19 +79,25 @@ references:
 `;
     });
   }
+
   frontMatter += '---
 
 ';
 
   const blocks = prompts.map(({ prompt, response }) => {
-    return `
-<p class="terminal-line matrix user">user@local:~$</p>
-<p>${sanitizeHTML(prompt).replace(/\n/g, "<br>")}</p>
+    return (
+      `<p class="terminal-line matrix user">user@local:~$</p>
+` +
+      `<p>${sanitizeHTML(prompt).replace(/\n/g, "<br>")}</p>
 
-<p class="terminal-line matrix gpt">gpt@remote:~$</p>
-<p>${sanitizeHTML(response).replace(/\n/g, "<br>")}</p>
+` +
+      `<p class="terminal-line matrix gpt">gpt@remote:~$</p>
+` +
+      `<p>${sanitizeHTML(response).replace(/\n/g, "<br>")}</p>
 
-<hr>`;
+` +
+      `<hr>`
+    );
   }).join('
 
 ');
