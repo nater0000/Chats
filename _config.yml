@@ -17,8 +17,8 @@ defaults:
       
 incremental: false
 
-#theme: jekyll-theme-custom
-remote_theme: pages-themes/midnight
+theme: null
+#remote_theme: pages-themes/midnight
 
 ## => GitHub Repository (if the site is hosted by GitHub)
 ##############################
