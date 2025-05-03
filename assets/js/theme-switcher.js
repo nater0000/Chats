@@ -31,9 +31,10 @@ function applyTheme(themeName, animate = true) {
 
   if (animate && overlay) {
     setTimeout(() => {
-      overlay.style.opacity = '0';
+      overlay.classList.add('fade-out');
       setTimeout(() => {
         overlay.style.visibility = 'hidden';
+        overlay.classList.remove('fade-out');
       }, 600);
     }, 1000); // delay before fade-out
   }
