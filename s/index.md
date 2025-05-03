@@ -9,43 +9,47 @@ permalink: /s/
   <form id="logForm">
     <input type="text" id="repo" value="nater0000/Chats" readonly hidden>
 
-    <fieldset>
-      <legend>🔐 GitHub Connection</legend>
-      <label>🔑 GitHub Token (not saved)<small> Must have repo content write access</small></label>
-      <input type="password" id="token" required>
+    <details open>
+      <summary>🔐 GitHub Connection</summary>
+      <fieldset>
+        <label>🔑 GitHub Token (not saved)<small> Must have repo content write access</small></label>
+        <input type="password" id="token" required>
 
-      <label>📁 File Folder Path</label>
-      <select id="path" required>
-        <option value="pages" selected>pages</option>
-        <option value="_gpts">_gpts</option>
-        <option value="_logs">_logs</option>
-      </select>
-    </fieldset>
+        <label>📁 File Folder Path</label>
+        <select id="path" required>
+          <option value="pages" selected>pages</option>
+          <option value="_gpts">_gpts</option>
+          <option value="_logs">_logs</option>
+        </select>
+      </fieldset>
+    </details>
 
-    <fieldset>
-      <legend>📝 Entry Metadata</legend>
-      <label>🧾 Entry Title</label>
-      <input type="text" id="title" class="metadata-field" required>
+    <details open>
+      <summary>📝 Entry Metadata</summary>
+      <fieldset>
+        <label>🧾 Entry Title</label>
+        <input type="text" id="title" class="metadata-field" required>
 
-      <label>📝 Custom Page Name (optional)</label>
-      <input type="text" id="customPage" oninput="checkFilenameCollision()">
-      <div id="filenameWarning">⚠️ File with this name may already exist.</div>
+        <label>📝 Custom Page Name (optional)</label>
+        <input type="text" id="customPage" oninput="checkFilenameCollision()">
+        <div id="filenameWarning">⚠️ File with this name may already exist.</div>
 
-      <label>👤 Author</label>
-      <input type="text" id="author" value="Nathan R">
+        <label>👤 Author</label>
+        <input type="text" id="author" value="Nathan R">
 
-      <label>📍 Location</label>
-      <input type="text" id="location" value="">
+        <label>📍 Location</label>
+        <input type="text" id="location" value="">
 
-      <label>🖥 Terminal</label>
-      <input type="text" id="terminal" value="">
+        <label>🖥 Terminal</label>
+        <input type="text" id="terminal" value="">
 
-      <label>🤖 GPT Model</label>
-      <input type="text" id="gpt" value="">
+        <label>🤖 GPT Model</label>
+        <input type="text" id="gpt" value="">
 
-      <label>🏷 Tags (comma separated)</label>
-      <input type="text" id="tags" value="gpt">
-    </fieldset>
+        <label>🏷 Tags (comma separated)</label>
+        <input type="text" id="tags" value="gpt">
+      </fieldset>
+    </details>
 
     <fieldset>
       <legend>📎 References</legend>
@@ -75,7 +79,7 @@ permalink: /s/
     <button type="button" class="mini" onclick="document.getElementById('logForm').reset()">🗑 Reset Form</button>
   </form>
 
-  <pre id="previewBox" style="display:none; float: right; max-width: 40%; margin-left: 2em;"></pre>
+  <pre id="previewBox" style="display:none; position: absolute; top: 8rem; right: 2rem; width: 35%; max-width: 400px; background-color: #000; color: #b5e853; padding: 1em; border: 1px solid #444; border-radius: 6px; font-size: 0.85em; overflow-x: auto;"></pre>
 </section>
 
 <link rel="stylesheet" href="{{ '/assets/css/form.css' | relative_url }}">
