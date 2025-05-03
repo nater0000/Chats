@@ -1,115 +1,120 @@
-// jekyll-theme-custom.scss
-
-// === Base Normalization and Fonts ===
-@import "normalize";
+// Theme Imports
+@import "variables";
 @import "fonts";
-
-// === Base Color Variables ===
-@import "default_colors";
-
-// === Base Syntax Highlighting ===
+@import "normalize";
 @import "rouge-base16-dark";
+@import "default_colors";
+@import "ie";
 
-// === Theme Selector — Default: Matrix ===
-// You can override this at build time or in CSS
-@import "matrix";
-
-// === Custom Styles Shared Across Themes ===
-/* Section Layout */
-section.content {
-  padding: 2em;
-  max-width: 42em;
+// Layout & Structure
+body {
+  font: 16px/1.5 $body-font;
+  background: $background-color;
+  color: $text-color;
+  padding: 2em 1em;
+  max-width: 960px;
   margin: auto;
+  transition: background 0.4s ease-in-out, color 0.4s ease-in-out;
 }
 
-/* Terminal Style */
-.terminal-line {
-  font-family: 'Cascadia Code', monospace;
-  padding: 0.3em 0.6em;
-  border-radius: 4px;
-  margin: 0.25em 0;
-  white-space: pre-wrap;
-  word-break: break-word;
+a {
+  color: $link-color;
+  text-decoration: none;
+
+  &:hover,
+  &:focus {
+    text-decoration: underline;
+  }
 }
 
-.terminal-line.user {
-  border: 2px solid #00ccff;
-  color: #00ccff;
+// Site title with optional logo
+.site-title {
+  font-size: 2em;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+
+  img {
+    margin-right: 0.5em;
+    max-height: 2.5em;
+    vertical-align: middle;
+  }
 }
 
-.terminal-line.gpt {
-  border: 2px solid #00ff00;
-  color: #00ff00;
-  background-color: rgba(0, 255, 0, 0.1);
-}
-
-/* Preview Box (floating markdown output) */
-#previewBox {
-  background: black;
-  color: #b5e853;
-  font-family: 'Cascadia Code', monospace;
-  padding: 1em;
-  border: 1px solid #222;
-  border-radius: 8px;
-  overflow-x: auto;
-  white-space: pre-wrap;
-  max-height: 80vh;
-  box-shadow: 0 0 10px #0f0;
-  z-index: 10;
-}
-
-/* Theme Transition */
-body.theme-transition {
-  transition: background-color 0.5s ease, color 0.5s ease;
-}
-
-/* Toast Notification */
-#theme-toast {
-  position: fixed;
-  top: 1em;
-  right: 1em;
-  background: #111;
-  color: #b5e853;
-  padding: 0.75em 1.25em;
-  border-radius: 5px;
+// Header and Footer layout
+.site-header,
+.site-footer {
+  border-top: 1px solid $border-color;
+  margin-top: 2em;
+  padding-top: 1em;
   font-size: 0.9em;
-  box-shadow: 0 0 10px rgba(0, 255, 0, 0.6);
-  z-index: 1000;
-  display: none;
+  color: $grey;
 }
 
-/* Form Adjustments */
-form#logForm {
-  font-size: 0.9rem;
+// Main content box
+.content {
+  padding: 1.5em;
+  background: $content-background;
+  border-radius: 0.5em;
+  box-shadow: 0 0 1em rgba(0, 0, 0, 0.2);
+  transition: background 0.4s ease-in-out, color 0.4s ease-in-out;
 }
 
-form#logForm fieldset {
-  margin-bottom: 1em;
-  border: 1px solid #333;
-  border-radius: 8px;
-  padding: 1em;
-}
-
-form#logForm legend {
-  font-weight: bold;
-  font-size: 1rem;
-  user-select: none;
-  cursor: pointer;
-  transition: color 0.2s;
-}
-
-form#logForm legend:hover {
-  text-decoration: underline;
-}
-
-/* Markdown-like Styling */
+// Typography Enhancements
 h1, h2, h3, h4 {
-  font-family: inherit;
-  font-weight: bold;
+  font-family: $heading-font;
+  margin-top: 1.5em;
+  margin-bottom: 0.5em;
+  line-height: 1.2;
+  color: $heading-color;
 }
 
-hr {
-  border: none;
-  border-top: 1px dashed #555;
-  margin: 2em 0;
+p {
+  margin-bottom: 1em;
+}
+
+pre, code {
+  font-family: $mono-font;
+  font-size: 0.95em;
+}
+
+// Terminal line styling
+.terminal-line {
+  font-family: $mono-font;
+  font-size: 0.95em;
+  padding: 0.5em 1em;
+  margin: 1em 0;
+  border-radius: 4px;
+  white-space: pre-wrap;
+
+  &.user {
+    color: $conifer;
+    background: #000;
+    border: 2px solid cyan;
+  }
+
+  &.gpt {
+    color: #0f0;
+    background: #000;
+    border: 2px solid limegreen;
+  }
+
+  &.matrix {
+    font-weight: bold;
+  }
+}
+
+// Theme switcher notification banner
+#theme-switch-msg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: $highlight-bg;
+  color: $text-color;
+  text-align: center;
+  padding: 0.5em;
+  z-index: 1000;
+  font-family: $mono-font;
+  font-size: 0.9em;
 }
