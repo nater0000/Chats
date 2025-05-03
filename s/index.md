@@ -1,3 +1,4 @@
+
 ---
 layout: default
 title: Submit GPT Log Entry
@@ -31,23 +32,23 @@ permalink: /s/
         <input type="text" id="title" class="metadata-field" required>
 
         <label>📝 Custom Page Name (optional)</label>
-        <input type="text" id="customPage" oninput="checkFilenameCollision()">
+        <input type="text" id="customPage" class="metadata-field" oninput="checkFilenameCollision()">
         <div id="filenameWarning">⚠️ File with this name may already exist.</div>
 
         <label>👤 Author</label>
-        <input type="text" id="author" value="Nathan R">
+        <input type="text" id="author" class="metadata-field" value="Nathan R">
 
         <label>📍 Location</label>
-        <input type="text" id="location" value="">
+        <input type="text" id="location" class="metadata-field" value="">
 
         <label>🖥 Terminal</label>
-        <input type="text" id="terminal" value="">
+        <input type="text" id="terminal" class="metadata-field" value="">
 
         <label>🤖 GPT Model</label>
-        <input type="text" id="gpt" value="">
+        <input type="text" id="gpt" class="metadata-field" value="">
 
         <label>🏷 Tags (comma separated)</label>
-        <input type="text" id="tags" value="gpt">
+        <input type="text" id="tags" class="metadata-field" value="gpt">
       </fieldset>
     </details>
 

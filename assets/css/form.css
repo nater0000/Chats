@@ -1,6 +1,6 @@
 
 form {
-  font-size: 0.8em; /* smaller form-wide text */
+  font-size: 0.8em;
 }
 
 input[type="text"],
@@ -8,22 +8,19 @@ input[type="password"],
 select,
 textarea {
   width: 100%;
-  padding: 0.5em 0.6em;     /* slightly taller fields */
+  padding: 0.5em 0.6em;
   margin-top: 0.2em;
   background-color: #1c1c1c;
   color: #b5e853;
   border: 1px solid #444;
   border-radius: 4px;
   font-family: monospace;
-  font-size: 0.85em;         /* keep input text legible */
+  font-size: 0.85em;
   line-height: 1.4;
   box-sizing: border-box;
 }
 
-label {
-  font-size: 0.9em;          /* make labels slightly smaller */
-  display: block;
-  margin-top: 0.75em;
+input.metadata-field {
   font-weight: bold;
 }
 
@@ -35,10 +32,17 @@ fieldset {
 }
 
 fieldset legend {
-  font-size: 0.95em;         /* match other text scale */
+  font-size: 0.95em;
   font-weight: bold;
   color: #b5e853;
   padding: 0 0.5em;
+}
+
+form label {
+  display: block;
+  font-weight: bold;
+  font-size: 0.9em;
+  margin-top: 0.75em;
 }
 
 button.mini {
@@ -61,12 +65,33 @@ button.mini:hover {
   background-color: #d7f98a;
 }
 
+.block {
+  margin-top: 1.5em;
+  padding: 1em;
+  border: 1px solid #333;
+  border-radius: 6px;
+  background-color: #000;
+}
+
 #previewBox {
-  margin-top: 2em;
   background-color: #000;
   padding: 1em;
   border: 1px solid #333;
   white-space: pre-wrap;
   font-family: monospace;
   color: #b5e853;
+  border-radius: 6px;
+  font-size: 0.85em;
+}
+
+details summary {
+  font-weight: bold;
+  font-size: 1em;
+  color: #b5e853;
+  cursor: pointer;
+  margin-top: 1em;
+}
+
+details[open] summary {
+  margin-bottom: 0.5em;
 }
