@@ -1,4 +1,3 @@
-
 function sanitizeHTML(str) {
   return str.replace(/&/g, "&amp;")
             .replace(/</g, "&lt;")
@@ -38,8 +37,8 @@ function generatePreview() {
   const tags = document.getElementById('tags').value.trim();
   const path = document.getElementById('path').value.trim();
   const references = Array.from(document.querySelectorAll('.reference'))
-                          .map(input => input.value.trim())
-                          .filter(val => val !== '');
+    .map(input => input.value.trim())
+    .filter(val => val !== '');
 
   const prompts = Array.from(document.querySelectorAll('.block')).map(block => {
     const prompt = block.querySelector('.prompt').value.trim();
@@ -51,56 +50,36 @@ function generatePreview() {
   const date = today.toISOString().split('T')[0];
   const time = today.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
-  const fileName = pageName !== '' ? pageName.replace(/[^a-zA-Z0-9-]/g, '-').toLowerCase() : title.replace(/[^a-zA-Z0-9-]/g, '-').toLowerCase();
+  const fileName = pageName !== ''
+    ? pageName.replace(/[^a-zA-Z0-9-]/g, '-').toLowerCase()
+    : title.replace(/[^a-zA-Z0-9-]/g, '-').toLowerCase();
+
   const filePath = `${path}/${fileName}.md`;
 
-  let frontMatter = `---
-title: ${title}
-author: ${author}
-date: ${date}
-time: ${time}
-location: ${location}
-terminal: ${terminal}
-gpt: ${gpt}
-tags: [${tags}]
-layout: gpt-log`;
+  let frontMatter = `---\ntitle: ${title}\nauthor: ${author}\ndate: ${date}\ntime: ${time}\nlocation: ${location}\nterminal: ${terminal}\ngpt: ${gpt}\ntags: [${tags}]\nlayout: gpt-log`;
 
   if (pageName) {
-    frontMatter += `
-permalink: /${path}/${fileName}`;
+    frontMatter += `\npermalink: /${path}/${fileName}`;
   }
 
   if (references.length > 0) {
-    frontMatter += `
-references:
-`;
+    frontMatter += `\nreferences:\n`;
     references.forEach(ref => {
-      frontMatter += `  - ${ref}
-`;
+      frontMatter += `  - ${ref}\n`;
     });
   }
 
-  frontMatter += '---
-
-';
+  frontMatter += '---\n\n';
 
   const blocks = prompts.map(({ prompt, response }) => {
     return (
-      `<p class="terminal-line matrix user">user@local:~$</p>
-` +
-      `<p>${sanitizeHTML(prompt).replace(/\n/g, "<br>")}</p>
-
-` +
-      `<p class="terminal-line matrix gpt">gpt@remote:~$</p>
-` +
-      `<p>${sanitizeHTML(response).replace(/\n/g, "<br>")}</p>
-
-` +
+      `<p class="terminal-line matrix user">user@local:~$</p>\n` +
+      `<p>${sanitizeHTML(prompt).replace(/\n/g, "<br>")}</p>\n\n` +
+      `<p class="terminal-line matrix gpt">gpt@remote:~$</p>\n` +
+      `<p>${sanitizeHTML(response).replace(/\n/g, "<br>")}</p>\n\n` +
       `<hr>`
     );
-  }).join('
-
-');
+  }).join('\n\n');
 
   const finalContent = sanitizeHTML(frontMatter) + blocks;
   const previewBox = document.getElementById('previewBox');
