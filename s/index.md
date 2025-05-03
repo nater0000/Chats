@@ -11,10 +11,10 @@ permalink: /s/
 
     <fieldset>
       <legend>🔐 GitHub Connection</legend>
-      <label>GitHub Token (not saved)<small>Must have repo content write access</small></label>
+      <label>🔑 GitHub Token (not saved)<small> Must have repo content write access</small></label>
       <input type="password" id="token" required>
 
-      <label>File Folder Path</label>
+      <label>📁 File Folder Path</label>
       <select id="path" required>
         <option value="pages" selected>pages</option>
         <option value="_gpts">_gpts</option>
@@ -24,32 +24,32 @@ permalink: /s/
 
     <fieldset>
       <legend>📝 Entry Metadata</legend>
-      <label>Entry Title</label>
-      <input type="text" id="title" required>
+      <label>🧾 Entry Title</label>
+      <input type="text" id="title" class="metadata-field" required>
 
-      <label>Custom Page Name (optional)</label>
+      <label>📝 Custom Page Name (optional)</label>
       <input type="text" id="customPage" oninput="checkFilenameCollision()">
       <div id="filenameWarning">⚠️ File with this name may already exist.</div>
 
-      <label>Author</label>
+      <label>👤 Author</label>
       <input type="text" id="author" value="Nathan R">
 
-      <label>Location</label>
+      <label>📍 Location</label>
       <input type="text" id="location" value="">
 
-      <label>Terminal</label>
+      <label>🖥 Terminal</label>
       <input type="text" id="terminal" value="">
 
-      <label>GPT Model</label>
+      <label>🤖 GPT Model</label>
       <input type="text" id="gpt" value="">
 
-      <label>Tags (comma separated)</label>
+      <label>🏷 Tags (comma separated)</label>
       <input type="text" id="tags" value="gpt">
     </fieldset>
 
     <fieldset>
       <legend>📎 References</legend>
-      <label>Reference URL(s)</label>
+      <label>🔗 Reference URL(s)</label>
       <div id="referenceInputs">
         <input type="text" class="reference" placeholder="https://example.com">
       </div>
@@ -60,9 +60,9 @@ permalink: /s/
       <legend>⌨️ Prompt/Response Blocks</legend>
       <div id="promptBlocks">
         <div class="block">
-          <label>Prompt 1</label>
+          <label>🧠 Prompt 1</label>
           <textarea class="prompt" rows="4"></textarea>
-          <label>Response 1</label>
+          <label>💬 Response 1</label>
           <textarea class="response" rows="4"></textarea>
         </div>
       </div>
@@ -75,7 +75,7 @@ permalink: /s/
     <button type="button" class="mini" onclick="document.getElementById('logForm').reset()">🗑 Reset Form</button>
   </form>
 
-  <pre id="previewBox" style="display:none;"></pre>
+  <pre id="previewBox" style="display:none; float: right; max-width: 40%; margin-left: 2em;"></pre>
 </section>
 
 <link rel="stylesheet" href="{{ '/assets/css/form.css' | relative_url }}">

@@ -1,17 +1,8 @@
-form {
-  font-size: 0.9em;
-}
-
-form label {
-  display: block;
-  margin-top: 1em;
-  font-weight: bold;
-  font-size: 0.9em;
-}
-
-form input,
-form select,
-form textarea {
+/* Consistent height and font for all text inputs */
+input[type="text"],
+input[type="password"],
+select,
+textarea {
   width: 100%;
   padding: 0.3em 0.5em;
   margin-top: 0.2em;
@@ -21,28 +12,36 @@ form textarea {
   border-radius: 4px;
   font-family: monospace;
   font-size: 0.85em;
+  box-sizing: border-box;
 }
 
-form input[type="text"],
-form input[type="password"],
-form select {
-  height: 2em;
+/* Fix any styling difference with Entry Title if needed */
+input.metadata-field {
+  font-weight: bold;
 }
 
+/* Keep fieldsets tight and clean */
 fieldset {
   border: 1px solid #333;
   padding: 1em;
-  border-radius: 6px;
   margin-bottom: 1.5em;
+  border-radius: 6px;
 }
 
+/* Add spacing around legends and style them clearly */
 fieldset legend {
   font-size: 1em;
   font-weight: bold;
-  padding: 0 0.5em;
   color: #b5e853;
+  padding: 0 0.5em;
 }
 
+/* Smaller form text globally */
+form {
+  font-size: 0.9em;
+}
+
+/* Buttons */
 button.mini {
   width: 250px;
   margin: 1em auto;
