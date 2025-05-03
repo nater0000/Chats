@@ -1,19 +1,9 @@
+/* _light.scss */
 body {
-  background: #fefefe;
-  color: #111;
-  font-family: "Segoe UI", sans-serif;
+  background-color: #ffffff;
+  color: #111111;
+  font-family: 'Segoe UI', sans-serif;
 }
-
-.terminal-line.matrix.user {
-  color: #007acc;
-  border: 1px solid #007acc;
-  padding: 2px 8px;
-  display: inline-block;
-}
-
-.terminal-line.matrix.gpt {
-  color: #008000;
-  border: 1px solid #008000;
-  padding: 2px 8px;
-  display: inline-block;
-}
+a { color: #007acc; }
+h1, h2, h3 { color: #444; }
+img { max-width: 100%; height: auto; }

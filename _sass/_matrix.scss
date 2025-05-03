@@ -1,19 +1,9 @@
+/* _matrix.scss */
 body {
-  background: #111;
+  background-color: #0e0e0e;
   color: #b5e853;
-  font-family: "Cascadia Code", monospace;
+  font-family: 'Cascadia Code', monospace;
 }
-
-.terminal-line.matrix.user {
-  color: cyan;
-  border: 1px solid cyan;
-  padding: 2px 8px;
-  display: inline-block;
-}
-
-.terminal-line.matrix.gpt {
-  color: lime;
-  border: 1px solid lime;
-  padding: 2px 8px;
-  display: inline-block;
-}
+a { color: #75b5aa; }
+h1, h2, h3 { color: #b5e853; }
+img { max-width: 100%; height: auto; }

@@ -1,71 +1,115 @@
+// jekyll-theme-custom.scss
+
+// === Base Normalization and Fonts ===
 @import "normalize";
 @import "fonts";
+
+// === Base Color Variables ===
 @import "default_colors";
+
+// === Base Syntax Highlighting ===
 @import "rouge-base16-dark";
-@import "ie";
 
-// Layout & shared form styling
-body {
-  line-height: 1.6;
-}
+// === Theme Selector — Default: Matrix ===
+// You can override this at build time or in CSS
+@import "matrix";
 
+// === Custom Styles Shared Across Themes ===
+/* Section Layout */
 section.content {
-  max-width: 960px;
+  padding: 2em;
+  max-width: 42em;
   margin: auto;
-  padding: 2rem 1rem;
 }
 
-fieldset {
-  border: 1px solid #444;
-  border-radius: 8px;
-  margin-bottom: 1.5rem;
-  padding: 1rem;
-}
-
-legend {
-  font-weight: bold;
-  cursor: pointer;
-}
-
-button.mini {
-  padding: 0.4rem 0.75rem;
-  font-size: 0.85rem;
-  margin: 0.5rem 0.25rem;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-input,
-textarea,
-select {
-  width: 100%;
-  margin-bottom: 0.75rem;
-  padding: 0.5rem;
+/* Terminal Style */
+.terminal-line {
+  font-family: 'Cascadia Code', monospace;
+  padding: 0.3em 0.6em;
   border-radius: 4px;
-  border: 1px solid #444;
-  background: inherit;
-  color: inherit;
+  margin: 0.25em 0;
+  white-space: pre-wrap;
+  word-break: break-word;
 }
 
-pre {
-  overflow-x: auto;
-  padding: 1em;
-  border-radius: 8px;
-  background: rgba(0,0,0,0.25);
+.terminal-line.user {
+  border: 2px solid #00ccff;
+  color: #00ccff;
 }
 
-#theme-switch-overlay {
-  position: fixed;
-  top: 1rem;
-  right: 1rem;
-  padding: 0.5em 1em;
-  background: rgba(0, 0, 0, 0.8);
+.terminal-line.gpt {
+  border: 2px solid #00ff00;
+  color: #00ff00;
+  background-color: rgba(0, 255, 0, 0.1);
+}
+
+/* Preview Box (floating markdown output) */
+#previewBox {
+  background: black;
   color: #b5e853;
-  font-family: monospace;
+  font-family: 'Cascadia Code', monospace;
+  padding: 1em;
+  border: 1px solid #222;
+  border-radius: 8px;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  max-height: 80vh;
+  box-shadow: 0 0 10px #0f0;
+  z-index: 10;
+}
+
+/* Theme Transition */
+body.theme-transition {
+  transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+/* Toast Notification */
+#theme-toast {
+  position: fixed;
+  top: 1em;
+  right: 1em;
+  background: #111;
+  color: #b5e853;
+  padding: 0.75em 1.25em;
+  border-radius: 5px;
+  font-size: 0.9em;
+  box-shadow: 0 0 10px rgba(0, 255, 0, 0.6);
+  z-index: 1000;
+  display: none;
+}
+
+/* Form Adjustments */
+form#logForm {
   font-size: 0.9rem;
-  border-radius: 4px;
-  z-index: 9999;
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.6s ease;
+}
+
+form#logForm fieldset {
+  margin-bottom: 1em;
+  border: 1px solid #333;
+  border-radius: 8px;
+  padding: 1em;
+}
+
+form#logForm legend {
+  font-weight: bold;
+  font-size: 1rem;
+  user-select: none;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+form#logForm legend:hover {
+  text-decoration: underline;
+}
+
+/* Markdown-like Styling */
+h1, h2, h3, h4 {
+  font-family: inherit;
+  font-weight: bold;
+}
+
+hr {
+  border: none;
+  border-top: 1px dashed #555;
+  margin: 2em 0;
 }
