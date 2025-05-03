@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Submit GPT Log Entry</title>
-  <link rel="icon" type="image/png" href="/assets/img/favicon.png">
   <style>
     body {
       font-family: system-ui, sans-serif;
@@ -14,48 +13,30 @@
       background: #111;
       color: #b5e853;
     }
-    a.back-link {
-      display: inline-block;
-      margin-bottom: 1.5em;
-      color: #b5e853;
-      text-decoration: none;
-      font-weight: bold;
-    }
     label {
       display: block;
-      margin-top: 1.5em;
+      margin-top: 1em;
     }
-    textarea, input, select {
+    textarea, input {
       width: 100%;
       background: #1c1c1c;
       color: #b5e853;
       border: 1px solid #444;
-      padding: 0.6em;
+      padding: 0.5em;
       font-family: monospace;
-      margin-top: 0.3em;
     }
     button {
-      margin-top: 1.5em;
-      padding: 0.75em 1em;
+      margin-top: 1em;
+      padding: 0.75em;
       width: 100%;
       background: #b5e853;
       color: #111;
       font-weight: bold;
       border: none;
-      border-radius: 6px;
       cursor: pointer;
-      transition: background 0.2s;
-    }
-    button:hover {
-      background: #d7f98a;
     }
     small { display: block; color: #888; margin-bottom: 1em; }
-    .block {
-      margin-bottom: 1.5em;
-      border: 1px solid #333;
-      padding: 1em;
-      border-radius: 6px;
-    }
+    .block { margin-bottom: 1em; border: 1px solid #333; padding: 1em; }
     #previewBox {
       background: #000;
       border: 1px solid #333;
@@ -65,51 +46,39 @@
       font-family: monospace;
       display: none;
     }
-    #filenameWarning {
-      color: #ff6565;
-      margin-top: 0.5em;
-      font-size: 0.9em;
-      display: none;
-    }
   </style>
 </head>
 <body>
-  <a href="/" class="back-link">← Back to Home</a>
   <h1>📝 New GPT Log Entry</h1>
   <form id="logForm">
     <label>GitHub Token (not saved)<small>Must have repo content write access</small></label>
     <input type="password" id="token" required>
 
-    <input type="hidden" id="repo" value="your-username/your-repo">
+    <input type="text" id="repo" value="nater0000/Chats" readonly hidden>
 
     <label>File Folder Path</label>
-    <select id="path" required>
-      <option value="_logs">_logs</option>
-      <option value="pages" selected>pages</option>
-      <option value="drafts">drafts</option>
+    <select id="path">
+      <option value="pages">pages</option>
+      <option value="_logs">_gpt</option>
     </select>
 
     <label>Entry Title</label>
     <input type="text" id="title" required>
 
-    <label>Custom Page Name (optional)</label>
-    <input type="text" id="customPage" oninput="checkFilenameCollision()">
-    <div id="filenameWarning">⚠️ File with this name may already exist.</div>
-
     <label>Author</label>
-    <input type="text" id="author" value="Nathan R">
+    <input type="text" id="author" value="Nathan R" required>
 
     <label>Location</label>
-    <input type="text" id="location" value="California">
+    <input type="text" id="location" value="">
 
     <label>Terminal</label>
-    <input type="text" id="terminal" value="RAINBOW">
+    <input type="text" id="terminal" value="">
 
     <label>GPT Model</label>
-    <input type="text" id="gpt" value="gpt-4-turbo">
+    <input type="text" id="gpt" value="">
 
     <label>Tags (comma separated)</label>
-    <input type="text" id="tags" value="exploratory, creative dev, research, debugging">
+    <input type="text" id="tags" value="gpt">
 
     <label>Reference URL(s)</label>
     <div id="referenceInputs">
@@ -121,6 +90,7 @@
       <div class="block">
         <label>Prompt 1</label>
         <textarea class="prompt" rows="4"></textarea>
+
         <label>Response 1</label>
         <textarea class="response" rows="4"></textarea>
       </div>
@@ -157,30 +127,6 @@
       container.appendChild(input);
     }
 
-    function slugifyFilename(text) {
-      return text.toLowerCase().replace(/[^a-z0-9\-]+/g, '-').replace(/^-+|-+$/g, '') + '.md';
-    }
-
-    async function checkFilenameCollision() {
-      const repo = document.getElementById('repo').value.trim();
-      const path = document.getElementById('path').value.trim();
-      const input = document.getElementById('customPage').value.trim();
-      const warn = document.getElementById('filenameWarning');
-      if (!input) return warn.style.display = 'none';
-      const filename = slugifyFilename(input);
-      const url = `https://api.github.com/repos/${repo}/contents/${path}/${filename}`;
-      try {
-        const res = await fetch(url);
-        if (res.status === 200) {
-          warn.style.display = 'block';
-        } else {
-          warn.style.display = 'none';
-        }
-      } catch {
-        warn.style.display = 'none';
-      }
-    }
-
     function generateContent() {
       const title = document.getElementById('title').value.trim();
       const author = document.getElementById('author').value.trim();
@@ -188,7 +134,6 @@
       const terminal = document.getElementById('terminal').value.trim();
       const gpt = document.getElementById('gpt').value.trim();
       const tags = document.getElementById('tags').value.trim();
-      const customPage = document.getElementById('customPage').value.trim();
 
       const references = Array.from(document.querySelectorAll('.reference'))
         .map(input => input.value.trim())
@@ -196,9 +141,9 @@
         .map(url => `  - ${url}`)
         .join('\n');
 
-      const now = new Date();
-      const date = now.toISOString().split('T')[0];
-      const time = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      const today = new Date();
+      const date = today.toISOString().split('T')[0];
+      const time = today.toTimeString().split(' ')[0];
 
       let logBlocks = '';
       const prompts = document.querySelectorAll('.prompt');
@@ -208,17 +153,12 @@
         logBlocks += `\n<p class="terminal-line matrix user">user@local:~$</p>\n\n${prompts[i].value}\n\n<p class="terminal-line matrix gpt">gpt@remote:~$</p>\n\n${responses[i].value}\n\n---\n`;
       }
 
-      let filename = customPage ? slugifyFilename(customPage) : `${date}-${title.toLowerCase().replace(/\s+/g, '-')}.md`;
-
-      return {
-        filename,
-        content: `---\ntitle: ${title}\nauthor: ${author}\ndate: ${date}\ntime: ${time}\nlocation: ${location}\nterminal: ${terminal}\ngpt: ${gpt}\ntags: [${tags}]\nreferences:\n${references || '  -'}\nlayout: gpt-log\n---\n${logBlocks}`
-      };
+      return `---\ntitle: ${title}\nauthor: ${author}\ndate: ${date}\ntime: ${time}\nlocation: ${location}\nterminal: ${terminal}\ngpt: ${gpt}\ntags: [${tags}]\nreferences:\n${references || '  -'}\nlayout: gpt-log\n---\n${logBlocks}`;
     }
 
     function generatePreview() {
-      const previewData = generateContent();
-      document.getElementById('previewBox').textContent = previewData.content;
+      const preview = generateContent();
+      document.getElementById('previewBox').textContent = preview;
       document.getElementById('previewBox').style.display = 'block';
       document.getElementById('confirmSubmit').style.display = 'inline-block';
     }
@@ -229,11 +169,16 @@
       const token = document.getElementById('token').value.trim();
       const repo = document.getElementById('repo').value.trim();
       const path = document.getElementById('path').value.trim();
+      const title = document.getElementById('title').value.trim();
 
-      const { filename, content } = generateContent();
+      const today = new Date();
+      const date = today.toISOString().split('T')[0];
+      const filename = `${date}-${title.toLowerCase().replace(/\s+/g, '-')}.md`;
+
+      const content = generateContent();
 
       const payload = {
-        message: `Add new GPT log: ${filename}`,
+        message: `Add new GPT log: ${title}`,
         content: btoa(unescape(encodeURIComponent(content)))
       };
 
@@ -255,7 +200,6 @@
         document.getElementById('referenceInputs').innerHTML = '<input type="text" class="reference" placeholder="https://example.com">';
         document.getElementById('previewBox').style.display = 'none';
         document.getElementById('confirmSubmit').style.display = 'none';
-        document.getElementById('filenameWarning').style.display = 'none';
       } else {
         const error = await responseGitHub.json();
         alert('❌ Error: ' + error.message);
