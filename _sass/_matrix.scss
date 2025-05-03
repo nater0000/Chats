@@ -1,0 +1,19 @@
+body {
+  background: #111;
+  color: #b5e853;
+  font-family: "Cascadia Code", monospace;
+}
+
+.terminal-line.matrix.user {
+  color: cyan;
+  border: 1px solid cyan;
+  padding: 2px 8px;
+  display: inline-block;
+}
+
+.terminal-line.matrix.gpt {
+  color: lime;
+  border: 1px solid lime;
+  padding: 2px 8px;
+  display: inline-block;
+}

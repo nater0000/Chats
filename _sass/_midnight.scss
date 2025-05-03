@@ -1,0 +1,19 @@
+body {
+  background: #0b0c10;
+  color: #66fcf1;
+  font-family: "Fira Code", monospace;
+}
+
+.terminal-line.matrix.user {
+  color: #45a29e;
+  border: 1px solid #45a29e;
+  padding: 2px 8px;
+  display: inline-block;
+}
+
+.terminal-line.matrix.gpt {
+  color: #c5c6c7;
+  border: 1px solid #c5c6c7;
+  padding: 2px 8px;
+  display: inline-block;
+}
