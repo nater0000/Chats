@@ -1,3 +1,51 @@
+form input,
+form select,
+form textarea {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 0.75em;
+  padding: 0.5em;
+  font-size: 0.95em;
+  border-radius: 4px;
+  border: 1px solid #444;
+  background: #222;
+  color: #eee;
+}
+
+form label {
+  margin-top: 1em;
+  font-weight: 600;
+  display: block;
+}
+
+form .block textarea {
+  font-family: inherit;
+  resize: vertical;
+}
+
+@media (min-width: 768px) {
+  .content {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 2rem;
+  }
+
+  #logForm {
+    flex: 1;
+    min-width: 0;
+  }
+
+  #previewContainer {
+    position: sticky;
+    top: 8rem;
+    flex-shrink: 0;
+    max-width: 400px;
+  }
+}
+
 fieldset {
   border: 1px solid #333;
   padding: 0.5em 1em 1em;
