@@ -9,9 +9,9 @@ permalink: /s/
   <form id="logForm">
     <input type="text" id="repo" value="nater0000/Chats" readonly hidden>
 
-    <fieldset aria-expanded="true">
+    <fieldset aria-expanded="false">
       <legend onclick="toggleFieldset(this)">
-        <span class="icon">🔽</span> 🔐 GitHub Connection
+        <span class="icon">▶️</span> 🔐 GitHub Connection
       </legend>
       <label>🔑 GitHub Token (not saved)<small> Must have repo content write access</small></label>
       <input type="password" id="token" required>
@@ -24,9 +24,9 @@ permalink: /s/
       </select>
     </fieldset>
 
-    <fieldset aria-expanded="true">
+    <fieldset aria-expanded="false">
       <legend onclick="toggleFieldset(this)">
-        <span class="icon">🔽</span> 📝 Entry Metadata
+        <span class="icon">▶️</span> 📝 Entry Metadata
       </legend>
       <label>🧾 Entry Title</label>
       <input type="text" id="title" class="metadata-field" required>
@@ -51,8 +51,10 @@ permalink: /s/
       <input type="text" id="tags" value="gpt">
     </fieldset>
 
-    <fieldset>
-      <legend>📎 References</legend>
+    <fieldset aria-expanded="false">
+      <legend onclick="toggleFieldset(this)">
+        <span class="icon">▶️</span> 📎 References
+      </legend>
       <label>🔗 Reference URL(s)</label>
       <div id="referenceInputs">
         <input type="text" class="reference" placeholder="https://example.com">
@@ -70,7 +72,6 @@ permalink: /s/
           <textarea class="response" rows="4"></textarea>
         </div>
       </div>
-
       <button type="button" class="mini" onclick="addBlock()">➕ Add Prompt/Response</button>
     </fieldset>
 
