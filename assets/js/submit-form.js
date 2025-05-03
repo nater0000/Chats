@@ -27,6 +27,17 @@ function addBlock() {
   document.getElementById('promptBlocks').appendChild(block);
 }
 
+function toggleFieldset(legend) {
+  const fieldset = legend.closest("fieldset");
+  const isExpanded = fieldset.getAttribute("aria-expanded") === "true";
+  fieldset.setAttribute("aria-expanded", !isExpanded);
+
+  const icon = legend.querySelector('.icon');
+  if (icon) {
+    icon.textContent = isExpanded ? '▶️' : '🔽';
+  }
+}
+
 function generatePreview() {
   const title = document.getElementById('title').value.trim();
   const pageName = document.getElementById('customPage').value.trim();
@@ -81,9 +92,62 @@ function generatePreview() {
     );
   }).join('\n\n');
 
-  const finalContent = sanitizeHTML(frontMatter) + blocks;
+  const finalContent = frontMatter + blocks;
+
   const previewBox = document.getElementById('previewBox');
-  previewBox.innerHTML = `<pre><code>${finalContent}</code></pre>`;
-  previewBox.style.display = 'block';
+  previewBox.innerHTML = finalContent;
+  document.getElementById('previewContainer').style.display = 'block';
   document.getElementById('confirmSubmit').style.display = 'inline-block';
 }
+
+function hidePreview() {
+  const box = document.getElementById('previewContainer');
+  box.style.display = 'none';
+  box.style.top = '';
+  box.style.left = '';
+  document.getElementById('confirmSubmit').style.display = 'none';
+}
+
+function resetPreviewPosition() {
+  const preview = document.getElementById("previewContainer");
+  preview.style.top = "100px";
+  preview.style.left = "10%";
+}
+
+// Make preview draggable
+function dragElement(element, handle) {
+  let posX = 0, posY = 0, mouseX = 0, mouseY = 0;
+  handle.onmousedown = dragMouseDown;
+
+  function dragMouseDown(e) {
+    e.preventDefault();
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+    document.onmouseup = closeDrag;
+    document.onmousemove = elementDrag;
+  }
+
+  function elementDrag(e) {
+    e.preventDefault();
+    posX = mouseX - e.clientX;
+    posY = mouseY - e.clientY;
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+    element.style.top = (element.offsetTop - posY) + "px";
+    element.style.left = (element.offsetLeft - posX) + "px";
+  }
+
+  function closeDrag() {
+    document.onmouseup = null;
+    document.onmousemove = null;
+  }
+}
+
+// Enable dragging once DOM is ready
+document.addEventListener("DOMContentLoaded", () => {
+  const box = document.getElementById("previewContainer");
+  const header = document.querySelector(".preview-header");
+  if (box && header) {
+    dragElement(box, header);
+  }
+});
