@@ -51,7 +51,7 @@ fieldset[aria-expanded="false"] {
   overflow: hidden;
 }
 
-fieldset[aria-expanded="false"] *:not(legend) {
+fieldset[aria-expanded="false"] > :not(legend) {
   display: none;
 }
 
