@@ -5,18 +5,18 @@ permalink: /s/
 ---
 
 <section class="content">
-  <h1>📝 Submit GPT Log Entry</h1>
+  <h1>📝 New GPT Log Entry</h1>
   <form id="logForm">
-    <input type="hidden" id="repo" value="your-username/your-repo">
+    <input type="text" id="repo" value="nater0000/Chats" readonly hidden>
 
     <label>GitHub Token (not saved)<small>Must have repo content write access</small></label>
     <input type="password" id="token" required>
 
     <label>File Folder Path</label>
     <select id="path" required>
-      <option value="_logs">_logs</option>
       <option value="pages" selected>pages</option>
-      <option value="drafts">drafts</option>
+      <option value="_gpts">_gpts</option>
+      <option value="_logs">_logs</option>
     </select>
 
     <label>Entry Title</label>
@@ -30,16 +30,16 @@ permalink: /s/
     <input type="text" id="author" value="Nathan R">
 
     <label>Location</label>
-    <input type="text" id="location" value="California">
+    <input type="text" id="location" value="">
 
     <label>Terminal</label>
-    <input type="text" id="terminal" value="RAINBOW">
+    <input type="text" id="terminal" value="">
 
     <label>GPT Model</label>
-    <input type="text" id="gpt" value="gpt-4-turbo">
+    <input type="text" id="gpt" value="">
 
     <label>Tags (comma separated)</label>
-    <input type="text" id="tags" value="exploratory, creative dev, research, debugging">
+    <input type="text" id="tags" value="gpt">
 
     <label>Reference URL(s)</label>
     <div id="referenceInputs">
@@ -65,5 +65,5 @@ permalink: /s/
   <pre id="previewBox" style="display:none;"></pre>
 </section>
 
-<link rel="stylesheet" href="/assets/css/form.css">
-<script src="/assets/js/submit-form.js"></script>
+<link rel="stylesheet" href="{{ '/assets/css/form.css' | relative_url }}">
+<script src="{{ '/assets/js/submit-form.js' | relative_url }}"></script>
