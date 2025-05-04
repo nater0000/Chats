@@ -1,9 +1,59 @@
 /* _light.scss */
+
+// === Light Theme Overrides ===
+$background-color: #fefefe;
+$text-color: #1c1c1c;
+$link-color: #0077cc;
+$link-hover-color: #004c99;
+$heading-color: #222;
+$mono-font: "Courier New", Courier, monospace;
+$content-background: #ffffff;
+$highlight-bg: #e5f3ff;
+$border-color: #ddd;
+
 body {
-  background-color: #ffffff;
-  color: #111111;
-  font-family: 'Segoe UI', sans-serif;
+  background-color: $background-color;
+  color: $text-color;
+  font-family: "Segoe UI", sans-serif;
 }
-a { color: #007acc; }
-h1, h2, h3 { color: #444; }
-img { max-width: 100%; height: auto; }
+
+a {
+  color: $link-color;
+  text-decoration: underline;
+  transition: color 0.2s;
+}
+
+a:hover {
+  color: $link-hover-color;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: $heading-color;
+  font-weight: 600;
+}
+
+pre, code {
+  background: #f2f2f2;
+  color: #222;
+  font-family: $mono-font;
+}
+
+hr {
+  border-color: $border-color;
+}
+
+.gpt-log-entry {
+  background: $content-background;
+  padding: 1em;
+  border-radius: 0.25em;
+}
+
+.terminal-line.user {
+  color: #005500;
+  font-weight: bold;
+}
+
+.terminal-line.gpt {
+  color: #000088;
+  font-weight: bold;
+}
