@@ -1,22 +1,35 @@
 /* _midnight.scss */
 
 :root {
-  --bg: #0f111a;
-  --bg-alt: #1c1e2a;
-  --text: #d0d4f5;
-  --text-alt: #a6accd;
-  --accent: #6699ff;
-  --accent-hover: #88bbff;
-  --border: #2b2d42;
-  --highlight: #223355;
-  --keyword: #8899ff;
-  --meta: #dbb2ff;
-  --string: #ffc285;
-  --comment: #607098;
-  --user-tag: #0f111a;
-  --user-bg: #66ccff;
-  --gpt-tag: #0f111a;
-  --gpt-bg: #66ff99;
-  --tag: #d0d4f5;
-  --tag-bg: #2c2f40;
+  --bg: black;
+  --bg-alt: #1a1a1a; // or very dark gray
+  --text: white;
+  --text-alt: lightgray;
+  --heading: yellow;
+  --accent: deepskyblue;
+  --accent-hover: dodgerblue;
+  --border: gray;
+  --footer-border: dimgray;
+
+  --code: white;
+  --keyword: violet;
+  --meta: plum;
+  --string: lightgreen;
+  --comment: lightslategray;
+
+  --link: gold;
+  --link-hover: orange;
+  --overlay: black;
+  --overlay-bg: rgba(0, 0, 0, 0.7);
+  
+  --highlight: khaki;
+  --content-bg: black;
+  --content-shadow: rgba(0, 0, 0, 0.2);
+  
+  --user-tag: darkturquoise;
+  --user-bg: black;
+  --user-border: darkturquoise;
+  --gpt-tag: chartreuse;
+  --gpt-bg: black;
+  --gpt-border: chartreuse;
 }

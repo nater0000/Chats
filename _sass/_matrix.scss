@@ -5,18 +5,31 @@
   --bg-alt: #1c1c1c;
   --text: #d0ffd0;
   --text-alt: #77ff77;
+  --heading: #b5e853;
   --accent: #00ff00;
   --accent-hover: #aaffaa;
-  --border: #22aa22;
-  --highlight: #003300;
+  --border: #444444;
+  --footer-border: #888888;
+  
+  --code: silver
   --keyword: #00ff00;
   --meta: #88ff88;
   --string: #44ff44;
   --comment: #339933;
-  --user-tag: #00ffff;
-  --user-bg: #000000;
-  --gpt-tag: #00ff00;
-  --gpt-bg: #001100;
-  --tag: #00aa00;
-  --tag-bg: #002200;
+  
+  --link: #6a9fb5;
+  --link-hover: #6ab5a6;
+  --overlay: #444444;
+  --overlay-bg: rgba(0, 0, 0, 0.9);
+  
+  --highlight: #003300;
+  --content-bg: #121212;
+  --content-shadow: rgba(0, 0, 0, 0.2);
+  
+  --user-tag: darkturquoise;
+  --user-bg: black;
+  --user-border: darkturquoise;
+  --gpt-tag: chartreuse;
+  --gpt-bg: black;
+  --gpt-border: chartreuse;
 }

@@ -1,22 +1,35 @@
 /* _light.scss */
 
 :root {
-  --bg: #ffffff;
-  --bg-alt: #f2f2f2;
-  --text: #222222;
-  --text-alt: #555555;
-  --accent: #0066cc;
-  --accent-hover: #004999;
-  --border: #dddddd;
-  --highlight: #f0f8ff;
-  --keyword: #00008b;
-  --meta: #9b59b6;
-  --string: #d35400;
-  --comment: #aaaaaa;
-  --user-tag: #ffffff;
-  --user-bg: #0044cc;
-  --gpt-tag: #ffffff;
-  --gpt-bg: #008800;
-  --tag: #333333;
-  --tag-bg: #eeeeee;
+  --bg: white;
+  --bg-alt: whitesmoke;
+  --text: black;
+  --text-alt: dimgray;
+  --heading: navy;
+  --accent: royalblue;
+  --accent-hover: blue;
+  --border: lightgray;
+  --footer-border: silver;
+
+  --code: black;
+  --keyword: indigo;
+  --meta: darkslateblue;
+  --string: darkgreen;
+  --comment: darkgray;
+
+  --link: palevioletred;
+  --link-hover: orchid;
+  --overlay: white;
+  --overlay-bg: rgba(255, 255, 255, 0.8);
+  
+  --highlight: palegoldenrod;
+  --content-bg: whitesmoke;
+  --content-shadow: rgba(0, 0, 0, 0.2);
+  
+  --user-tag: darkturquoise;
+  --user-bg: whitesmoke;
+  --user-border: darkturquoise;
+  --gpt-tag: chartreuse;
+  --gpt-bg: whitesmoke;
+  --gpt-border: chartreuse;
 }

@@ -1,17 +1,15 @@
 // Theme Imports
+//@import "default_colors";
 @import "variables";
 @import "fonts";
 @import "normalize";
 @import "rouge-base16-dark";
-@import "default_colors";
 @import "ie";
 
 // Layout & Structure
 
 body {
   font: 16px/1.5 $body-font;
-  background: $background-color;
-  color: $text-color;
   padding: 2em 1em;
   max-width: 960px;
   margin: auto;
@@ -19,7 +17,6 @@ body {
 }
 
 a {
-  color: $link-color;
   text-decoration: none;
 
   &:hover,
@@ -60,19 +57,16 @@ h4 {
 // Header and Footer layout
 .site-header,
 .site-footer {
-  border-top: 1px solid $border-color;
+  border-top: 1px solid;
   margin-top: 2em;
   padding-top: 1em;
   font-size: 0.7em;
-  color: $grey;
 }
 
 // Main content box
 .content {
   padding: 1.5em;
-  background: $content-background;
   border-radius: 0.5em;
-  box-shadow: 0 0 1em rgba(0, 0, 0, 0.2);
   transition: background 0.4s ease-in-out, color 0.4s ease-in-out;
 }
 
@@ -82,7 +76,6 @@ h1, h2, h3, h4 {
   margin-top: 1.5em;
   margin-bottom: 0.5em;
   line-height: 1.2;
-  color: $heading-color;
 }
 
 p {
@@ -102,22 +95,6 @@ pre, code {
   margin: 1em 0;
   border-radius: 4px;
   white-space: pre-wrap;
-
-  &.user {
-    color: $conifer;
-    background: #000;
-    border: 2px solid cyan;
-  }
-
-  &.gpt {
-    color: #0f0;
-    background: #000;
-    border: 2px solid limegreen;
-  }
-
-  &.matrix {
-    font-weight: bold;
-  }
 }
 
 // Theme switcher notification banner
@@ -126,8 +103,6 @@ pre, code {
   position: fixed;
   top: 1em;
   right: 1em;
-  background: rgba(0, 0, 0, 0.9);
-  color: #b5e853;
   font-family: monospace;
   font-size: 0.7rem;
   padding: 0.5em 1em;
@@ -167,4 +142,81 @@ a:hover,
 a:focus,
 a:active {
   text-decoration: none;
+}
+
+// Colors for styling
+
+body {
+  background: var(--bg);
+  color: var(--text);
+}
+
+a {
+  color: var(--link);
+}
+
+a:hover {
+  color: var(--link-hover);
+}
+
+
+h1, h2, h3, h4 {
+  color: var(--heading);
+}
+
+.content {
+  background: var(--content-bg);
+  box-shadow: 0 0 1em var(--content-shadow);
+}
+
+.site-header,
+.site-footer {
+  color: var(--heading);
+  border-color: var(--footer-border);
+}
+
+hr {
+  border-color: var(--border);
+}
+
+code,
+pre {
+  background-color: var(--bg-alt);
+  color: var(--text);
+}
+
+::selection {
+  background: var(--highlight);
+}
+
+.keyword {
+  color: var(--keyword);
+}
+
+.meta {
+  color: var(--meta);
+}
+
+.string {
+  color: var(--string);
+}
+
+.comment {
+  color: var(--comment);
+}
+
+.terminal-line.user {
+  color: var(--user-tag);
+  background-color: var(--user-bg);
+  border: 2px solid var(--user-border);
+}
+
+.terminal-line.gpt {
+  color: var(--gpt-tag);
+  background-color: var(--gpt-bg);
+  border: 2px solid var(--gpt-border);
+}
+
+#theme-switch-overlay {
+  background: var(--overlay-bg);
 }
