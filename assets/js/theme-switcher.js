@@ -2,23 +2,25 @@ let themeOverlayTimeout;
 
 document.addEventListener('DOMContentLoaded', () => {
   const selector = document.getElementById('theme-selector');
+  const saved = localStorage.getItem('theme');
+
   if (selector) {
+    // Apply saved theme without overlay
+    if (saved) {
+      applyTheme(saved, false);
+      selector.value = saved;
+    }
+
     selector.addEventListener('change', (e) => {
       const theme = e.target.value;
-      applyTheme(theme);
+      applyTheme(theme, true); // Show overlay only on user change
     });
-  }
-
-  // Apply saved theme or default
-  const saved = localStorage.getItem('theme');
-  if (saved) {
-    applyTheme(saved);
-    const selector = document.getElementById('theme-selector');
-    if (selector) selector.value = saved;
+  } else if (saved) {
+    applyTheme(saved, false);
   }
 });
 
-function applyTheme(themeName) {
+function applyTheme(themeName, showOverlay = false) {
   const existingLink = document.getElementById('theme-style');
   if (existingLink) existingLink.remove();
 
@@ -29,7 +31,8 @@ function applyTheme(themeName) {
   document.head.appendChild(link);
 
   localStorage.setItem('theme', themeName);
-  showThemeOverlay(themeName);
+
+  if (showOverlay) showThemeOverlay(themeName);
 }
 
 function showThemeOverlay(themeName) {
@@ -39,14 +42,11 @@ function showThemeOverlay(themeName) {
   overlay.classList.remove('fade-out');
   overlay.style.visibility = 'visible';
 
-  // Clear any previous timeout so switching is smooth
   if (themeOverlayTimeout) clearTimeout(themeOverlayTimeout);
 
-  // Start new timer for fade-out
   themeOverlayTimeout = setTimeout(() => {
     overlay.classList.add('fade-out');
 
-    // Remove after animation
     themeOverlayTimeout = setTimeout(() => {
       overlay.classList.remove('show', 'fade-out');
       overlay.style.visibility = 'hidden';
