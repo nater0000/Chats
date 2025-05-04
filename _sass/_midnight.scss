@@ -1,59 +1,22 @@
 /* _midnight.scss */
 
-// === Midnight Theme Overrides ===
-$background-color: #121212;
-$text-color: #cccccc;
-$link-color: #91b9ff;
-$link-hover-color: #ffffff;
-$heading-color: #ffffff;
-$mono-font: "Fira Code", monospace;
-$content-background: #1b1b1b;
-$highlight-bg: #2a2a2a;
-$border-color: #444;
-
-body {
-  background-color: $background-color;
-  color: $text-color;
-  font-family: "Segoe UI", sans-serif;
-}
-
-a {
-  color: $link-color;
-  text-decoration: none;
-  transition: color 0.2s;
-}
-
-a:hover {
-  color: $link-hover-color;
-}
-
-h1, h2, h3, h4, h5, h6 {
-  color: $heading-color;
-  font-weight: 500;
-}
-
-pre, code {
-  background: #2e2e2e;
-  color: #bfbfbf;
-  font-family: $mono-font;
-}
-
-hr {
-  border-color: $border-color;
-}
-
-.gpt-log-entry {
-  background: $content-background;
-  padding: 1em;
-  border-radius: 0.25em;
-}
-
-.terminal-line.user {
-  color: #55ff55;
-  font-weight: bold;
-}
-
-.terminal-line.gpt {
-  color: #55aaff;
-  font-weight: bold;
+:root {
+  --bg: #0f111a;
+  --bg-alt: #1c1e2a;
+  --text: #d0d4f5;
+  --text-alt: #a6accd;
+  --accent: #6699ff;
+  --accent-hover: #88bbff;
+  --border: #2b2d42;
+  --highlight: #223355;
+  --keyword: #8899ff;
+  --meta: #dbb2ff;
+  --string: #ffc285;
+  --comment: #607098;
+  --user-tag: #0f111a;
+  --user-bg: #66ccff;
+  --gpt-tag: #0f111a;
+  --gpt-bg: #66ff99;
+  --tag: #d0d4f5;
+  --tag-bg: #2c2f40;
 }
