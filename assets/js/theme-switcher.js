@@ -11,7 +11,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Apply saved theme or default
   const saved = localStorage.getItem('theme');
-  if (saved) applyTheme(saved);
+  if (saved) {
+    applyTheme(saved);
+    const selector = document.getElementById('theme-selector');
+    if (selector) selector.value = saved;
+  }
 });
 
 function applyTheme(themeName) {
