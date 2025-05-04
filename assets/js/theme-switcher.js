@@ -2,33 +2,41 @@ let themeOverlayTimeout;
 
 document.addEventListener('DOMContentLoaded', () => {
   const selector = document.getElementById('theme-selector');
-  const saved = localStorage.getItem('theme');
+  const saved = localStorage.getItem('theme') || 'matrix';
 
   if (selector) {
-    // Apply saved theme without overlay
-    if (saved) {
+    selector.value = saved;
+
+    // Only inject theme if not already applied
+    const currentHref = document.getElementById('dynamic-theme')?.href;
+    const expectedHref = `${location.origin}/assets/css/theme-${saved}.css`;
+    if (!currentHref || !currentHref.includes(`theme-${saved}.css`)) {
       applyTheme(saved, false);
-      selector.value = saved;
     }
 
     selector.addEventListener('change', (e) => {
       const theme = e.target.value;
-      applyTheme(theme, true); // Show overlay only on user change
+      applyTheme(theme, true); // Only show overlay on change
     });
-  } else if (saved) {
+  } else {
     applyTheme(saved, false);
   }
 });
 
 function applyTheme(themeName, showOverlay = false) {
-  const existingLink = document.getElementById('theme-style');
-  if (existingLink) existingLink.remove();
+  const existingLink = document.getElementById('dynamic-theme');
+  const newHref = `/assets/css/theme-${themeName}.css`;
 
-  const link = document.createElement('link');
-  link.id = 'theme-style';
-  link.rel = 'stylesheet';
-  link.href = `/assets/css/theme-${themeName}.css`;
-  document.head.appendChild(link);
+  if (existingLink && existingLink.getAttribute('href') === newHref) return;
+
+  if (existingLink) existingLink.href = newHref;
+  else {
+    const link = document.createElement('link');
+    link.id = 'dynamic-theme';
+    link.rel = 'stylesheet';
+    link.href = newHref;
+    document.head.appendChild(link);
+  }
 
   localStorage.setItem('theme', themeName);
 
@@ -37,6 +45,8 @@ function applyTheme(themeName, showOverlay = false) {
 
 function showThemeOverlay(themeName) {
   const overlay = document.getElementById('theme-switch-overlay');
+  if (!overlay) return;
+
   overlay.textContent = `Switching to ${themeName} theme...`;
   overlay.classList.add('show');
   overlay.classList.remove('fade-out');
