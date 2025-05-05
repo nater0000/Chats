@@ -18,14 +18,14 @@
 	
 	{% seo %}
 	
-	<link id="dynamic-theme" rel="stylesheet" href="">
+<link
+  id="dynamic-theme"
+  rel="stylesheet"
+  href="{{ '/assets/css/theme-matrix.css' | relative_url }}"
+  media="all"
+/>
 
 <!-- Preload theme CSS files to reduce delay when switching -->
-<link
-  rel="preload"
-  as="style"
-  href="{{ '/assets/css/theme-matrix.css?v=' | append: site.github.build_revision | relative_url }}"
-/>
 <link
   rel="preload"
   as="style"
