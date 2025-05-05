@@ -32,9 +32,11 @@ function toggleFieldset(legend) {
   const isExpanded = fieldset.getAttribute("aria-expanded") === "true";
   fieldset.setAttribute("aria-expanded", !isExpanded);
   const icon = legend.querySelector('.icon');
-  if (icon) {
-    icon.textContent = isExpanded ? '▶️' : '🔽';
-  }
+  if (icon) icon.textContent = isExpanded ? '▶️' : '🔽';
+}
+
+function sanitizeFilename(str) {
+  return str.replace(/[^a-zA-Z0-9-]/g, '-').replace(/-+/g, '-').toLowerCase();
 }
 
 function generatePreview() {
@@ -60,7 +62,7 @@ function generatePreview() {
   const date = today.toISOString().split('T')[0];
   const time = today.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
-  const safeName = (pageName || title).replace(/[^a-zA-Z0-9-]/g, '-').toLowerCase();
+  const safeName = sanitizeFilename(pageName || title);
   const filePath = `${path}/${safeName}.md`;
 
   let frontMatter = `---\ntitle: ${title}\nauthor: ${author}\ndate: ${date}\ntime: ${time}\nlocation: ${location}\nterminal: ${terminal}\ngpt: ${gpt}\ntags: [${tags}]\nlayout: gpt-log`;
@@ -76,7 +78,7 @@ function generatePreview() {
     });
   }
 
-  frontMatter += '---\n\n';
+  frontMatter += '\n---\n\n';
 
   const blocks = prompts.map(({ prompt, response }) => {
     return (
@@ -95,6 +97,34 @@ function generatePreview() {
   document.getElementById('confirmSubmit').style.display = 'inline-block';
 
   checkFilenameCollision();
+}
+
+function checkFilenameCollision() {
+  const token = document.getElementById('token').value.trim();
+  const pageName = document.getElementById('customPage').value.trim();
+  const title = document.getElementById('title').value.trim();
+  if (!title && !pageName) return;
+  if (!token) return;
+
+  const path = document.getElementById('path').value.trim();
+  const fileName = sanitizeFilename(pageName || title);
+  const repo = document.getElementById('repo').value.trim();
+  const apiUrl = `https://api.github.com/repos/${repo}/contents/${path}/${fileName}.md`;
+
+  fetch(apiUrl, {
+    method: 'GET',
+    headers: {
+      'Authorization': `token ${token}`,
+      'Accept': 'application/vnd.github.v3+json'
+    }
+  })
+    .then(response => {
+      const warning = document.getElementById('filenameWarning');
+      warning.style.display = response.ok ? 'block' : 'none';
+    })
+    .catch(() => {
+      document.getElementById('filenameWarning').style.display = 'none';
+    });
 }
 
 function hidePreview() {
@@ -139,34 +169,6 @@ function dragElement(element, handle) {
   }
 }
 
-function checkFilenameCollision() {
-  const token = document.getElementById('token').value.trim();
-  const pageName = document.getElementById('customPage').value.trim();
-  const title = document.getElementById('title').value.trim();
-  if (!title && !pageName) return;
-  if (!token) return;
-
-  const path = document.getElementById('path').value.trim();
-  const fileName = (pageName || title).replace(/[^a-zA-Z0-9-]/g, '-').toLowerCase();
-  const repo = document.getElementById('repo').value.trim();
-  const apiUrl = `https://api.github.com/repos/${repo}/contents/${path}/${fileName}.md`;
-
-  fetch(apiUrl, {
-    method: 'GET',
-    headers: {
-      'Authorization': `token ${token}`,
-      'Accept': 'application/vnd.github.v3+json'
-    }
-  })
-    .then(response => {
-      const warning = document.getElementById('filenameWarning');
-      warning.style.display = response.ok ? 'block' : 'none';
-    })
-    .catch(() => {
-      document.getElementById('filenameWarning').style.display = 'none';
-    });
-}
-
 document.addEventListener("DOMContentLoaded", () => {
   const box = document.getElementById("previewContainer");
   const header = document.querySelector(".preview-header");
@@ -181,8 +183,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const path = document.getElementById('path').value.trim();
     const title = document.getElementById('title').value.trim();
     const pageName = document.getElementById('customPage').value.trim();
-
-    const fileName = (pageName || title).replace(/[^a-zA-Z0-9-]/g, '-').toLowerCase();
+    const fileName = sanitizeFilename(pageName || title);
     const filePath = `${path}/${fileName}.md`;
     const content = btoa(unescape(encodeURIComponent(document.getElementById('previewBox').innerText)));
 
