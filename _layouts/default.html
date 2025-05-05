@@ -2,7 +2,6 @@
 <html lang="{{ site.lang | default: "en-US" }}">
 
   <head>
-<link id="dynamic-theme" rel="stylesheet" href="/assets/css/theme-matrix.css?v={{ site.github.build_revision }}">
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 	
@@ -19,27 +18,23 @@
 	
 	{% seo %}
 	
+	<link id="dynamic-theme" rel="stylesheet" href="">
+
 <!-- Preload theme CSS files to reduce delay when switching -->
 <link
   rel="preload"
   as="style"
   href="{{ '/assets/css/theme-matrix.css?v=' | append: site.github.build_revision | relative_url }}"
-  onload="this.onload=null;this.rel='stylesheet'"
-  media="all"
 />
 <link
   rel="preload"
   as="style"
   href="{{ '/assets/css/theme-light.css?v=' | append: site.github.build_revision | relative_url }}"
-  onload="this.onload=null;this.rel='stylesheet'"
-  media="all"
 />
 <link
   rel="preload"
   as="style"
   href="{{ '/assets/css/theme-midnight.css?v=' | append: site.github.build_revision | relative_url }}"
-  onload="this.onload=null;this.rel='stylesheet'"
-  media="all"
 />
 
     <script src="{{ '/assets/js/theme-switcher.js' | relative_url }}"></script>
