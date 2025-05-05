@@ -19,9 +19,27 @@
 	{% seo %}
 	
 <!-- Preload theme CSS files to reduce delay when switching -->
-<link rel="preload" as="style" href="/assets/css/theme-matrix.css">
-<link rel="preload" as="style" href="/assets/css/theme-light.css">
-<link rel="preload" as="style" href="/assets/css/theme-midnight.css">
+<link
+  rel="preload"
+  as="style"
+  href="{{ '/assets/css/theme-matrix.css?v=' | append: site.github.build_revision | relative_url }}"
+  onload="this.onload=null;this.rel='stylesheet'"
+  media="all"
+/>
+<link
+  rel="preload"
+  as="style"
+  href="{{ '/assets/css/theme-light.css?v=' | append: site.github.build_revision | relative_url }}"
+  onload="this.onload=null;this.rel='stylesheet'"
+  media="all"
+/>
+<link
+  rel="preload"
+  as="style"
+  href="{{ '/assets/css/theme-midnight.css?v=' | append: site.github.build_revision | relative_url }}"
+  onload="this.onload=null;this.rel='stylesheet'"
+  media="all"
+/>
 
 <!-- Theme stylesheet loader -->
 {% assign saved_theme = 'matrix' %}
