@@ -25,6 +25,7 @@ def validate(file)
 end
 
 validate "index.html"
+validate File.join "assets", "css", "style.css"
 validate File.join "assets", "css", "theme-matrix.css"
 validate File.join "assets", "css", "theme-light.css"
 validate File.join "assets", "css", "theme-midnight.css"
