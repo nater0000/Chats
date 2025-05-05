@@ -6,6 +6,10 @@ function sanitizeHTML(str) {
             .replace(/'/g, "&#039;");
 }
 
+function sanitizeFilename(str) {
+  return str.replace(/[^a-zA-Z0-9-]/g, '-').replace(/-+/g, '-').toLowerCase();
+}
+
 function addReference() {
   const input = document.createElement('input');
   input.type = 'text';
@@ -35,8 +39,38 @@ function toggleFieldset(legend) {
   if (icon) icon.textContent = isExpanded ? '▶️' : '🔽';
 }
 
-function sanitizeFilename(str) {
-  return str.replace(/[^a-zA-Z0-9-]/g, '-').replace(/-+/g, '-').toLowerCase();
+function checkFilenameCollision() {
+  const token = document.getElementById('token').value.trim();
+  const repo = document.getElementById('repo').value.trim();
+  const title = document.getElementById('title').value.trim();
+  const pageName = document.getElementById('customPage').value.trim();
+  const path = document.getElementById('path').value.trim();
+
+  const warning = document.getElementById('filenameWarning');
+  warning.style.display = 'none';
+
+  if (!token || (!title && !pageName)) return;
+
+  const safeName = sanitizeFilename(pageName || title);
+  const apiUrl = `https://api.github.com/repos/${repo}/contents/${path}/${safeName}.md`;
+
+  fetch(apiUrl, {
+    method: 'GET',
+    headers: {
+      'Authorization': `token ${token}`,
+      'Accept': 'application/vnd.github.v3+json'
+    }
+  })
+  .then(response => {
+    if (response.status === 200) {
+      warning.style.display = 'block';
+    } else if (response.status !== 404) {
+      console.warn('Unexpected response when checking file:', response.status);
+    }
+  })
+  .catch(err => {
+    console.warn('Silent error checking for file:', err);
+  });
 }
 
 function generatePreview() {
@@ -49,8 +83,8 @@ function generatePreview() {
   const tags = document.getElementById('tags').value.trim();
   const path = document.getElementById('path').value.trim();
   const references = Array.from(document.querySelectorAll('.reference'))
-    .map(input => input.value.trim())
-    .filter(val => val !== '');
+                          .map(input => input.value.trim())
+                          .filter(val => val !== '');
 
   const prompts = Array.from(document.querySelectorAll('.block')).map(block => {
     const prompt = block.querySelector('.prompt').value.trim();
@@ -91,40 +125,11 @@ function generatePreview() {
   }).join('\n\n');
 
   const finalContent = frontMatter + blocks;
-  const previewBox = document.getElementById('previewBox');
-  previewBox.innerHTML = finalContent;
+  document.getElementById('previewBox').innerHTML = finalContent;
   document.getElementById('previewContainer').style.display = 'block';
   document.getElementById('confirmSubmit').style.display = 'inline-block';
 
   checkFilenameCollision();
-}
-
-function checkFilenameCollision() {
-  const token = document.getElementById('token').value.trim();
-  const pageName = document.getElementById('customPage').value.trim();
-  const title = document.getElementById('title').value.trim();
-  if (!title && !pageName) return;
-  if (!token) return;
-
-  const path = document.getElementById('path').value.trim();
-  const fileName = sanitizeFilename(pageName || title);
-  const repo = document.getElementById('repo').value.trim();
-  const apiUrl = `https://api.github.com/repos/${repo}/contents/${path}/${fileName}.md`;
-
-  fetch(apiUrl, {
-    method: 'GET',
-    headers: {
-      'Authorization': `token ${token}`,
-      'Accept': 'application/vnd.github.v3+json'
-    }
-  })
-    .then(response => {
-      const warning = document.getElementById('filenameWarning');
-      warning.style.display = response.ok ? 'block' : 'none';
-    })
-    .catch(() => {
-      document.getElementById('filenameWarning').style.display = 'none';
-    });
 }
 
 function hidePreview() {
