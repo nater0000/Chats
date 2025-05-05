@@ -11,7 +11,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const currentHref = document.getElementById('dynamic-theme')?.href;
     const expectedHref = `${location.origin}/assets/css/theme-${saved}.css`;
     if (!currentHref || !currentHref.includes(`theme-${saved}.css`)) {
-      applyTheme(saved, false);
+      applyTheme(saved, false); // No overlay
+    } else {
+      // Theme is already applied, but set dropdown value
+      selector.value = saved;
     }
 
     selector.addEventListener('change', (e) => {
