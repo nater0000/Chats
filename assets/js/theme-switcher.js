@@ -25,12 +25,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function applyTheme(themeName, showOverlay = false) {
   const existingLink = document.getElementById('dynamic-theme');
-  const newHref = `/assets/css/theme-${themeName}.css`;
+  const baseHref = `/assets/css/theme-${themeName}.css`;
+  const newHref = `${baseHref}?v=${Date.now()}`;
 
-  if (existingLink && existingLink.getAttribute('href') === newHref) return;
+  const stripVersion = (href) => href?.split('?')[0];
 
-  if (existingLink) existingLink.href = newHref;
-  else {
+  if (existingLink && stripVersion(existingLink.getAttribute('href')) === baseHref) {
+    if (showOverlay) showThemeOverlay(themeName);
+    return;
+  }
+
+  if (existingLink) {
+    existingLink.href = newHref;
+  } else {
     const link = document.createElement('link');
     link.id = 'dynamic-theme';
     link.rel = 'stylesheet';
@@ -39,9 +46,9 @@ function applyTheme(themeName, showOverlay = false) {
   }
 
   localStorage.setItem('theme', themeName);
-
   if (showOverlay) showThemeOverlay(themeName);
 }
+
 
 function showThemeOverlay(themeName) {
   const overlay = document.getElementById('theme-switch-overlay');
