@@ -190,7 +190,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const pageName = document.getElementById('customPage').value.trim();
     const fileName = sanitizeFilename(pageName || title);
     const filePath = `${path}/${fileName}.md`;
-    const content = btoa(unescape(encodeURIComponent(document.getElementById('previewBox').innerText)));
+    const content = btoa(unescape(encodeURIComponent(document.getElementById('previewBox').innerHTML)));
 
     const apiUrl = `https://api.github.com/repos/${repo}/contents/${filePath}`;
 
