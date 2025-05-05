@@ -60,16 +60,13 @@ function generatePreview() {
   const date = today.toISOString().split('T')[0];
   const time = today.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
-  const fileName = pageName !== ''
-    ? pageName.replace(/[^a-zA-Z0-9-]/g, '-').toLowerCase()
-    : title.replace(/[^a-zA-Z0-9-]/g, '-').toLowerCase();
-
-  const filePath = `${path}/${fileName}.md`;
+  const safeName = (pageName || title).replace(/[^a-zA-Z0-9-]/g, '-').toLowerCase();
+  const filePath = `${path}/${safeName}.md`;
 
   let frontMatter = `---\ntitle: ${title}\nauthor: ${author}\ndate: ${date}\ntime: ${time}\nlocation: ${location}\nterminal: ${terminal}\ngpt: ${gpt}\ntags: [${tags}]\nlayout: gpt-log`;
 
   if (pageName) {
-    frontMatter += `\npermalink: /${path}/${fileName}`;
+    frontMatter += `\npermalink: /${path}/${safeName}`;
   }
 
   if (references.length > 0) {
@@ -96,7 +93,8 @@ function generatePreview() {
   previewBox.innerHTML = finalContent;
   document.getElementById('previewContainer').style.display = 'block';
   document.getElementById('confirmSubmit').style.display = 'inline-block';
-  checkFilenameCollision(); // update warning
+
+  checkFilenameCollision();
 }
 
 function hidePreview() {
@@ -141,29 +139,16 @@ function dragElement(element, handle) {
   }
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-  const box = document.getElementById("previewContainer");
-  const header = document.querySelector(".preview-header");
-  if (box && header) {
-    dragElement(box, header);
-  }
-  checkFilenameCollision();
-});
-
 function checkFilenameCollision() {
+  const token = document.getElementById('token').value.trim();
   const pageName = document.getElementById('customPage').value.trim();
   const title = document.getElementById('title').value.trim();
   if (!title && !pageName) return;
   if (!token) return;
 
   const path = document.getElementById('path').value.trim();
-
-  const fileName = (pageName !== '' ? pageName : title)
-    .replace(/[^a-zA-Z0-9-]/g, '-')
-    .toLowerCase();
-
+  const fileName = (pageName || title).replace(/[^a-zA-Z0-9-]/g, '-').toLowerCase();
   const repo = document.getElementById('repo').value.trim();
-  const token = document.getElementById('token').value.trim();
   const apiUrl = `https://api.github.com/repos/${repo}/contents/${path}/${fileName}.md`;
 
   fetch(apiUrl, {
@@ -181,3 +166,53 @@ function checkFilenameCollision() {
       document.getElementById('filenameWarning').style.display = 'none';
     });
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+  const box = document.getElementById("previewContainer");
+  const header = document.querySelector(".preview-header");
+  if (box && header) {
+    dragElement(box, header);
+  }
+
+  document.getElementById('logForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const token = document.getElementById('token').value.trim();
+    const repo = document.getElementById('repo').value.trim();
+    const path = document.getElementById('path').value.trim();
+    const title = document.getElementById('title').value.trim();
+    const pageName = document.getElementById('customPage').value.trim();
+
+    const fileName = (pageName || title).replace(/[^a-zA-Z0-9-]/g, '-').toLowerCase();
+    const filePath = `${path}/${fileName}.md`;
+    const content = btoa(unescape(encodeURIComponent(document.getElementById('previewBox').innerText)));
+
+    const apiUrl = `https://api.github.com/repos/${repo}/contents/${filePath}`;
+
+    try {
+      const response = await fetch(apiUrl, {
+        method: 'PUT',
+        headers: {
+          'Authorization': `token ${token}`,
+          'Accept': 'application/vnd.github.v3+json'
+        },
+        body: JSON.stringify({
+          message: `Add new GPT log entry: ${fileName}`,
+          content: content
+        })
+      });
+
+      if (response.ok) {
+        alert("✅ File created successfully!");
+        document.getElementById('logForm').reset();
+        hidePreview();
+      } else {
+        const error = await response.json();
+        alert("❌ Error: " + (error.message || "Unable to create file."));
+      }
+    } catch (err) {
+      alert("❌ Request failed. Check token and repo settings.");
+    }
+  });
+
+  checkFilenameCollision();
+});
