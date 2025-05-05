@@ -2,6 +2,7 @@
 <html lang="{{ site.lang | default: "en-US" }}">
 
   <head>
+<link id="dynamic-theme" rel="stylesheet" href="/assets/css/theme-matrix.css?v={{ site.github.build_revision }}">
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 	
@@ -40,10 +41,6 @@
   onload="this.onload=null;this.rel='stylesheet'"
   media="all"
 />
-
-<!-- Theme stylesheet loader -->
-{% assign saved_theme = 'matrix' %}
-<link id="dynamic-theme" rel="stylesheet" href="/assets/css/theme-{{ saved_theme }}.css?v={{ site.github.build_revision }}">
 
     <script src="{{ '/assets/js/theme-switcher.js' | relative_url }}"></script>
 

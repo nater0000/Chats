@@ -2,29 +2,45 @@ let themeOverlayTimeout;
 
 document.addEventListener('DOMContentLoaded', () => {
   const selector = document.getElementById('theme-selector');
-  const saved = localStorage.getItem('theme') || 'matrix';
+  const overlay = document.getElementById('theme-switch-overlay');
+  let overlayTimeout = null;
 
-  if (selector) {
-    selector.value = saved;
+  function applyTheme(theme, showOverlay = true) {
+    const existingLink = document.getElementById('dynamic-theme');
+    const newHref = `/assets/css/theme-${theme}.css?v=${new Date().getTime()}`;
 
-    // Only inject theme if not already applied
-    const currentHref = document.getElementById('dynamic-theme')?.href;
-    const expectedHref = `${location.origin}/assets/css/theme-${saved}.css`;
-    if (!currentHref || !currentHref.includes(`theme-${saved}.css`)) {
-      applyTheme(saved, false); // No overlay
-    } else {
-      // Theme is already applied, but set dropdown value
-      selector.value = saved;
+    // Prevent duplicate loading
+    if (existingLink.getAttribute('href').startsWith(`/assets/css/theme-${theme}.css`)) {
+      return;
     }
 
-    selector.addEventListener('change', (e) => {
-      const theme = e.target.value;
-      applyTheme(theme, true); // Only show overlay on change
-    });
-  } else {
-    applyTheme(saved, false);
+    // Set theme stylesheet
+    existingLink.setAttribute('href', newHref);
+    localStorage.setItem('selectedTheme', theme);
+
+    // Show overlay if needed
+    if (showOverlay && overlay) {
+      overlay.style.display = 'block';
+      overlay.style.opacity = 1;
+
+      if (overlayTimeout) clearTimeout(overlayTimeout);
+      overlayTimeout = setTimeout(() => {
+        overlay.style.opacity = 0;
+        setTimeout(() => (overlay.style.display = 'none'), 500);
+      }, 1000);
+    }
   }
+
+  // On load, apply saved theme without showing overlay
+  const saved = localStorage.getItem('selectedTheme') || 'matrix';
+  selector.value = saved;
+  applyTheme(saved, false);
+
+  selector.addEventListener('change', () => {
+    applyTheme(selector.value, true);
+  });
 });
+
 
 function applyTheme(themeName, showOverlay = false) {
   const savedTheme = localStorage.getItem('theme') || 'matrix';
