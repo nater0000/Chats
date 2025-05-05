@@ -17,18 +17,21 @@
   <!-- Load base structural styles -->
   <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
 
-  <!-- Dynamically loaded theme stylesheet -->
-  <link
-    id="dynamic-theme"
-    rel="stylesheet"
-    href="{{ '/assets/css/theme-matrix.css?v=' | append: site.github.build_revision | relative_url }}"
-    media="all"
-  />
-
   <!-- Preload all theme CSS for faster switching -->
   <link rel="preload" as="style" href="{{ '/assets/css/theme-light.css?v=' | append: site.github.build_revision | relative_url }}">
   <link rel="preload" as="style" href="{{ '/assets/css/theme-midnight.css?v=' | append: site.github.build_revision | relative_url }}">
   <link rel="preload" as="style" href="{{ '/assets/css/theme-matrix.css?v=' | append: site.github.build_revision | relative_url }}">
+
+  <!-- Dynamically loaded theme stylesheet -->
+<script>
+  const savedTheme = localStorage.getItem('theme') || 'matrix';
+  const link = document.createElement('link');
+  link.id = 'dynamic-theme';
+  link.rel = 'stylesheet';
+  link.href = `/assets/css/theme-${savedTheme}.css?v={{ site.github.build_revision }}`;
+  link.media = 'all';
+  document.head.appendChild(link);
+</script>
 
   <script src="{{ '/assets/js/theme-switcher.js' | relative_url }}"></script>
   <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
