@@ -153,6 +153,9 @@ document.addEventListener("DOMContentLoaded", () => {
 function checkFilenameCollision() {
   const pageName = document.getElementById('customPage').value.trim();
   const title = document.getElementById('title').value.trim();
+  if (!title && !pageName) return;
+  if (!token) return;
+
   const path = document.getElementById('path').value.trim();
 
   const fileName = (pageName !== '' ? pageName : title)
