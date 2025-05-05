@@ -54,23 +54,24 @@ function checkFilenameCollision() {
   const safeName = sanitizeFilename(pageName || title);
   const apiUrl = `https://api.github.com/repos/${repo}/contents/${path}/${safeName}.md`;
 
-  fetch(apiUrl, {
-    method: 'GET',
-    headers: {
-      'Authorization': `token ${token}`,
-      'Accept': 'application/vnd.github.v3+json'
-    }
-  })
-  .then(response => {
+  try {
+    const response = await fetch(apiUrl, {
+      method: 'GET',
+      headers: {
+        'Authorization': `token ${token}`,
+        'Accept': 'application/vnd.github.v3+json'
+      }
+    });
+
     if (response.status === 200) {
       warning.style.display = 'block';
     } else if (response.status !== 404) {
       console.warn('Unexpected response when checking file:', response.status);
     }
-  })
-  .catch(err => {
-    console.warn('Silent error checking for file:', err);
-  });
+    // Do nothing for 404 — that means the file doesn't exist, which is expected
+  } catch (err) {
+    console.warn('Silent fetch error while checking filename:', err);
+  }
 }
 
 function generatePreview() {
