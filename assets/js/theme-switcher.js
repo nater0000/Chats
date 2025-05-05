@@ -27,6 +27,10 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function applyTheme(themeName, showOverlay = false) {
+  const savedTheme = localStorage.getItem('theme') || 'matrix';
+  const selector = document.getElementById('theme-selector');
+  selector.value = savedTheme;
+
   const existingLink = document.getElementById('dynamic-theme');
   const baseHref = `/assets/css/theme-${themeName}.css`;
   const newHref = `${baseHref}?v=${Date.now()}`;

@@ -24,14 +24,8 @@
 <link rel="preload" as="style" href="/assets/css/theme-midnight.css">
 
 <!-- Theme stylesheet loader -->
-<script>
-  const savedTheme = localStorage.getItem('theme') || 'matrix';
-  const themeLink = document.createElement('link');
-  themeLink.id = 'dynamic-theme';
-  themeLink.rel = 'stylesheet';
-  themeLink.href = `/assets/css/theme-${savedTheme}.css?v=${Date.now()}`;
-  document.head.appendChild(themeLink);
-</script>
+{% assign saved_theme = 'matrix' %}
+<link id="dynamic-theme" rel="stylesheet" href="/assets/css/theme-{{ saved_theme }}.css?v={{ site.github.build_revision }}">
 
     <script src="{{ '/assets/js/theme-switcher.js' | relative_url }}"></script>
 
