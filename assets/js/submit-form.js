@@ -39,7 +39,7 @@ function toggleFieldset(legend) {
   if (icon) icon.textContent = isExpanded ? '▶️' : '🔽';
 }
 
-function checkFilenameCollision() {
+async function checkFilenameCollision() {
   const token = document.getElementById('token').value.trim();
   const repo = document.getElementById('repo').value.trim();
   const title = document.getElementById('title').value.trim();
