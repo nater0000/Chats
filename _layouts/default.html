@@ -1,120 +1,109 @@
 <!DOCTYPE html>
-<html lang="{{ site.lang | default: "en-US" }}">
+<html lang="{{ site.lang | default: 'en-US' }}">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-	
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-	
-	{% if page.title %}
-		<title>{{ site.site_name }} | {{ page.title }}</title>
-	{% else %}
-		<title>{{ site.site_name }}</title>
-	{% endif %}
-	
-	{% include head-custom.html %}
-	
-	
-	{% seo %}
-	
-<link
-  id="dynamic-theme"
-  rel="stylesheet"
-  href="{{ '/assets/css/theme-matrix.css' | relative_url }}"
-  media="all"
-/>
+  {% if page.title %}
+    <title>{{ site.site_name }} | {{ page.title }}</title>
+  {% else %}
+    <title>{{ site.site_name }}</title>
+  {% endif %}
 
-<!-- Preload theme CSS files to reduce delay when switching -->
-<link
-  rel="preload"
-  as="style"
-  href="{{ '/assets/css/theme-light.css?v=' | append: site.github.build_revision | relative_url }}"
-/>
-<link
-  rel="preload"
-  as="style"
-  href="{{ '/assets/css/theme-midnight.css?v=' | append: site.github.build_revision | relative_url }}"
-/>
+  {% include head-custom.html %}
+  {% seo %}
 
-    <script src="{{ '/assets/js/theme-switcher.js' | relative_url }}"></script>
+  <!-- Load base structural styles -->
+  <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
 
-    <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+  <!-- Dynamically loaded theme stylesheet -->
+  <link
+    id="dynamic-theme"
+    rel="stylesheet"
+    href="{{ '/assets/css/theme-matrix.css?v=' | append: site.github.build_revision | relative_url }}"
+    media="all"
+  />
 
-<!--   <script src="{{ '/assets/js/respond.js' | relative_url }}"></script>-->
+  <!-- Preload all theme CSS for faster switching -->
+  <link rel="preload" as="style" href="{{ '/assets/css/theme-light.css?v=' | append: site.github.build_revision | relative_url }}">
+  <link rel="preload" as="style" href="{{ '/assets/css/theme-midnight.css?v=' | append: site.github.build_revision | relative_url }}">
+  <link rel="preload" as="style" href="{{ '/assets/css/theme-matrix.css?v=' | append: site.github.build_revision | relative_url }}">
 
-<!--[if lt IE 9]>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
-<![endif]-->
-  </head>
-  
-  <body>
-    <div id="theme-switch-overlay">Switching theme...</div>
+  <script src="{{ '/assets/js/theme-switcher.js' | relative_url }}"></script>
+  <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+</head>
 
-    <div class="wrapper">
-      <header>
-  <div class="site-title">
+<body>
+  <!-- Overlay shown during theme switch -->
+  <div id="theme-switch-overlay">Switching theme...</div>
+
+  <div class="wrapper">
+    <header>
+      <div class="site-title">
         <h1>
-		<a href="{{ "/" | absolute_url }}">
-		
-        {% if site.logo %}
-          <img id="logoId" src="{{site.logo | relative_url}}" alt="Logo" />
-        {% endif %}
-		
-		{{ site.site_name | default: site.github.repository_name }}</a>
-		</h1>
-  </div>
+          <a href="{{ "/" | absolute_url }}">
+            {% if site.logo %}
+              <img id="logoId" src="{{ site.logo | relative_url }}" alt="Logo" />
+            {% endif %}
+            {{ site.site_name | default: site.github.repository_name }}
+          </a>
+        </h1>
+      </div>
 
-        <p id="descId" >{{ site.description | default: site.github.project_tagline }}</p>
+      <p id="descId">{{ site.description | default: site.github.project_tagline }}</p>
+      {% include theme-selector.html %}
+    </header>
 
-        {% include theme-selector.html %}
+    <hr>
 
-      </header>
-	  <hr>
-      <section class="content">
-	  
+    <section class="content">
       {{ content }}
-	  
-      </section>
-      <footer>
-        <div>
+    </section>
+
+    <footer>
+      <div>
         {% if site.github.is_project_page %}
-        <p class="view" ><a href="{{ site.github.repository_url }}">View the source <small>[{{ site.github.repository_nwo }}]</small></a></p>
+          <p class="view">
+            <a href="{{ site.github.repository_url }}">
+              View the source <small>[{{ site.github.repository_nwo }}]</small>
+            </a>
+          </p>
         {% endif %}
 
         {% if site.github.is_user_page %}
-        <p class="view"><a href="{{ site.github.owner_url }}">View My GitHub Profile</a></p>
+          <p class="view"><a href="{{ site.github.owner_url }}">View My GitHub Profile</a></p>
         {% endif %}
-        </div>
-		
-        {% if site.show_downloads %}
+      </div>
+
+      {% if site.show_downloads %}
         <ul class="downloads">
           <li><a href="{{ site.github.zip_url }}">Download <strong>ZIP File</strong></a></li>
           <li><a href="{{ site.github.tar_url }}">Download <strong>TAR Ball</strong></a></li>
           <li><a href="{{ site.github.repository_url }}">View On <strong>GitHub</strong></a></li>
         </ul>
-        {% endif %}
-		
-        {% if site.github.is_project_page %}
-        {% endif %}
-		
-        <p><small>&mdash; Hosted on <a href="https://pages.github.com/">{{ 'GitHub Pages' }}</a> maintained by <a href="{{ site.github.owner_url }}">{{ site.github.owner_name }}</a> &mdash;</small></p>
-		<script>
-			(function(d, h, m){
-				var js, fjs = d.getElementsByTagName(h)[0];
-				if (d.getElementById(m)){return;}
-				js = d.createElement(h); js.id = m;
-				js.onload = function(){
-					window.makerWidgetComInit({
-					position: "left",          
-					widget: "md1ha8p5wucaszrj-ipniicgrgm5sddtg-blq2qqefddoocuzb"                
-				})};
-				js.src = "https://makerwidget.com/js/embed.js";
-				fjs.parentNode.insertBefore(js, fjs)
-			}(document, "script", "dhm"))
-		</script>
-      </footer>
-    </div>
-    <script src="{{ "/assets/js/scale.fix.js" | relative_url }}"></script>
-  </body>
+      {% endif %}
+
+      <p><small>&mdash; Hosted on <a href="https://pages.github.com/">GitHub Pages</a> maintained by <a href="{{ site.github.owner_url }}">{{ site.github.owner_name }}</a> &mdash;</small></p>
+
+      <script>
+        (function(d, h, m){
+          var js, fjs = d.getElementsByTagName(h)[0];
+          if (d.getElementById(m)){ return; }
+          js = d.createElement(h); js.id = m;
+          js.onload = function(){
+            window.makerWidgetComInit({
+              position: "left",
+              widget: "md1ha8p5wucaszrj-ipniicgrgm5sddtg-blq2qqefddoocuzb"
+            });
+          };
+          js.src = "https://makerwidget.com/js/embed.js";
+          fjs.parentNode.insertBefore(js, fjs);
+        })(document, "script", "dhm");
+      </script>
+    </footer>
+  </div>
+
+  <script src="{{ '/assets/js/scale.fix.js' | relative_url }}"></script>
+</body>
 </html>
