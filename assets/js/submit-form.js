@@ -140,7 +140,7 @@ function generateMarkdownForSubmission() {
     fileContent += `<p class="terminal-line matrix gpt">gpt@remote:~$</p>\n`; // Injected HTML
     fileContent += `\n${response.trim()}\n\n`; // Raw user Markdown, surrounded by blank lines
 
-    fileContent += `<hr />\n\n`; // Injected HTML, blank line after for separation
+    fileContent += `\n\n`; // Injected blank line after for separation
   });
 
   return fileContent;
