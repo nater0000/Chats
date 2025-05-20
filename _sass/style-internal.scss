@@ -161,3 +161,11 @@ a:focus,
 a:active {
   text-decoration: none; //
 }
+
+.page-meta a,
+.page-meta li,
+.references-section a,
+.references-section li {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+}
