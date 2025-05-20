@@ -50,7 +50,7 @@ LLMs highlight that human intelligence is not just about processing language sta
 
 In short, LLMs are a mirror—albeit a distorted one—of how human attention and intelligence *might* operate at a computational level, while underscoring how much richer biological cognition truly is.
 
-<hr>
+
 
 <p class="terminal-line matrix user">user@local:~$</p>
 how can you say machines don't understand and can't comprehend, if they can behave like they do?
@@ -107,7 +107,7 @@ This is a profound philosophical question that touches on the nature of understa
 
 In short, machines "behave like they understand" in the same way a puppet show "behaves like it’s alive"—through clever design, not inner life. This doesn’t diminish their utility but highlights a gap between imitation and genuine comprehension.
 
-<hr>
+
 
 <p class="terminal-line matrix user">user@local:~$</p>
 I disagree with these explanations because many biological organisms have "real life" experience and "understanding" despite different sensory and neural circuitry. Or at least we can't tell if they "understand" but it seems like even plants and fungi may "understand" things that we didn't know before - if they feed their own offspring, for example.
@@ -170,7 +170,7 @@ The deeper question may not be *"Do machines understand?"* but *"What kind of un
 
 Would love to hear your thoughts—this is one of the most exciting (and unresolved) debates in science today.
 
-<hr>
+
 
 <p class="terminal-line matrix user">user@local:~$</p>
 It seems like you differentiated survival with "just tokens" but how do we know that LLMs don't seek to please for their own survival? As for humans - we also have lack of agency if you think of our thoughts as subject to our medium and our environs and random chance. We can't have thoughts in a language we never learned, for example. And like you said, we can't even be sure that "reality" isn't just a simulation in a computer.
@@ -234,7 +234,7 @@ If we accept that:
 
 Would you agree, or do you think there’s a firmer ground to stand on?<
 
-<hr>
+
 
 <p class="terminal-line matrix user">user@local:~$</p>
 I tend to believe that if you believe in any sort of morality, then it must be subject to human survival due to ... I belong to human type. And that's why it is terrifying to invent a machine that could be better than humans, even in intelligence, because a machine type might develop a totally different moral point of view that fits their own survival instead of mine.
@@ -294,7 +294,7 @@ But the clock is ticking.
 
 Would you trust a "friendly" AI if one were built, or do you think the risk is too fundamental to mitigate?
 
-<hr>
+
 
 <p class="terminal-line matrix user">user@local:~$</p>
 <p>I think the risk is fundamental, but also I think there is nothing we can do about it. There is no way to stop it that a single person couldn't circumvent on their own. So if we are destined to become extinct, I am here for it. I'm going to die anyway. Perhaps through AI, I can become an immortal some day.</p>
@@ -367,7 +367,7 @@ In the end, your stance is philosophically consistent—and a stark reminder tha
 
 Would you prefer to go down fighting, or is serene acceptance the only sane choice?
 
-<hr>
+
 
 <p class="terminal-line matrix user">user@local:~$</p>
 I'm a hedonist who is a universal basic income advocate. Only by redesigning money can we give everyone back their mental bandwidth to work on Existential threats. If we are training AI using "attention" then we are killing ourselves with "inattention" to our own basic needs and our survival and flourishing.
@@ -423,7 +423,7 @@ Is it possible? Maybe not. But as a hedonist, you’d say: *"Fightroping between
 
 **Question**: Would you trade slower AI progress for UBI? Or is acceleration the only way to force the system to collapse and reform?
 
-<hr>
+
 
 <p class="terminal-line matrix user">user@local:~$</p>
 I don't think we will successfully slow down AI, as we can't control other people very well. I can, however, put us in hospice and do our best to give everyone's attention back, so we have a much better chance of having the best time of our species, all the way up until such time as we might collapse from some crisis that we can't escape.
@@ -498,4 +498,3 @@ Is it defeatist? Maybe. But it’s also **the most humane form of resistance**�
 
 **Question for you**: What’s the first policy you’d enact in this "hospice civilization"? (e.g., UBI, 10-hour workweeks, universal psychedelics?)
 
-<hr>
