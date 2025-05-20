@@ -1,10 +1,10 @@
 // Theme Imports
 //@import "default_colors";
-@import "variables";
-@import "fonts";
-@import "normalize";
-@import "rouge-base16-dark";
-@import "ie";
+@import "variables"; //
+@import "fonts"; //
+@import "normalize"; //
+@import "rouge-base16-dark"; //
+@import "ie"; //
 
 // Layout & Structure
 
@@ -16,22 +16,18 @@ body {
   transition: background 0.4s ease-in-out, color 0.4s ease-in-out; //
 }
 
+// Consolidated 'a' tag styling
 a {
-  text-decoration: none; //
+  text-decoration: none; // Base style: no underline
 
   &:hover,
   &:focus {
-    text-decoration: underline; //
+    text-decoration: underline; // Underline on hover/focus
   }
+  // The conflicting 'a:hover, a:focus, a:active { text-decoration: none; }' block
+  // has been removed to allow the underline on hover/focus to work as initially defined.
+  // If you prefer no underline on hover/focus, you can change 'underline' to 'none' above.
 }
-
-// NEW: Add word wrapping for links and list items to prevent layout breaks from long URLs
-a,
-li {
-  overflow-wrap: break-word;   // Standard property
-  word-wrap: break-word;       // Older alias for broader compatibility
-}
-
 
 h1 {
   font-size: 1.5rem; //
@@ -49,17 +45,23 @@ h4 {
   font-size: 1rem; //
 }
 
-// Site title with optional logo
+// Consolidated Site title with optional logo
 .site-title {
   font-weight: bold; //
   display: flex; //
   align-items: center; //
 
   img {
+    height: 48px; // From the more specific rule in your original file
+    width: auto; // From the more specific rule in your original file
     margin-right: 0.5em; //
-    max-height: 2.5em; //
     vertical-align: middle; //
-    // Note: There's a later .site-title img rule with height: 48px; width: auto;
+  }
+
+  h1 {
+    margin: 0; // Ensure h1 inside site-title has no extra margin
+    // Font size for h1 inside .site-title will be inherited from the global h1 style (1.5rem)
+    // or can be overridden here if needed.
   }
 }
 
@@ -107,7 +109,6 @@ pre, code {
 }
 
 // Theme switcher notification banner
-
 #theme-switch-overlay {
   position: fixed; //
   top: 1em; //
@@ -130,42 +131,32 @@ pre, code {
   opacity: 0; //
 }
 
-// This .site-title block is a duplicate of the one above.
-// Consider merging them. The img styles here are different.
-.site-title {
-  display: flex; //
-  align-items: center; //
-
-  img {
-    height: 48px; //
-    width: auto; //
-    margin-right: 0.5em; //
-    vertical-align: middle; //
-  }
-
-  h1 {
-    margin: 0; //
-  }
+// =========================================================================
+// STYLES FOR LONG URL WRAPPING IN METADATA REFERENCES
+// Based on the HTML structure: <header class="metadata"> <ul> <li> <a href="...">...</a> </li> </ul>
+// =========================================================================
+header.metadata ul {
+  // Default browser styling for ul usually includes left padding for bullets.
+  // Adjust if necessary, for example:
+  // padding-left: 20px; /* Or your preferred indentation */
+  // margin-left: 0; /* If you want to control indentation strictly with padding */
 }
 
-// This 'a' styling block appears after the initial one.
-// The text-decoration: none on hover/focus here will override the underline
-// from the first 'a' block.
-// Remove underlines from links 
-a {
-  text-decoration: none; //
-}
+header.metadata ul li,
+header.metadata ul li a {
+  overflow-wrap: break-word;   // Standard property for word wrapping
+  word-wrap: break-word;       // Older alias for overflow-wrap (for wider compatibility)
+  word-break: break-all;       // More aggressive breaking, very effective for URLs
 
-a:hover,
-a:focus,
-a:active {
-  text-decoration: none; //
-}
+  // Defensive measure: ensure the element attempts to conform to its parent's width.
+  max-width: 100%;
 
-.page-meta a,
-.page-meta li,
-.references-section a,
-.references-section li {
-  overflow-wrap: break-word;
-  word-wrap: break-word;
+  // For <a> tags (which are inline by default), `display: inline-block;` or `display: block;`
+  // can sometimes help `max-width` apply more predictably.
+  // However, `word-break: break-all;` should handle the wrapping directly on the text content.
+  // Test without changing display first, as it can alter layout.
+  // e.g., display: inline-block;
 }
+// =========================================================================
+// END OF STYLES FOR LONG URL WRAPPING
+// =========================================================================
