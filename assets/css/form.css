@@ -61,22 +61,24 @@ legend .icon {
   transition: transform 0.2s ease;
 }
 
-#previewContainer.draggable {
+/* Updated styles for #previewContainer for better responsiveness */
+#previewContainer {
   position: absolute;
-  top: 100px;
-  left: 10%;
-  z-index: 999;
-  cursor: move;
+  top: 100px; /* Default for desktop */
+  left: 10%;  /* Default for desktop */
+  z-index: 999; /* Keep it above other content on desktop */
   background: #111;
   color: #b5e853;
   padding: 1em;
   border: 1px solid #444;
   border-radius: 6px;
   font-size: 0.85em;
-  min-width: 300px;
-  width: 400px;  /* Prevents unexpected shrinking */
-  max-width: 95vw;
-  overflow-x: auto;
+  min-width: 300px; /* Base min-width */
+  width: 400px;     /* Default width for desktop */
+  max-width: 95vw;  /* Max width relative to viewport width */
+  box-sizing: border-box; /* Ensures padding and border are included in width/height */
+  overflow-x: auto; /* Allow horizontal scroll for <pre> content if needed */
+  /* overflow-y will be specified in mobile view or if universally desired */
 }
 
 .preview-header {
@@ -85,7 +87,7 @@ legend .icon {
   align-items: center;
   font-weight: bold;
   margin-bottom: 0.5em;
-  cursor: grab;
+  cursor: grab; /* Use 'grab' for the header that initiates dragging */
 }
 
 .preview-header:active {
@@ -101,4 +103,37 @@ legend .icon {
   border-radius: 4px;
   font-size: 0.9em;
   cursor: pointer;
+}
+
+/* --- Styles for Mobile Devices --- */
+@media (max-width: 768px) {
+  #previewContainer {
+    position: relative; /* Change to relative to flow in the document */
+    top: auto;          /* Reset absolute positioning */
+    left: auto;         /* Reset absolute positioning */
+    width: 100%;        /* Take full available width */
+    min-width: auto;    /* Override desktop min-width */
+    max-width: 100%;    /* Ensure it doesn't exceed viewport (works with width: 100%) */
+    margin-top: 1.5em;  /* Add some space above it, below the "Preview" button */
+    margin-bottom: 1em; /* Add some space below it */
+    z-index: auto;      /* Reset z-index as it's in normal flow */
+    cursor: default;    /* Draggable feature is less suitable for static layout */
+    
+    max-height: 50vh;   /* Limit height (e.g., 50% of viewport height) */
+                         /* You can also use a fixed pixel value like 300px or 400px */
+    overflow-y: auto;   /* Enable vertical scrolling for the preview box content */
+  }
+
+  .preview-header {
+    cursor: default; /* Remove grab cursor as dragging might be disabled or awkward */
+  }
+
+  /* Optional: Adjust form buttons for better mobile layout if needed */
+  #logForm button.mini {
+    /* For example, make them full width for easier tapping */
+    /* width: 100%; 
+    margin-top: 0.5em;
+    padding: 0.8em;
+    font-size: 1em; */
+  }
 }
