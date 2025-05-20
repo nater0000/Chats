@@ -9,141 +9,155 @@
 // Layout & Structure
 
 body {
-  font: 16px/1.5 $body-font;
-  padding: 2em 1em;
-  max-width: 960px;
-  margin: auto;
-  transition: background 0.4s ease-in-out, color 0.4s ease-in-out;
+  font: 16px/1.5 $body-font; //
+  padding: 2em 1em; //
+  max-width: 960px; //
+  margin: auto; //
+  transition: background 0.4s ease-in-out, color 0.4s ease-in-out; //
 }
 
 a {
-  text-decoration: none;
+  text-decoration: none; //
 
   &:hover,
   &:focus {
-    text-decoration: underline;
+    text-decoration: underline; //
   }
 }
 
+// NEW: Add word wrapping for links and list items to prevent layout breaks from long URLs
+a,
+li {
+  overflow-wrap: break-word;   // Standard property
+  word-wrap: break-word;       // Older alias for broader compatibility
+}
+
+
 h1 {
-  font-size: 1.5rem;
+  font-size: 1.5rem; //
 }
 
 h2 {
-  font-size: 1.25rem;
+  font-size: 1.25rem; //
 }
 
 h3 {
-  font-size: 1.1rem;
+  font-size: 1.1rem; //
 }
 
 h4 {
-  font-size: 1rem;
+  font-size: 1rem; //
 }
 
 // Site title with optional logo
 .site-title {
-  font-weight: bold;
-  display: flex;
-  align-items: center;
+  font-weight: bold; //
+  display: flex; //
+  align-items: center; //
 
   img {
-    margin-right: 0.5em;
-    max-height: 2.5em;
-    vertical-align: middle;
+    margin-right: 0.5em; //
+    max-height: 2.5em; //
+    vertical-align: middle; //
+    // Note: There's a later .site-title img rule with height: 48px; width: auto;
   }
 }
 
 // Header and Footer layout
 .site-header,
 .site-footer {
-  border-top: 1px solid;
-  margin-top: 2em;
-  padding-top: 1em;
-  font-size: 0.7em;
+  border-top: 1px solid; //
+  margin-top: 2em; //
+  padding-top: 1em; //
+  font-size: 0.7em; //
 }
 
 // Main content box
 .content {
-  padding: 1.5em;
-  border-radius: 0.5em;
-  transition: background 0.4s ease-in-out, color 0.4s ease-in-out;
+  padding: 1.5em; //
+  border-radius: 0.5em; //
+  transition: background 0.4s ease-in-out, color 0.4s ease-in-out; //
 }
 
 // Typography Enhancements
 h1, h2, h3, h4 {
-  font-family: $heading-font;
-  margin-top: 1.5em;
-  margin-bottom: 0.5em;
-  line-height: 1.2;
+  font-family: $heading-font; //
+  margin-top: 1.5em; //
+  margin-bottom: 0.5em; //
+  line-height: 1.2; //
 }
 
 p {
-  margin-bottom: 1em;
+  margin-bottom: 1em; //
 }
 
 pre, code {
-  font-family: $mono-font;
-  font-size: 0.85em;
+  font-family: $mono-font; //
+  font-size: 0.85em; //
 }
 
 // Terminal line styling
 .terminal-line {
-  font-family: $mono-font;
-  font-size: 0.85em;
-  padding: 0.5em 1em;
-  margin: 1em 0;
-  border-radius: 4px;
-  white-space: pre-wrap;
+  font-family: $mono-font; //
+  font-size: 0.85em; //
+  padding: 0.5em 1em; //
+  margin: 1em 0; //
+  border-radius: 4px; //
+  white-space: pre-wrap; //
 }
 
 // Theme switcher notification banner
 
 #theme-switch-overlay {
-  position: fixed;
-  top: 1em;
-  right: 1em;
-  font-family: monospace;
-  font-size: 0.7rem;
-  padding: 0.5em 1em;
-  border-radius: 4px;
-  z-index: 9999;
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.6s ease-out;
+  position: fixed; //
+  top: 1em; //
+  right: 1em; //
+  font-family: monospace; //
+  font-size: 0.7rem; //
+  padding: 0.5em 1em; //
+  border-radius: 4px; //
+  z-index: 9999; //
+  opacity: 0; //
+  visibility: hidden; //
+  transition: opacity 0.6s ease-out; //
 }
 
 #theme-switch-overlay.show {
-  opacity: 1;
+  opacity: 1; //
 }
 
 #theme-switch-overlay.fade-out {
-  opacity: 0;
+  opacity: 0; //
 }
 
+// This .site-title block is a duplicate of the one above.
+// Consider merging them. The img styles here are different.
 .site-title {
-  display: flex;
-  align-items: center;
+  display: flex; //
+  align-items: center; //
 
   img {
-    height: 48px;
-    width: auto;
-    margin-right: 0.5em;
-    vertical-align: middle;
+    height: 48px; //
+    width: auto; //
+    margin-right: 0.5em; //
+    vertical-align: middle; //
   }
 
   h1 {
-    margin: 0;
+    margin: 0; //
   }
 }
 
+// This 'a' styling block appears after the initial one.
+// The text-decoration: none on hover/focus here will override the underline
+// from the first 'a' block.
 // Remove underlines from links 
 a {
-  text-decoration: none;
+  text-decoration: none; //
 }
 
 a:hover,
 a:focus,
 a:active {
-  text-decoration: none;
+  text-decoration: none; //
 }
