@@ -10,8 +10,6 @@ references:
   - "https://docs.google.com/document/d/1CHWUS3wJ8qRBU8MlpIGRprkHQ7mw69N8QcP8qhed8Ng/view"
 ---
 
-# The Transition with TC
-
 <p class="terminal-line matrix user">user@local:~$</p>
 
 I would like to propose rather than building communities from scratch, we repurpose existing communities. Whereas society is built on the idea of rugged individualism, we shift the idea to one of interconnectedness. Rather than struggling alone to feed the machine for survival, we join together to work for ourselves and the betterment of the community. 
