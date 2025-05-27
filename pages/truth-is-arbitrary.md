@@ -42,7 +42,5 @@ Here's a breakdown of what this means from an information theory standpoint:
      * The reliability of the source.
      * Correspondence with some external reality or agreed-upon model of reality.
    * Arbitrariness: The conventions used to establish these external factors are, at some level, arbitrary human constructs. We've decided what symbols mean and what constitutes a reliable source or a valid model.
+
 Therefore, saying "truth is arbitrary" from an information theory perspective means that the assignment of meaning and truth-value to a piece of information (a string of symbols) is not an intrinsic property of that information but is contingent upon the representational systems, codes, and contexts established and shared by interpreters. The raw information itself is neutral; its "truth" emerges from the framework we use to decode and understand it.
-
-
-
