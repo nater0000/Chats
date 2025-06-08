@@ -21,6 +21,7 @@ permalink: /s/
         <option value="pages" selected>pages</option>
         <option value="_gpts">_gpts</option>
         <option value="_logs">_logs</option>
+        <option value="faye">_logs</option>
       </select>
     </fieldset>
 
