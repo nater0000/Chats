@@ -1,7 +1,10 @@
+---
 title: Computer Architecture as a Process
 author: nathanr
+gpt: gemini-pro-3
+date: 2026-03-30
 
-===
+---
 
 Standard computer science models the processor as a passive executor of static scripts. This perspective overlooks a fundamental reality. The hardware generates real-time signals regarding its own internal state. These signals constitute a sensory system. This research investigates these feedback mechanisms as the foundational requirements for machine agency.
 
