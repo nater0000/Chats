@@ -15,7 +15,7 @@ permalink: /pages/active-grid-01
 
 <p class="terminal-line matrix user">user@local:~$</p>
 
-<workshopped a description of the universe as a shared interface to reality>
+(workshopped a description of the universe as a shared interface to reality)
 
 <p class="terminal-line matrix gpt">gpt@remote:~$</p>
 
