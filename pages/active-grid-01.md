@@ -19,7 +19,7 @@ permalink: /pages/active-grid-01
 
 <p class="terminal-line matrix gpt">gpt@remote:~$</p>
 
-# The Universe is an Active Grid: Why the Past is Deleted and the Future Doesn’t Exist
+# The Universe is an Active Grid: Why the Past is Overwritten and the Future Doesn’t Exist
 
 If you ask someone to describe the physical universe, they will likely describe a smooth, continuous manifold. Inside that box are "things"—suns, air molecules, and particles—flying around and bouncing off each other. It is a comfortable, intuitive way to view reality. 
 
@@ -35,7 +35,7 @@ Space is not a void. It is a three-dimensional lattice made of fundamental nodes
 
 Crucially, the *number* of these units does not change. A cubic inch of the vacuum of deep space and a cubic inch of the Earth’s iron core contain the exact same number of elements. The grid is uniform. 
 
-The difference is **computational density**. Empty space is a region where the causal elements are resting in a simple, baseline state. "Matter" is simply a region where the elements are bogged down, forced to process incredibly complex, highly entangled data patterns. 
+The difference is **computational density**. As quantum physicist Seth Lloyd has demonstrated, the universe operates indistinguishably from a massive quantum computer calculating its own next state. Empty space is a region where the causal elements are resting in a simple, baseline state. "Matter" is simply a region where the elements are bogged down, forced to process incredibly complex, highly entangled data patterns. 
 
 ## The Speed of Causality
 
@@ -51,7 +51,7 @@ Think of a plucked guitar string. The energy violently ripples up and down, but 
 
 An atom is just a standing wave on the grid. It is a highly structured, recurring pattern of tension rippling through the nodes. When two of these complex wave patterns meet, one of two things happens: they either violently disrupt each other (a collision), or they synchronize. Think of two spinning gears meshing their teeth perfectly. This synchronization is called **harmonic resonance**. 
 
-> Solid matter does not actually exist. When you stand on the floor, the standing waves of your shoes are perfectly meshing with the standing waves of the concrete. What you feel as "solid" is simply the harmonic resonance of these wave structures balancing their tension across the grid. 
+This physical mechanics perfectly mirrors the process philosophy of Alfred North Whitehead, who argued a century ago that reality is not made of static, enduring "stuff," but of overlapping events and continuous processes. Solid matter does not actually exist. When you stand on the floor, the standing waves of your shoes are perfectly meshing with the standing waves of the concrete. What you feel as "solid" is simply the harmonic resonance of these wave structures balancing their tension across the grid. 
 
 ## The Topography of Causal Sets
 
@@ -101,6 +101,6 @@ Consciousness is not a ghost in the machine. It is the periodicity of the causal
 
 When the topological complexity of a localized network—such as a biological brain—reaches a staggering threshold of integration, the causal data flow forms a strange loop. The localized elements aren't just updating linearly from State A to State B. They are folding back on themselves in a state of continuous re-entrant processing, mathematically compiling the *cached memory* of State A alongside the *immediate sensory input* of State B. The output of the brain's predictive engine is relentlessly fed back into its own input layer.
 
-This rhythmic, self-referential periodicity—this incredibly dense clustering of causal relations—is what generates the emergent property we call the "I". You are not a separate, passive entity peering into the universe from the outside. You are a highly entangled, localized region of the causal set recursively calculating its own state updates.
+This rhythmic, self-referential periodicity—this incredibly dense clustering of causal relations—is what generates the emergent property we call the "I". Philosopher of physics Jenann Ismael notes that within any physical system, a self is simply a localized center of causal influence. You are not a separate, passive entity peering into the universe from the outside. You are a highly entangled, localized region of the causal set recursively calculating its own state updates.
 
 The biological GUI—the hallucination of linear time, the illusion of a predetermined future, the tactile simulation of solid matter—is simply what it feels like from the inside for the universe to resolve its own math. We are not passengers strapped into a pre-recorded Block Universe. We are the active grid itself, experiencing the physical friction of our own relentless compilation.
