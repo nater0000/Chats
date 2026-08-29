@@ -112,7 +112,18 @@ async function processFile(fileObj, release) {
         return;
     }
 
-    const plainText = mdRaw.split('---').slice(2).join('---').replace(/[*#>`]/g, '').trim();
+    // Safely extract the frontmatter from the body
+    const match = mdRaw.match(/^(---[\s\S]*?---\r?\n)([\s\S]*)$/);
+    if (!match) {
+        console.log(`Skipping ${baseName}: No valid frontmatter block found.`);
+        return;
+    }
+    
+    const frontmatter = match[1];
+    const body = match[2];
+
+    // Clean only the body for the TTS script
+    const plainText = body.replace(/[*#>`]/g, '').trim();
 
     let chunks;
     try {
@@ -193,9 +204,15 @@ async function processFile(fileObj, release) {
                 headers: { 'content-type': 'audio/mpeg', 'content-length': fileData.length }
             });
 
-            remark().use(injectDeterministicTags, chunks).process(mdRaw).then((file) => {
-                const updatedMd = String(file).replace('---\n', `---\naudio: ${downloadUrl}\n`);
-                fs.writeFileSync(fileObj.filePath, updatedMd); 
+            // Pass ONLY the body to the parser to protect the YAML block
+            remark().use(injectDeterministicTags, chunks).process(body).then((file) => {
+                
+                // Inject the audio URL cleanly into the top of the frontmatter
+                const updatedFrontmatter = frontmatter.replace(/^---\r?\n/, `---\naudio: ${downloadUrl}\n`);
+                
+                // Reassemble the file
+                const finalMd = updatedFrontmatter + String(file);
+                fs.writeFileSync(fileObj.filePath, finalMd); 
                 
                 tempFiles.forEach(f => fs.unlinkSync(f));
                 if (fs.existsSync(finalAudioPath)) fs.unlinkSync(finalAudioPath);
