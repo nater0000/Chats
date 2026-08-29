@@ -23,6 +23,15 @@ layout: default
 		</ul>
 	  {% endif %}
 	</header>
+
+	{% if page.audio %}
+	<div id="sticky-audio-wrapper">
+	  <audio id="post-audio" controls>
+		<source src="{{ page.audio }}" type="audio/mpeg">
+	  </audio>
+	</div>
+	{% endif %}
+
     <section class="gpt-content">
       {{ content }}
     </section>
@@ -31,4 +40,3 @@ layout: default
 	</footer>
 
   </article>
-  
