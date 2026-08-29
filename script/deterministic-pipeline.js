@@ -105,7 +105,6 @@ async function processFile(fileObj, release) {
     console.log(`\nProcessing ${baseName}...`);
     const mdRaw = fs.readFileSync(fileObj.filePath, 'utf8');
     
-    // Safety check: Skip if it already has audio frontmatter
     if (mdRaw.includes('\naudio: ')) {
         console.log(`Skipping ${baseName}: Audio tag already exists in frontmatter.`);
         return;
@@ -115,8 +114,9 @@ async function processFile(fileObj, release) {
 
     let chunks;
     try {
+        console.log(`Requesting prosody metadata from OpenRouter...`);
         const plan = await llm.chat.completions.create({
-            model: "meta-llama/llama-3.1-8b-instruct:free",
+            model: "google/gemini-2.5-flash-free",
             messages: [
                 { role: "system", content: `You are an audio director. Break the text into dramatic phrases. Output ONLY valid JSON: {"chunks": [{"original_text": "Exact string from source", "kokoro_prompt": "Punctuated string for TTS", "speed": 0.9, "trailing_silence_ms": 1200}]}` },
                 { role: "user", content: plainText }
@@ -124,13 +124,17 @@ async function processFile(fileObj, release) {
             response_format: { type: "json_object" }
         });
 
-        let rawContent = plan.choices[0].message.content.replace(/```json/g, '').replace(/```/g, '').trim();
-        chunks = JSON.parse(rawContent).chunks;
+        const rawContent = plan.choices[0].message.content;
+        console.log(`\n--- RAW LLM OUTPUT ---\n${rawContent}\n----------------------\n`);
+
+        const cleanContent = rawContent.replace(/```json/g, '').replace(/```/g, '').trim();
+        chunks = JSON.parse(cleanContent).chunks;
         
         if (!Array.isArray(chunks) || chunks.length === 0) throw new Error("Invalid chunk array");
         console.log(`LLM parsed ${chunks.length} chunks successfully.`);
     } catch (error) {
-        console.error(`LLM Parsing failed for ${baseName}. Aborting.`, error.message);
+        console.error(`LLM Parsing failed for ${baseName}. Aborting.`);
+        console.error(`Error Details:`, error.message);
         return; 
     }
 
@@ -184,7 +188,6 @@ async function processFile(fileObj, release) {
             });
 
             remark().use(injectDeterministicTags, chunks).process(mdRaw).then((file) => {
-                // Overwrite the original file rather than creating a -synced.md duplicate
                 const updatedMd = String(file).replace('---\n', `---\naudio: ${downloadUrl}\n`);
                 fs.writeFileSync(fileObj.filePath, updatedMd); 
                 
@@ -208,7 +211,6 @@ async function run() {
     const release = await getOrCreateRelease();
     const allFiles = getSortedFiles();
     
-    // Filter out posts that already contain the audio player frontmatter tag
     const pendingFiles = allFiles.filter(fileObj => {
         const content = fs.readFileSync(fileObj.filePath, 'utf8');
         return !content.includes('\naudio: ');
@@ -223,3 +225,4 @@ async function run() {
 }
 
 run();
+
