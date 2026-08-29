@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@ffmpeg-installer/ffmpeg": "^1.1.0",
-    "@ffprobe-installer/ffprobe",
+    "@ffprobe-installer/ffprobe": "^2.1.2",
     "@octokit/rest": "^20.0.0",
     "fluent-ffmpeg": "^2.1.3",
     "music-metadata": "^10.0.0",
