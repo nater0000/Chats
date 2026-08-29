@@ -43,7 +43,7 @@ function getSortedFiles() {
             const fullPath = path.join(dir, file);
             if (fs.statSync(fullPath).isDirectory()) {
                 results = results.concat(walkDir(fullPath));
-            } else if (fullPath.endsWith('.md') && !fullPath.endsWith('-synced.md')) {
+            } else if (fullPath.endsWith('.md')) {
                 results.push(fullPath);
             }
         });
@@ -52,7 +52,6 @@ function getSortedFiles() {
 
     const files = walkDir(PAGES_DIR);
     
-    // Sort by actual file modification time, newest first
     const mapped = files.map(filePath => {
         const stats = fs.statSync(filePath);
         return { filePath, mtime: stats.mtimeMs };
@@ -101,11 +100,17 @@ async function processFile(fileObj, release) {
     const baseName = path.basename(fileObj.filePath, '.md');
     const assetName = `${baseName}.mp3`;
     const finalAudioPath = path.join(TMP_DIR, assetName);
-    const syncedMdPath = fileObj.filePath.replace('.md', '-synced.md');
     const downloadUrl = `https://github.com/${owner}/${repo}/releases/download/${RELEASE_TAG}/${assetName}`;
 
     console.log(`\nProcessing ${baseName}...`);
     const mdRaw = fs.readFileSync(fileObj.filePath, 'utf8');
+    
+    // Safety check: Skip if it already has audio frontmatter
+    if (mdRaw.includes('\naudio: ')) {
+        console.log(`Skipping ${baseName}: Audio tag already exists in frontmatter.`);
+        return;
+    }
+
     const plainText = mdRaw.split('---').slice(2).join('---').replace(/[*#>`]/g, '').trim();
 
     let chunks;
@@ -123,8 +128,9 @@ async function processFile(fileObj, release) {
         chunks = JSON.parse(rawContent).chunks;
         
         if (!Array.isArray(chunks) || chunks.length === 0) throw new Error("Invalid chunk array");
+        console.log(`LLM parsed ${chunks.length} chunks successfully.`);
     } catch (error) {
-        console.error(`LLM Parsing failed for ${baseName}. Aborting.`);
+        console.error(`LLM Parsing failed for ${baseName}. Aborting.`, error.message);
         return; 
     }
 
@@ -134,27 +140,32 @@ async function processFile(fileObj, release) {
 
     for (let i = 0; i < chunks.length; i++) {
         const chunk = chunks[i];
-        const audioRes = await kokoro.audio.speech.create({
-            model: 'kokoro', voice: 'af_bella', input: chunk.kokoro_prompt, speed: chunk.speed, response_format: 'mp3'
-        });
-        
-        const chunkPath = path.join(TMP_DIR, `temp_${baseName}_${i}.mp3`);
-        fs.writeFileSync(chunkPath, Buffer.from(await audioRes.arrayBuffer()));
-        tempFiles.push(chunkPath);
-        
-        const metadata = await mm.parseFile(chunkPath);
-        chunk.start_time = currentTime.toFixed(3);
-        currentTime += metadata.format.duration;
-        chunk.end_time = currentTime.toFixed(3);
-        
-        command.input(chunkPath);
+        try {
+            const audioRes = await kokoro.audio.speech.create({
+                model: 'kokoro', voice: 'af_bella', input: chunk.kokoro_prompt, speed: chunk.speed, response_format: 'mp3'
+            });
+            
+            const chunkPath = path.join(TMP_DIR, `temp_${baseName}_${i}.mp3`);
+            fs.writeFileSync(chunkPath, Buffer.from(await audioRes.arrayBuffer()));
+            tempFiles.push(chunkPath);
+            
+            const metadata = await mm.parseFile(chunkPath);
+            chunk.start_time = currentTime.toFixed(3);
+            currentTime += metadata.format.duration;
+            chunk.end_time = currentTime.toFixed(3);
+            
+            command.input(chunkPath);
 
-        if (chunk.trailing_silence_ms > 0) {
-            const silencePath = path.join(TMP_DIR, `temp_${baseName}_silence_${i}.mp3`);
-            await generateSilence(chunk.trailing_silence_ms, silencePath);
-            tempFiles.push(silencePath);
-            command.input(silencePath);
-            currentTime += (chunk.trailing_silence_ms / 1000);
+            if (chunk.trailing_silence_ms > 0) {
+                const silencePath = path.join(TMP_DIR, `temp_${baseName}_silence_${i}.mp3`);
+                await generateSilence(chunk.trailing_silence_ms, silencePath);
+                tempFiles.push(silencePath);
+                command.input(silencePath);
+                currentTime += (chunk.trailing_silence_ms / 1000);
+            }
+        } catch (audioErr) {
+            console.error(`Kokoro generation failed on chunk ${i}:`, audioErr.message);
+            return;
         }
     }
 
@@ -173,13 +184,14 @@ async function processFile(fileObj, release) {
             });
 
             remark().use(injectDeterministicTags, chunks).process(mdRaw).then((file) => {
+                // Overwrite the original file rather than creating a -synced.md duplicate
                 const updatedMd = String(file).replace('---\n', `---\naudio: ${downloadUrl}\n`);
-                fs.writeFileSync(syncedMdPath, updatedMd);
+                fs.writeFileSync(fileObj.filePath, updatedMd); 
                 
                 tempFiles.forEach(f => fs.unlinkSync(f));
                 if (fs.existsSync(finalAudioPath)) fs.unlinkSync(finalAudioPath);
                 
-                console.log(`Successfully completed ${baseName}.`);
+                console.log(`Successfully completed and updated ${baseName}.`);
                 resolve();
             });
         }).on('error', reject).mergeToFile(finalAudioPath, TMP_DIR);
@@ -196,13 +208,10 @@ async function run() {
     const release = await getOrCreateRelease();
     const allFiles = getSortedFiles();
     
-    // Filter for files that are either unsynced, or where the source was modified after the sync
+    // Filter out posts that already contain the audio player frontmatter tag
     const pendingFiles = allFiles.filter(fileObj => {
-        const syncedMdPath = fileObj.filePath.replace('.md', '-synced.md');
-        if (!fs.existsSync(syncedMdPath)) return true;
-        
-        const syncedStats = fs.statSync(syncedMdPath);
-        return fileObj.mtime > syncedStats.mtimeMs;
+        const content = fs.readFileSync(fileObj.filePath, 'utf8');
+        return !content.includes('\naudio: ');
     });
 
     const filesToProcess = pendingFiles.slice(0, TTS_BATCH_SIZE);
