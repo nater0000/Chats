@@ -116,19 +116,23 @@ async function processFile(fileObj, release) {
     try {
         console.log(`Requesting prosody metadata from OpenRouter...`);
         const plan = await llm.chat.completions.create({
-            model: "google/gemini-2.5-flash-free",
+            model: "nvidia/nemotron-3.5-lightning:free",
             messages: [
-                { role: "system", content: `You are an audio director. Break the text into dramatic phrases. Output ONLY valid JSON: {"chunks": [{"original_text": "Exact string from source", "kokoro_prompt": "Punctuated string for TTS", "speed": 0.9, "trailing_silence_ms": 1200}]}` },
+                { role: "system", content: `You are an audio director. Break the text into dramatic phrases. Output ONLY a raw JSON array of objects. Do not use markdown formatting. Structure: [{"original_text": "Exact string from source", "kokoro_prompt": "Punctuated string for TTS", "speed": 0.9, "trailing_silence_ms": 1200}]` },
                 { role: "user", content: plainText }
-            ],
-            response_format: { type: "json_object" }
+            ]
         });
 
-        const rawContent = plan.choices[0].message.content;
+        let rawContent = plan.choices[0].message.content;
         console.log(`\n--- RAW LLM OUTPUT ---\n${rawContent}\n----------------------\n`);
 
-        const cleanContent = rawContent.replace(/```json/g, '').replace(/```/g, '').trim();
-        chunks = JSON.parse(cleanContent).chunks;
+        rawContent = rawContent.replace(/```json/gi, '').replace(/```/g, '').trim();
+        
+        if (rawContent.startsWith('[')) {
+             chunks = JSON.parse(rawContent);
+        } else {
+             chunks = JSON.parse(rawContent).chunks || JSON.parse(rawContent);
+        }
         
         if (!Array.isArray(chunks) || chunks.length === 0) throw new Error("Invalid chunk array");
         console.log(`LLM parsed ${chunks.length} chunks successfully.`);
@@ -225,4 +229,3 @@ async function run() {
 }
 
 run();
-
