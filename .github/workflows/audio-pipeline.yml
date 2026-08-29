@@ -13,7 +13,7 @@ jobs:
           fetch-depth: 0 # Required to read historical Git commit dates
 
       - name: Restore Git Timestamps
-        uses: chek-it/git-restore-mtime-action@v2 # Reverts mtime to the actual commit date
+        uses: step-security/git-restore-mtime-action@v2 # Reverts mtime to the actual commit date
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
