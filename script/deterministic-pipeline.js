@@ -5,10 +5,12 @@ import { remark } from 'remark';
 import { visit } from 'unist-util-visit';
 import ffmpeg from 'fluent-ffmpeg';
 import ffmpegInstaller from '@ffmpeg-installer/ffmpeg';
+import ffprobeInstaller from '@ffprobe-installer/ffprobe';
 import * as mm from 'music-metadata';
 import { Octokit } from '@octokit/rest';
 
 ffmpeg.setFfmpegPath(ffmpegInstaller.path);
+ffmpeg.setFfprobePath(ffprobeInstaller.path);
 
 const llm = new OpenAI({ baseURL: 'https://openrouter.ai/api/v1', apiKey: process.env.OPENROUTER_API_KEY });
 const kokoro = new OpenAI({ baseURL: 'https://voice.i.rickey.io/v1', apiKey: 'local' });
