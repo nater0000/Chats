@@ -1,0 +1,42 @@
+name: Generate Audio & Sync Pipeline
+on: [push]
+
+jobs:
+  build-audio-and-sync:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write 
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 # Required to read historical Git commit dates
+
+      - name: Restore Git Timestamps
+        uses: chek-it/git-restore-mtime-action@v2 # Reverts mtime to the actual commit date
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install Dependencies
+        run: npm install openai remark unist-util-visit fluent-ffmpeg @ffmpeg-installer/ffmpeg music-metadata @octokit/rest
+
+      - name: Run Deterministic Pipeline
+        env:
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TTS_BATCH_SIZE: 1
+        run: node script/deterministic-pipeline.js
+
+      - name: Commit Synced Markdown
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          
+          # We only commit the Markdown. MP3s are securely on the Release page.
+          git add pages/
+          
+          git diff --staged --quiet || git commit -m "Auto-generate audio and AST sync [skip ci]"
+          git push
