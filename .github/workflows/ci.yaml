@@ -1,3 +1,4 @@
+name: Master CI & Audio Pipeline
 on:
   push:
     branches:
@@ -6,32 +7,61 @@ on:
     branches:
       - main
     types: [opened, synchronize]
-    
+
 jobs:
-  build:
+  build-and-sync:
     runs-on: ubuntu-latest
-    name: script/cibuild
+    name: Audio Sync & cibuild
+    permissions:
+      contents: write # Required for releases and committing code
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v2
-      
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 
+
+      - name: Restore Git Timestamps
+        uses: step-security/git-restore-mtime-action@v2 
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install Node Dependencies
+        run: npm install openai remark unist-util-visit fluent-ffmpeg @ffmpeg-installer/ffmpeg music-metadata @octokit/rest
+
+      - name: Run Deterministic Audio Pipeline
+        env:
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TTS_BATCH_SIZE: 1
+        run: node script/deterministic-pipeline.js
+
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: '3.2'
           bundler-cache: true
-          
-      - name: Make Build Script executable
-        run: chmod +x script/bootstrap
-        
+
       - name: Bootstrap Bundle Environment
-        run: script/bootstrap
-        
-      - name: Make Build Script executable
-        run: chmod +x script/cibuild
-        
-      - name: Make Validate Script executable
-        run: chmod +x script/validate-html
-        
+        run: |
+          chmod +x script/bootstrap
+          script/bootstrap
+
       - name: Run Build And Validate
-        run: script/cibuild
+        run: |
+          chmod +x script/cibuild script/validate-html
+          script/cibuild
+
+      # Only commit changes if this is a push to main, not a PR preview
+      - name: Commit Synced Markdown
+        if: github.event_name == 'push'
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          
+          git add pages/
+          git diff --staged --quiet || git commit -m "Auto-generate audio and AST sync [skip ci]"
+          git push
+
