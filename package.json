@@ -2,11 +2,11 @@
   "name": "chats-audio-pipeline",
   "version": "1.0.0",
   "description": "Automated TTS audio generation and Markdown AST synchronization pipeline",
-  "main": "deterministic-pipeline.js",
+  "main": "script/deterministic-pipeline.js",
   "type": "module",
   "private": true,
   "scripts": {
-    "generate-audio": "node deterministic-pipeline.js"
+    "generate-audio": "node script/deterministic-pipeline.js"
   },
   "dependencies": {
     "@ffmpeg-installer/ffmpeg": "^1.1.0",
