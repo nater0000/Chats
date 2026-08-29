@@ -104,3 +104,4 @@ When the topological complexity of a localized network—such as a biological br
 This rhythmic, self-referential periodicity—this incredibly dense clustering of causal relations—is what generates the emergent property we call the "I". Philosopher of physics Jenann Ismael notes that within any physical system, a self is simply a localized center of causal influence. You are not a separate, passive entity peering into the universe from the outside. You are a highly entangled, localized region of the causal set recursively calculating its own state updates.
 
 The biological GUI—the hallucination of linear time, the illusion of a predetermined future, the tactile simulation of solid matter—is simply what it feels like from the inside for the universe to resolve its own math. We are not passengers strapped into a pre-recorded Block Universe. We are the active grid itself, experiencing the physical friction of our own relentless compilation.
+
