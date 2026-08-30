@@ -35,7 +35,7 @@ jobs:
         env:
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          TTS_BATCH_SIZE: 1
+          TTS_BATCH_SIZE: 3
         run: node script/deterministic-pipeline.js
 
       - name: Set up Ruby
