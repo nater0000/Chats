@@ -89,6 +89,7 @@ async function processFile(fileObj, release) {
     const processor = remark();
     const ast = processor.parse(body);
 
+    // 1. Walk the AST just to extract clean text and exact string offsets
     visit(ast, (node) => {
         if (node.type === 'paragraph' || node.type === 'heading') {
             let text = '';
@@ -96,7 +97,12 @@ async function processFile(fileObj, release) {
             text = text.replace(/\s+/g, ' ').trim();
             
             if (text && !text.startsWith('<')) {
-                chunks.push({ kokoro_prompt: text, speed: 1.15, trailing_silence_ms: 350, nodeRef: node });
+                chunks.push({ 
+                    kokoro_prompt: text, 
+                    speed: 1.15, 
+                    trailing_silence_ms: 350, 
+                    nodeRef: node 
+                });
             }
         }
     });
@@ -107,27 +113,28 @@ async function processFile(fileObj, release) {
     let currentTime = 0;
     const tempFiles = [];
 
+    // 2. Generate Audio
     for (let i = 0; i < chunks.length; i++) {
         const chunk = chunks[i];
         
-        try {
-            // Safety Check 1: Skip if the text contains no pronounceable characters
-            if (!chunk.kokoro_prompt.replace(/[^a-zA-Z0-9]/g, '').trim()) {
-                console.log(`Skipping chunk ${i} (Unpronounceable): "${chunk.kokoro_prompt}"`);
-                chunk.start_time = currentTime.toFixed(3);
-                chunk.end_time = currentTime.toFixed(3);
-                continue;
-            }
+        // Safety Check 1: Skip entirely unpronounceable chunks (e.g. "---")
+        if (!chunk.kokoro_prompt.replace(/[^a-zA-Z0-9]/g, '').trim()) {
+            console.log(`Skipping chunk ${i} (Unpronounceable): "${chunk.kokoro_prompt}"`);
+            chunk.start_time = currentTime.toFixed(3);
+            chunk.end_time = currentTime.toFixed(3);
+            continue;
+        }
 
+        try {
             const audioRes = await kokoro.audio.speech.create({
                 model: 'kokoro', voice: 'af_bella', input: chunk.kokoro_prompt, speed: chunk.speed, response_format: 'mp3'
             });
             
             const buffer = Buffer.from(await audioRes.arrayBuffer());
             
-            // Safety Check 2: Skip if Kokoro returns an empty audio stream
+            // Safety Check 2: Skip if Kokoro returns a 0-byte ghost file
             if (buffer.length === 0) {
-                console.warn(`Warning: Kokoro returned 0 bytes for chunk ${i}: "${chunk.kokoro_prompt}"`);
+                console.warn(`Warning: Kokoro returned 0 bytes for chunk ${i}`);
                 chunk.start_time = currentTime.toFixed(3);
                 chunk.end_time = currentTime.toFixed(3);
                 continue;
@@ -152,17 +159,17 @@ async function processFile(fileObj, release) {
                 currentTime += (chunk.trailing_silence_ms / 1000);
             }
         } catch (audioErr) {
-            console.error(`Kokoro generation failed on chunk ${i} ("${chunk.kokoro_prompt}"):`, audioErr.message);
-            return; 
+            console.error(`Kokoro generation failed on chunk ${i}:`, audioErr.message);
+            return;
         }
     }
 
-    // Only proceed to compile if we actually generated audio files
     if (tempFiles.length === 0) {
-        console.log(`Skipping ${baseName}: No valid audio generated from text.`);
+        console.log(`Skipping ${baseName}: No valid audio generated.`);
         return;
     }
 
+    // 3. Merge Audio and Inject Tags via Raw String Splicing
     await new Promise((resolve, reject) => {
         command.on('end', async () => {
             console.log(`Uploading ${assetName} to GitHub Releases...`);
@@ -177,11 +184,29 @@ async function processFile(fileObj, release) {
                 headers: { 'content-type': 'audio/mpeg', 'content-length': fileData.length }
             });
 
-            // Re-stringify the modified AST
-            const newBody = processor.stringify(ast);
-            const updatedFrontmatter = frontmatter.replace(/^---\r?\n/, `---\naudio: ${downloadUrl}\n`);
+            // Splice spans into the RAW body to perfectly preserve original formatting
+            let modifiedBody = body;
+            const validChunks = chunks.filter(c => c.start_time !== undefined && c.nodeRef.position);
             
-            fs.writeFileSync(fileObj.filePath, updatedFrontmatter + newBody); 
+            // Sort in reverse order so injecting HTML doesn't shift the offsets of previous chunks
+            validChunks.sort((a, b) => b.nodeRef.position.start.offset - a.nodeRef.position.start.offset);
+
+            for (const chunk of validChunks) {
+                const startIdx = chunk.nodeRef.position.start.offset;
+                const endIdx = chunk.nodeRef.position.end.offset;
+                
+                const before = modifiedBody.slice(0, startIdx);
+                const content = modifiedBody.slice(startIdx, endIdx);
+                const after = modifiedBody.slice(endIdx);
+                
+                const spanOpen = `<span class="sync-text" data-start="${chunk.start_time}" data-end="${chunk.end_time}">`;
+                const spanClose = `</span>`;
+                
+                modifiedBody = before + spanOpen + content + spanClose + after;
+            }
+
+            const updatedFrontmatter = frontmatter.replace(/^---\r?\n/, `---\naudio: ${downloadUrl}\n`);
+            fs.writeFileSync(fileObj.filePath, updatedFrontmatter + modifiedBody); 
             
             tempFiles.forEach(f => fs.unlinkSync(f));
             if (fs.existsSync(finalAudioPath)) fs.unlinkSync(finalAudioPath);
