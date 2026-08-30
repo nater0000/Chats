@@ -7,13 +7,18 @@ layout: default
 	  <h1>📓 {{ page.title }}</h1>
 
 	  {% if page.author %}👤 {{ page.author }}<br>{% endif %}
-	  {% if page.date %}📆 {{ page.date }}{% endif %}
-	  {% if page.time %} ⏱️ {{ page.time }}<br>{% endif %}
+	  
+	  {% if page.date %}📆 Created: {{ page.date }}{% if page.time %} ⏱️ {{ page.time }}{% endif %}<br>{% endif %}
+	  {% if page.updated %}↪️ Updated: {{ page.updated }}{% if page.updated_time %} ⏱️ {{ page.updated_time }}{% endif %}<br>{% endif %}
+	  
 	  {% if page.location %}📍 {{ page.location }}<br>{% endif %}
 	  {% if page.terminal %}🖥 {{ page.terminal }}<br>{% endif %}
 	  {% if page.gpt %}🤖 {{ page.gpt }}<br>{% endif %}
 	  {% if page.tags %}🏷 {{ page.tags | join: ", " }}<br>{% endif %}
 	  {% if page.slug %}🧲 <a href="{{ page.source }}">{{ page.slug }}</a><br>{% endif %}
+	  
+	  ⏳ {{ content | number_of_words | divided_by: 180 | plus: 1 }} min read ({{ content | number_of_words }} words)<br>
+
 	  {% if page.references %}
 		📚 References:<br>
 		<ul>
