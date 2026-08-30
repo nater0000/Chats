@@ -1,6 +1,29 @@
 ---
 layout: default
 ---
+  <style>
+    /* Float the audio player at the top of the screen */
+    #sticky-audio-wrapper {
+      position: sticky;
+      top: 10px;
+      z-index: 1000;
+      background: rgba(0, 0, 0, 0.6); /* Frosted glass effect for matrix/dark themes */
+      backdrop-filter: blur(5px);
+      -webkit-backdrop-filter: blur(5px);
+      padding: 10px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+      display: flex;
+      justify-content: center;
+    }
+    
+    #sticky-audio-wrapper audio {
+      width: 100%;
+      max-width: 600px;
+    }
+  </style>
+
   <article class="gpt-log-entry">
 
 	<header class="metadata">
@@ -8,8 +31,8 @@ layout: default
 
 	  {% if page.author %}👤 {{ page.author }}<br>{% endif %}
 	  
-	  {% if page.date %}📆 Created: {{ page.date }}{% if page.time %} ⏱️ {{ page.time }}{% endif %}<br>{% endif %}
-	  {% if page.updated %}↪️ Updated: {{ page.updated }}{% if page.updated_time %} ⏱️ {{ page.updated_time }}{% endif %}<br>{% endif %}
+	  {% if page.date %}📆 Published: {{ page.date }}{% if page.time %} ⏱️ {{ page.time }}{% endif %}<br>{% endif %}
+	  {% if page.updated %}🔄 Updated: {{ page.updated }}{% if page.updated_time %} ⏱️ {{ page.updated_time }}{% endif %}<br>{% endif %}
 	  
 	  {% if page.location %}📍 {{ page.location }}<br>{% endif %}
 	  {% if page.terminal %}🖥 {{ page.terminal }}<br>{% endif %}
@@ -52,23 +75,37 @@ layout: default
       if (!audio) return;
 
       const syncSpans = document.querySelectorAll("span.sync-text");
+      let currentActiveSpan = null;
 
       audio.addEventListener("timeupdate", () => {
         const currentTime = audio.currentTime;
+        let foundActive = false;
         
         syncSpans.forEach(span => {
           const start = parseFloat(span.getAttribute("data-start"));
           const end = parseFloat(span.getAttribute("data-end"));
           
           if (currentTime >= start && currentTime <= end) {
+            foundActive = true;
             span.style.backgroundColor = "rgba(0, 255, 136, 0.3)";
             span.style.color = "#ffffff";
             span.style.borderRadius = "3px";
+            
+            // Only trigger the scroll if we transitioned to a new span
+            if (currentActiveSpan !== span) {
+              currentActiveSpan = span;
+              span.scrollIntoView({ behavior: "smooth", block: "center" });
+            }
           } else {
             span.style.backgroundColor = "transparent";
             span.style.color = "inherit";
           }
         });
+
+        // Reset tracking if the audio is paused or seeking in empty space
+        if (!foundActive) {
+            currentActiveSpan = null;
+        }
       });
     });
   </script>
