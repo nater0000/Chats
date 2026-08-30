@@ -175,9 +175,13 @@ async function processFile(fileObj, release) {
 
 async function run() {
     if (!process.env.GITHUB_TOKEN) return;
+    
+    const TTS_BATCH_SIZE = parseInt(process.env.TTS_BATCH_SIZE || '1', 10);
     const release = await getOrCreateRelease();
     const pendingFiles = getSortedFiles().filter(f => !fs.readFileSync(f.filePath, 'utf8').includes('\naudio: '));
-    const filesToProcess = pendingFiles.slice(0, 1);
+    const filesToProcess = pendingFiles.slice(0, TTS_BATCH_SIZE);
+    
+    console.log(`Found ${pendingFiles.length} pending posts. Processing ${filesToProcess.length} this run.`);
     
     for (const fileObj of filesToProcess) {
         await processFile(fileObj, release);
@@ -185,4 +189,3 @@ async function run() {
 }
 
 run();
-
