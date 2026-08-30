@@ -89,7 +89,6 @@ async function processFile(fileObj, release) {
     const processor = remark();
     const ast = processor.parse(body);
 
-    // 1. Walk the AST and extract text perfectly
     visit(ast, (node) => {
         if (node.type === 'paragraph' || node.type === 'heading') {
             let text = '';
@@ -108,40 +107,60 @@ async function processFile(fileObj, release) {
     let currentTime = 0;
     const tempFiles = [];
 
-    // 2. Generate Audio & Calculate Timestamps
     for (let i = 0; i < chunks.length; i++) {
         const chunk = chunks[i];
-        const audioRes = await kokoro.audio.speech.create({
-            model: 'kokoro', voice: 'af_bella', input: chunk.kokoro_prompt, speed: chunk.speed, response_format: 'mp3'
-        });
         
-        const chunkPath = path.join(TMP_DIR, `temp_${baseName}_${i}.mp3`);
-        fs.writeFileSync(chunkPath, Buffer.from(await audioRes.arrayBuffer()));
-        tempFiles.push(chunkPath);
-        
-        const metadata = await mm.parseFile(chunkPath);
-        chunk.start_time = currentTime.toFixed(3);
-        currentTime += metadata.format.duration;
-        chunk.end_time = currentTime.toFixed(3);
-        
-        command.input(chunkPath);
+        try {
+            // Safety Check 1: Skip if the text contains no pronounceable characters
+            if (!chunk.kokoro_prompt.replace(/[^a-zA-Z0-9]/g, '').trim()) {
+                console.log(`Skipping chunk ${i} (Unpronounceable): "${chunk.kokoro_prompt}"`);
+                chunk.start_time = currentTime.toFixed(3);
+                chunk.end_time = currentTime.toFixed(3);
+                continue;
+            }
 
-        if (chunk.trailing_silence_ms > 0) {
-            const silencePath = path.join(TMP_DIR, `temp_${baseName}_silence_${i}.mp3`);
-            await generateSilence(chunk.trailing_silence_ms, silencePath);
-            tempFiles.push(silencePath);
-            command.input(silencePath);
-            currentTime += (chunk.trailing_silence_ms / 1000);
+            const audioRes = await kokoro.audio.speech.create({
+                model: 'kokoro', voice: 'af_bella', input: chunk.kokoro_prompt, speed: chunk.speed, response_format: 'mp3'
+            });
+            
+            const buffer = Buffer.from(await audioRes.arrayBuffer());
+            
+            // Safety Check 2: Skip if Kokoro returns an empty audio stream
+            if (buffer.length === 0) {
+                console.warn(`Warning: Kokoro returned 0 bytes for chunk ${i}: "${chunk.kokoro_prompt}"`);
+                chunk.start_time = currentTime.toFixed(3);
+                chunk.end_time = currentTime.toFixed(3);
+                continue;
+            }
+
+            const chunkPath = path.join(TMP_DIR, `temp_${baseName}_${i}.mp3`);
+            fs.writeFileSync(chunkPath, buffer);
+            tempFiles.push(chunkPath);
+            
+            const metadata = await mm.parseFile(chunkPath);
+            chunk.start_time = currentTime.toFixed(3);
+            currentTime += metadata.format.duration;
+            chunk.end_time = currentTime.toFixed(3);
+            
+            command.input(chunkPath);
+
+            if (chunk.trailing_silence_ms > 0) {
+                const silencePath = path.join(TMP_DIR, `temp_${baseName}_silence_${i}.mp3`);
+                await generateSilence(chunk.trailing_silence_ms, silencePath);
+                tempFiles.push(silencePath);
+                command.input(silencePath);
+                currentTime += (chunk.trailing_silence_ms / 1000);
+            }
+        } catch (audioErr) {
+            console.error(`Kokoro generation failed on chunk ${i} ("${chunk.kokoro_prompt}"):`, audioErr.message);
+            return; 
         }
+    }
 
-        // 3. Mutate the AST safely by wrapping the children
-        const node = chunk.nodeRef;
-        const originalChildren = [...node.children];
-        node.children = [
-            { type: 'html', value: `<span class="sync-text" data-start="${chunk.start_time}" data-end="${chunk.end_time}">` },
-            ...originalChildren,
-            { type: 'html', value: `</span>` }
-        ];
+    // Only proceed to compile if we actually generated audio files
+    if (tempFiles.length === 0) {
+        console.log(`Skipping ${baseName}: No valid audio generated from text.`);
+        return;
     }
 
     await new Promise((resolve, reject) => {
