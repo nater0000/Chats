@@ -206,8 +206,11 @@ async function processFile(fileObj, release) {
             validChunks.sort((a, b) => b.nodeRef.position.start.offset - a.nodeRef.position.start.offset);
 
             for (const chunk of validChunks) {
-                const startIdx = chunk.nodeRef.position.start.offset;
-                const endIdx = chunk.nodeRef.position.end.offset;
+                const children = chunk.nodeRef.children;
+                if (!children || children.length === 0) continue;
+
+                const startIdx = children[0].position.start.offset;
+                const endIdx = children[children.length - 1].position.end.offset;
                 
                 const before = modifiedBody.slice(0, startIdx);
                 const content = modifiedBody.slice(startIdx, endIdx);
@@ -238,11 +241,9 @@ async function run() {
     const release = await getOrCreateRelease();
     const allFiles = getSortedFiles();
 
-    // --- SMART GARBAGE COLLECTION ---
     console.log('\nRunning Smart Garbage Collection...');
     const validAssetNames = new Set(allFiles.map(f => getAssetInfo(f.filePath).assetName));
     
-    // Protect legacy files that are currently linked in markdown frontmatter
     allFiles.forEach(f => {
         const mdRaw = fs.readFileSync(f.filePath, 'utf8');
         const audioMatch = mdRaw.match(/^audio:\s*.*?\/([^/]+?\.mp3)\s*$/m);
@@ -269,7 +270,6 @@ async function run() {
         }
         console.log('Garbage Collection complete.');
     }
-    // --------------------------------
 
     const pendingFiles = allFiles.filter(f => !fs.readFileSync(f.filePath, 'utf8').includes('\naudio: '));
     const filesToProcess = pendingFiles.slice(0, TTS_BATCH_SIZE);
