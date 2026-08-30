@@ -72,29 +72,30 @@ function generateSilence(durationMs, outputPath) {
 
 function injectDeterministicTags(chunks) {
     return (tree) => {
-        visit(tree, 'text', (node, index, parent) => {
-            let nodeValue = node.value;
-            let replaced = false;
-
-            chunks.forEach(chunk => {
-                if (!chunk.tagged && nodeValue.includes(chunk.original_text)) {
-                    const parts = nodeValue.split(chunk.original_text);
-                    const newNodes = [
-                        { type: 'text', value: parts[0] },
-                        { type: 'html', value: `<span class="sync-text" data-start="${chunk.start_time}" data-end="${chunk.end_time}">` },
-                        { type: 'text', value: chunk.original_text },
-                        { type: 'html', value: `</span>` },
-                        { type: 'text', value: parts.slice(1).join(chunk.original_text) }
-                    ].filter(n => n.value !== "");
+        // Process one chunk at a time to prevent AST mutation scrambling
+        for (let chunk of chunks) {
+            visit(tree, 'text', (node, index, parent) => {
+                if (chunk.tagged) return;
+                
+                if (node.value.includes(chunk.original_text)) {
+                    const parts = node.value.split(chunk.original_text);
+                    const newNodes = [];
+                    
+                    if (parts[0]) newNodes.push({ type: 'text', value: parts[0] });
+                    newNodes.push({ type: 'html', value: `<span class="sync-text" data-start="${chunk.start_time}" data-end="${chunk.end_time}">` });
+                    newNodes.push({ type: 'text', value: chunk.original_text });
+                    newNodes.push({ type: 'html', value: `</span>` });
+                    
+                    const remainder = parts.slice(1).join(chunk.original_text);
+                    if (remainder) newNodes.push({ type: 'text', value: remainder });
 
                     parent.children.splice(index, 1, ...newNodes);
-                    nodeValue = parts.slice(1).join(chunk.original_text);
                     chunk.tagged = true;
-                    replaced = true;
+                    
+                    return false; // Immediately halt tree traversal for this chunk
                 }
             });
-            if (replaced) return index + 5; 
-        });
+        }
     };
 }
 
@@ -112,7 +113,6 @@ async function processFile(fileObj, release) {
         return;
     }
 
-    // Safely extract the frontmatter from the body
     const match = mdRaw.match(/^(---[\s\S]*?---\r?\n)([\s\S]*)$/);
     if (!match) {
         console.log(`Skipping ${baseName}: No valid frontmatter block found.`);
@@ -121,8 +121,6 @@ async function processFile(fileObj, release) {
     
     const frontmatter = match[1];
     const body = match[2];
-
-    // Clean only the body for the TTS script
     const plainText = body.replace(/[*#>`]/g, '').trim();
 
     let chunks;
@@ -131,7 +129,7 @@ async function processFile(fileObj, release) {
         const plan = await llm.chat.completions.create({
             model: "nvidia/nemotron-3.5-lightning:free",
             messages: [
-                { role: "system", content: `You are an audio director. Break the text into dramatic phrases. Output ONLY a raw JSON array of objects. Do not use markdown formatting. Structure: [{"original_text": "Exact string from source", "kokoro_prompt": "Punctuated string for TTS", "speed": 0.9, "trailing_silence_ms": 1200}]` },
+                { role: "system", content: `You are an audio director. Break the text into dramatic phrases. Output ONLY a raw JSON array of objects. Do not use markdown formatting. Structure: [{"original_text": "Exact string from source", "kokoro_prompt": "Punctuated string for TTS", "speed": 1.15, "trailing_silence_ms": 400}]` },
                 { role: "user", content: plainText }
             ]
         });
@@ -204,13 +202,8 @@ async function processFile(fileObj, release) {
                 headers: { 'content-type': 'audio/mpeg', 'content-length': fileData.length }
             });
 
-            // Pass ONLY the body to the parser to protect the YAML block
             remark().use(injectDeterministicTags, chunks).process(body).then((file) => {
-                
-                // Inject the audio URL cleanly into the top of the frontmatter
                 const updatedFrontmatter = frontmatter.replace(/^---\r?\n/, `---\naudio: ${downloadUrl}\n`);
-                
-                // Reassemble the file
                 const finalMd = updatedFrontmatter + String(file);
                 fs.writeFileSync(fileObj.filePath, finalMd); 
                 
@@ -248,3 +241,4 @@ async function run() {
 }
 
 run();
+
