@@ -1,8 +1,8 @@
 import fs from 'fs';
 import path from 'path';
-import OpenAI from 'openai';
 import { remark } from 'remark';
 import { visit } from 'unist-util-visit';
+import OpenAI from 'openai';
 import ffmpeg from 'fluent-ffmpeg';
 import ffmpegInstaller from '@ffmpeg-installer/ffmpeg';
 import ffprobeInstaller from '@ffprobe-installer/ffprobe';
@@ -12,9 +12,7 @@ import { Octokit } from '@octokit/rest';
 ffmpeg.setFfmpegPath(ffmpegInstaller.path);
 ffmpeg.setFfprobePath(ffprobeInstaller.path);
 
-const llm = new OpenAI({ baseURL: 'https://openrouter.ai/api/v1', apiKey: process.env.OPENROUTER_API_KEY });
 const kokoro = new OpenAI({ baseURL: 'https://voice.i.rickey.io/v1', apiKey: 'local' });
-
 const octokit = new Octokit({ auth: process.env.GITHUB_TOKEN });
 const [owner, repo] = (process.env.GITHUB_REPOSITORY || 'local/fallback').split('/');
 const RELEASE_TAG = 'audio-assets';
@@ -53,13 +51,10 @@ function getSortedFiles() {
     }
 
     const files = walkDir(PAGES_DIR);
-    
-    const mapped = files.map(filePath => {
+    return files.map(filePath => {
         const stats = fs.statSync(filePath);
         return { filePath, mtime: stats.mtimeMs };
-    });
-
-    return mapped.sort((a, b) => b.mtime - a.mtime);
+    }).sort((a, b) => b.mtime - a.mtime);
 }
 
 function generateSilence(durationMs, outputPath) {
@@ -68,35 +63,6 @@ function generateSilence(durationMs, outputPath) {
             .duration(durationMs / 1000).audioCodec('libmp3lame')
             .save(outputPath).on('end', resolve).on('error', reject);
     });
-}
-
-function injectDeterministicTags(chunks) {
-    return (tree) => {
-        // Process one chunk at a time to prevent AST mutation scrambling
-        for (let chunk of chunks) {
-            visit(tree, 'text', (node, index, parent) => {
-                if (chunk.tagged) return;
-                
-                if (node.value.includes(chunk.original_text)) {
-                    const parts = node.value.split(chunk.original_text);
-                    const newNodes = [];
-                    
-                    if (parts[0]) newNodes.push({ type: 'text', value: parts[0] });
-                    newNodes.push({ type: 'html', value: `<span class="sync-text" data-start="${chunk.start_time}" data-end="${chunk.end_time}">` });
-                    newNodes.push({ type: 'text', value: chunk.original_text });
-                    newNodes.push({ type: 'html', value: `</span>` });
-                    
-                    const remainder = parts.slice(1).join(chunk.original_text);
-                    if (remainder) newNodes.push({ type: 'text', value: remainder });
-
-                    parent.children.splice(index, 1, ...newNodes);
-                    chunk.tagged = true;
-                    
-                    return false; // Immediately halt tree traversal for this chunk
-                }
-            });
-        }
-    };
 }
 
 async function processFile(fileObj, release) {
@@ -109,83 +75,73 @@ async function processFile(fileObj, release) {
     const mdRaw = fs.readFileSync(fileObj.filePath, 'utf8');
     
     if (mdRaw.includes('\naudio: ')) {
-        console.log(`Skipping ${baseName}: Audio tag already exists in frontmatter.`);
+        console.log(`Skipping ${baseName}: Audio tag already exists.`);
         return;
     }
 
     const match = mdRaw.match(/^(---[\s\S]*?---\r?\n)([\s\S]*)$/);
-    if (!match) {
-        console.log(`Skipping ${baseName}: No valid frontmatter block found.`);
-        return;
-    }
+    if (!match) return;
     
     const frontmatter = match[1];
     const body = match[2];
-    const plainText = body.replace(/[*#>`]/g, '').trim();
 
-    let chunks;
-    try {
-        console.log(`Requesting prosody metadata from OpenRouter...`);
-        const plan = await llm.chat.completions.create({
-            model: "nvidia/nemotron-3.5-lightning:free",
-            messages: [
-                { role: "system", content: `You are an audio director. Break the text into dramatic phrases. Output ONLY a raw JSON array of objects. Do not use markdown formatting. Structure: [{"original_text": "Exact string from source", "kokoro_prompt": "Punctuated string for TTS", "speed": 1.15, "trailing_silence_ms": 400}]` },
-                { role: "user", content: plainText }
-            ]
-        });
+    const chunks = [];
+    const processor = remark();
+    const ast = processor.parse(body);
 
-        let rawContent = plan.choices[0].message.content;
-        console.log(`\n--- RAW LLM OUTPUT ---\n${rawContent}\n----------------------\n`);
-
-        rawContent = rawContent.replace(/```json/gi, '').replace(/```/g, '').trim();
-        
-        if (rawContent.startsWith('[')) {
-             chunks = JSON.parse(rawContent);
-        } else {
-             chunks = JSON.parse(rawContent).chunks || JSON.parse(rawContent);
+    // 1. Walk the AST and extract text perfectly
+    visit(ast, (node) => {
+        if (node.type === 'paragraph' || node.type === 'heading') {
+            let text = '';
+            visit(node, ['text', 'inlineCode'], n => { text += n.value + ' '; });
+            text = text.replace(/\s+/g, ' ').trim();
+            
+            if (text && !text.startsWith('<')) {
+                chunks.push({ kokoro_prompt: text, speed: 1.15, trailing_silence_ms: 350, nodeRef: node });
+            }
         }
-        
-        if (!Array.isArray(chunks) || chunks.length === 0) throw new Error("Invalid chunk array");
-        console.log(`LLM parsed ${chunks.length} chunks successfully.`);
-    } catch (error) {
-        console.error(`LLM Parsing failed for ${baseName}. Aborting.`);
-        console.error(`Error Details:`, error.message);
-        return; 
-    }
+    });
+
+    console.log(`Locally parsed ${chunks.length} blocks for TTS.`);
 
     const command = ffmpeg();
     let currentTime = 0;
     const tempFiles = [];
 
+    // 2. Generate Audio & Calculate Timestamps
     for (let i = 0; i < chunks.length; i++) {
         const chunk = chunks[i];
-        try {
-            const audioRes = await kokoro.audio.speech.create({
-                model: 'kokoro', voice: 'af_bella', input: chunk.kokoro_prompt, speed: chunk.speed, response_format: 'mp3'
-            });
-            
-            const chunkPath = path.join(TMP_DIR, `temp_${baseName}_${i}.mp3`);
-            fs.writeFileSync(chunkPath, Buffer.from(await audioRes.arrayBuffer()));
-            tempFiles.push(chunkPath);
-            
-            const metadata = await mm.parseFile(chunkPath);
-            chunk.start_time = currentTime.toFixed(3);
-            currentTime += metadata.format.duration;
-            chunk.end_time = currentTime.toFixed(3);
-            
-            command.input(chunkPath);
+        const audioRes = await kokoro.audio.speech.create({
+            model: 'kokoro', voice: 'af_bella', input: chunk.kokoro_prompt, speed: chunk.speed, response_format: 'mp3'
+        });
+        
+        const chunkPath = path.join(TMP_DIR, `temp_${baseName}_${i}.mp3`);
+        fs.writeFileSync(chunkPath, Buffer.from(await audioRes.arrayBuffer()));
+        tempFiles.push(chunkPath);
+        
+        const metadata = await mm.parseFile(chunkPath);
+        chunk.start_time = currentTime.toFixed(3);
+        currentTime += metadata.format.duration;
+        chunk.end_time = currentTime.toFixed(3);
+        
+        command.input(chunkPath);
 
-            if (chunk.trailing_silence_ms > 0) {
-                const silencePath = path.join(TMP_DIR, `temp_${baseName}_silence_${i}.mp3`);
-                await generateSilence(chunk.trailing_silence_ms, silencePath);
-                tempFiles.push(silencePath);
-                command.input(silencePath);
-                currentTime += (chunk.trailing_silence_ms / 1000);
-            }
-        } catch (audioErr) {
-            console.error(`Kokoro generation failed on chunk ${i}:`, audioErr.message);
-            return;
+        if (chunk.trailing_silence_ms > 0) {
+            const silencePath = path.join(TMP_DIR, `temp_${baseName}_silence_${i}.mp3`);
+            await generateSilence(chunk.trailing_silence_ms, silencePath);
+            tempFiles.push(silencePath);
+            command.input(silencePath);
+            currentTime += (chunk.trailing_silence_ms / 1000);
         }
+
+        // 3. Mutate the AST safely by wrapping the children
+        const node = chunk.nodeRef;
+        const originalChildren = [...node.children];
+        node.children = [
+            { type: 'html', value: `<span class="sync-text" data-start="${chunk.start_time}" data-end="${chunk.end_time}">` },
+            ...originalChildren,
+            { type: 'html', value: `</span>` }
+        ];
     }
 
     await new Promise((resolve, reject) => {
@@ -202,38 +158,26 @@ async function processFile(fileObj, release) {
                 headers: { 'content-type': 'audio/mpeg', 'content-length': fileData.length }
             });
 
-            remark().use(injectDeterministicTags, chunks).process(body).then((file) => {
-                const updatedFrontmatter = frontmatter.replace(/^---\r?\n/, `---\naudio: ${downloadUrl}\n`);
-                const finalMd = updatedFrontmatter + String(file);
-                fs.writeFileSync(fileObj.filePath, finalMd); 
-                
-                tempFiles.forEach(f => fs.unlinkSync(f));
-                if (fs.existsSync(finalAudioPath)) fs.unlinkSync(finalAudioPath);
-                
-                console.log(`Successfully completed and updated ${baseName}.`);
-                resolve();
-            });
+            // Re-stringify the modified AST
+            const newBody = processor.stringify(ast);
+            const updatedFrontmatter = frontmatter.replace(/^---\r?\n/, `---\naudio: ${downloadUrl}\n`);
+            
+            fs.writeFileSync(fileObj.filePath, updatedFrontmatter + newBody); 
+            
+            tempFiles.forEach(f => fs.unlinkSync(f));
+            if (fs.existsSync(finalAudioPath)) fs.unlinkSync(finalAudioPath);
+            
+            console.log(`Successfully completed ${baseName}.`);
+            resolve();
         }).on('error', reject).mergeToFile(finalAudioPath, TMP_DIR);
     });
 }
 
 async function run() {
-    if (!process.env.GITHUB_TOKEN) {
-        console.error("Missing GITHUB_TOKEN. Cannot upload release assets.");
-        return;
-    }
-    
-    const TTS_BATCH_SIZE = parseInt(process.env.TTS_BATCH_SIZE || '1', 10);
+    if (!process.env.GITHUB_TOKEN) return;
     const release = await getOrCreateRelease();
-    const allFiles = getSortedFiles();
-    
-    const pendingFiles = allFiles.filter(fileObj => {
-        const content = fs.readFileSync(fileObj.filePath, 'utf8');
-        return !content.includes('\naudio: ');
-    });
-
-    const filesToProcess = pendingFiles.slice(0, TTS_BATCH_SIZE);
-    console.log(`Found ${pendingFiles.length} pending posts. Processing ${filesToProcess.length} this run.`);
+    const pendingFiles = getSortedFiles().filter(f => !fs.readFileSync(f.filePath, 'utf8').includes('\naudio: '));
+    const filesToProcess = pendingFiles.slice(0, 1);
     
     for (const fileObj of filesToProcess) {
         await processFile(fileObj, release);
