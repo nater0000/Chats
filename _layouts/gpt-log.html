@@ -40,3 +40,30 @@ layout: default
 	</footer>
 
   </article>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      const audio = document.getElementById("post-audio");
+      if (!audio) return;
+
+      const syncSpans = document.querySelectorAll("span.sync-text");
+
+      audio.addEventListener("timeupdate", () => {
+        const currentTime = audio.currentTime;
+        
+        syncSpans.forEach(span => {
+          const start = parseFloat(span.getAttribute("data-start"));
+          const end = parseFloat(span.getAttribute("data-end"));
+          
+          if (currentTime >= start && currentTime <= end) {
+            span.style.backgroundColor = "rgba(0, 255, 136, 0.3)";
+            span.style.color = "#ffffff";
+            span.style.borderRadius = "3px";
+          } else {
+            span.style.backgroundColor = "transparent";
+            span.style.color = "inherit";
+          }
+        });
+      });
+    });
+  </script>
