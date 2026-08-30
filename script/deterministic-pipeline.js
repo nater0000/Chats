@@ -89,7 +89,6 @@ async function processFile(fileObj, release) {
     const processor = remark();
     const ast = processor.parse(body);
 
-    // 1. Walk the AST just to extract clean text and exact string offsets
     visit(ast, (node) => {
         if (node.type === 'paragraph' || node.type === 'heading') {
             let text = '';
@@ -113,11 +112,9 @@ async function processFile(fileObj, release) {
     let currentTime = 0;
     const tempFiles = [];
 
-    // 2. Generate Audio
     for (let i = 0; i < chunks.length; i++) {
         const chunk = chunks[i];
         
-        // Safety Check 1: Skip entirely unpronounceable chunks (e.g. "---")
         if (!chunk.kokoro_prompt.replace(/[^a-zA-Z0-9]/g, '').trim()) {
             console.log(`Skipping chunk ${i} (Unpronounceable): "${chunk.kokoro_prompt}"`);
             chunk.start_time = currentTime.toFixed(3);
@@ -132,7 +129,6 @@ async function processFile(fileObj, release) {
             
             const buffer = Buffer.from(await audioRes.arrayBuffer());
             
-            // Safety Check 2: Skip if Kokoro returns a 0-byte ghost file
             if (buffer.length === 0) {
                 console.warn(`Warning: Kokoro returned 0 bytes for chunk ${i}`);
                 chunk.start_time = currentTime.toFixed(3);
@@ -169,11 +165,18 @@ async function processFile(fileObj, release) {
         return;
     }
 
-    // 3. Merge Audio and Inject Tags via Raw String Splicing
     await new Promise((resolve, reject) => {
         command.on('end', async () => {
             console.log(`Uploading ${assetName} to GitHub Releases...`);
-            const existingAsset = release.assets.find(a => a.name === assetName);
+            
+            // Bypass the 30-item limit by paginating through all assets
+            const allAssets = await octokit.paginate(octokit.rest.repos.listReleaseAssets, {
+                owner,
+                repo,
+                release_id: release.id
+            });
+
+            const existingAsset = allAssets.find(a => a.name === assetName);
             if (existingAsset) {
                 await octokit.rest.repos.deleteReleaseAsset({ owner, repo, asset_id: existingAsset.id });
             }
@@ -184,11 +187,9 @@ async function processFile(fileObj, release) {
                 headers: { 'content-type': 'audio/mpeg', 'content-length': fileData.length }
             });
 
-            // Splice spans into the RAW body to perfectly preserve original formatting
             let modifiedBody = body;
             const validChunks = chunks.filter(c => c.start_time !== undefined && c.nodeRef.position);
             
-            // Sort in reverse order so injecting HTML doesn't shift the offsets of previous chunks
             validChunks.sort((a, b) => b.nodeRef.position.start.offset - a.nodeRef.position.start.offset);
 
             for (const chunk of validChunks) {
