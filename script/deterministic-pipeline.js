@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import crypto from 'crypto';
 import { remark } from 'remark';
 import { visit } from 'unist-util-visit';
 import OpenAI from 'openai';
@@ -21,6 +22,21 @@ const PAGES_DIR = './pages';
 const TMP_DIR = './tmp_audio';
 
 if (!fs.existsSync(TMP_DIR)) fs.mkdirSync(TMP_DIR);
+
+function getAssetInfo(filePath) {
+    const relPath = path.relative('.', filePath);
+    const pathHash = crypto.createHash('md5').update(relPath).digest('hex').substring(0, 8);
+    const cleanPath = relPath
+        .replace(/\.md$/i, '')
+        .replace(/[^a-zA-Z0-9]/g, '-')
+        .replace(/-+/g, '-')
+        .replace(/^-|-$/g, '')
+        .toLowerCase();
+    
+    const assetName = `${cleanPath}-${pathHash}.mp3`;
+    const downloadUrl = `https://github.com/${owner}/${repo}/releases/download/${RELEASE_TAG}/${assetName}`;
+    return { relPath, pathHash, assetName, downloadUrl };
+}
 
 async function getOrCreateRelease() {
     try {
@@ -66,16 +82,14 @@ function generateSilence(durationMs, outputPath) {
 }
 
 async function processFile(fileObj, release) {
-    const baseName = path.basename(fileObj.filePath, '.md');
-    const assetName = `${baseName}.mp3`;
+    const { relPath, pathHash, assetName, downloadUrl } = getAssetInfo(fileObj.filePath);
     const finalAudioPath = path.join(TMP_DIR, assetName);
-    const downloadUrl = `https://github.com/${owner}/${repo}/releases/download/${RELEASE_TAG}/${assetName}`;
 
-    console.log(`\nProcessing ${baseName}...`);
+    console.log(`\nProcessing ${relPath} (Asset: ${assetName})...`);
     const mdRaw = fs.readFileSync(fileObj.filePath, 'utf8');
     
     if (mdRaw.includes('\naudio: ')) {
-        console.log(`Skipping ${baseName}: Audio tag already exists.`);
+        console.log(`Skipping ${relPath}: Audio tag already exists.`);
         return;
     }
 
@@ -136,7 +150,7 @@ async function processFile(fileObj, release) {
                 continue;
             }
 
-            const chunkPath = path.join(TMP_DIR, `temp_${baseName}_${i}.mp3`);
+            const chunkPath = path.join(TMP_DIR, `temp_${pathHash}_${i}.mp3`);
             fs.writeFileSync(chunkPath, buffer);
             tempFiles.push(chunkPath);
             
@@ -148,7 +162,7 @@ async function processFile(fileObj, release) {
             command.input(chunkPath);
 
             if (chunk.trailing_silence_ms > 0) {
-                const silencePath = path.join(TMP_DIR, `temp_${baseName}_silence_${i}.mp3`);
+                const silencePath = path.join(TMP_DIR, `temp_${pathHash}_silence_${i}.mp3`);
                 await generateSilence(chunk.trailing_silence_ms, silencePath);
                 tempFiles.push(silencePath);
                 command.input(silencePath);
@@ -161,7 +175,7 @@ async function processFile(fileObj, release) {
     }
 
     if (tempFiles.length === 0) {
-        console.log(`Skipping ${baseName}: No valid audio generated.`);
+        console.log(`Skipping ${relPath}: No valid audio generated.`);
         return;
     }
 
@@ -169,7 +183,6 @@ async function processFile(fileObj, release) {
         command.on('end', async () => {
             console.log(`Uploading ${assetName} to GitHub Releases...`);
             
-            // Bypass the 30-item limit by paginating through all assets
             const allAssets = await octokit.paginate(octokit.rest.repos.listReleaseAssets, {
                 owner,
                 repo,
@@ -212,7 +225,7 @@ async function processFile(fileObj, release) {
             tempFiles.forEach(f => fs.unlinkSync(f));
             if (fs.existsSync(finalAudioPath)) fs.unlinkSync(finalAudioPath);
             
-            console.log(`Successfully completed ${baseName}.`);
+            console.log(`Successfully completed ${relPath}.`);
             resolve();
         }).on('error', reject).mergeToFile(finalAudioPath, TMP_DIR);
     });
@@ -223,10 +236,45 @@ async function run() {
     
     const TTS_BATCH_SIZE = parseInt(process.env.TTS_BATCH_SIZE || '1', 10);
     const release = await getOrCreateRelease();
-    const pendingFiles = getSortedFiles().filter(f => !fs.readFileSync(f.filePath, 'utf8').includes('\naudio: '));
+    const allFiles = getSortedFiles();
+
+    // --- SMART GARBAGE COLLECTION ---
+    console.log('\nRunning Smart Garbage Collection...');
+    const validAssetNames = new Set(allFiles.map(f => getAssetInfo(f.filePath).assetName));
+    
+    // Protect legacy files that are currently linked in markdown frontmatter
+    allFiles.forEach(f => {
+        const mdRaw = fs.readFileSync(f.filePath, 'utf8');
+        const audioMatch = mdRaw.match(/^audio:\s*.*?\/([^/]+?\.mp3)\s*$/m);
+        if (audioMatch) {
+            validAssetNames.add(audioMatch[1]);
+        }
+    });
+    
+    const allAssets = await octokit.paginate(octokit.rest.repos.listReleaseAssets, {
+        owner,
+        repo,
+        release_id: release.id
+    });
+
+    const orphans = allAssets.filter(asset => !validAssetNames.has(asset.name));
+
+    if (orphans.length === 0) {
+        console.log('No orphaned assets found. Safe to proceed.');
+    } else {
+        console.log(`Found ${orphans.length} orphaned asset(s). Cleaning up...`);
+        for (const orphan of orphans) {
+            console.log(` Deleting ${orphan.name}...`);
+            await octokit.rest.repos.deleteReleaseAsset({ owner, repo, asset_id: orphan.id });
+        }
+        console.log('Garbage Collection complete.');
+    }
+    // --------------------------------
+
+    const pendingFiles = allFiles.filter(f => !fs.readFileSync(f.filePath, 'utf8').includes('\naudio: '));
     const filesToProcess = pendingFiles.slice(0, TTS_BATCH_SIZE);
     
-    console.log(`Found ${pendingFiles.length} pending posts. Processing ${filesToProcess.length} this run.`);
+    console.log(`\nFound ${pendingFiles.length} pending posts. Processing ${filesToProcess.length} this run.`);
     
     for (const fileObj of filesToProcess) {
         await processFile(fileObj, release);
