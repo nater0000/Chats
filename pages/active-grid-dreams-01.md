@@ -27,11 +27,11 @@ To keep the biological subnet from suffering a fatal kernel panic, the hyperviso
 
 1\. Dropping External I/O (The Thalamic Firewall)
 
-When you fall asleep, the brain does not power down. Instead, the OS executes a strict network block. The thalamusâ€”the brain's primary network switchâ€”begins dropping incoming packets from your eyes, ears, and touch sensors. It acts as a hardware firewall, artificially isolating the local subnet from the rest of the universe's grid so the internal data bus is completely clear for maintenance.
+When you fall asleep, the brain does not power down. Instead, the OS executes a strict network block. The thalamus - the brain's primary network switch - begins dropping incoming packets from your eyes, ears, and touch sensors. It acts as a hardware firewall, artificially isolating the local subnet from the rest of the universe's grid so the internal data bus is completely clear for maintenance.
 
 2\. Cache Flushing (L1 to NVMe Transfer)
 
-Your hippocampus acts as the brainâ€™s L1 Cache. It is extremely fast, but it has a very small buffer capacity. Throughout the day, it eagerly allocates pointers for everything you experience.
+Your hippocampus acts as the brain's L1 Cache. It is extremely fast, but it has a very small buffer capacity. Throughout the day, it eagerly allocates pointers for everything you experience.
 
 *   By nightfall, this cache is dangerously close to overflowing.
 *   During Slow-Wave Sleep (Deep Sleep), the OS begins batch-transferring these temporary files. It physically re-routes the data structures from the volatile hippocampus cache into the massive, slower, long-term storage array of the neocortex.
@@ -41,7 +41,7 @@ Your hippocampus acts as the brainâ€™s L1 Cache. It is extremely fast, but 
 
 Once the critical data is backed up, the OS runs its Garbage Collection algorithm on the remaining neural pointers (Synaptic Pruning).
 
-*   It uses a standard "Mark-and-Sweep" protocol. The OS scans the routing tables, looking for unreferenced or rarely used synaptic pathwaysâ€”like the color of a car that drove by at noon.
+*   It uses a standard "Mark-and-Sweep" protocol. The OS scans the routing tables, looking for unreferenced or rarely used synaptic pathways like the color of a car that drove by at noon.
 *   Because maintaining an active dynamic route costs energy, the OS intentionally increases the impedance of these unused traces, effectively zeroing out the pointers and deleting the memory to free up hardware bandwidth for the next day.
 
 4\. Dreams: Chaos Engineering and Fuzz Testing
