@@ -11,6 +11,7 @@ layout: gpt-log
 permalink: /pages/active-grid-double-slit-01
 ---
 
+
 # Active Grid Double Slit
 
 <p class="terminal-line matrix user">user@local:~$</p>
